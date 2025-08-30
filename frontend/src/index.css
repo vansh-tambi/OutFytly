@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brand utility classes */
+@layer components {
+  .btn { @apply inline-flex items-center gap-2 px-4 py-2 rounded-2xl font-medium shadow-soft transition; }
+  .btn-primary { @apply btn bg-primary text-white hover:opacity-90; }
+  .btn-outline { @apply btn border border-lavender text-lavender hover:bg-lavender/10; }
+  .card { @apply rounded-2xl border border-plum/40 bg-plum/30 backdrop-blur p-4 shadow-soft; }
+  .chip { @apply px-2 py-1 text-xs rounded-full bg-lavender/20 text-lavender border border-lavender/30; }
+}
+
+/* Page background */
+html, body, #root { height: 100%; }
+body { @apply bg-ink text-white; }
+#root { @apply flex flex-col min-h-screen; }
