@@ -1,50 +1,29 @@
-import React, { useState } from "react";
+// src/pages/Login.jsx
+import React from "react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Login Data:", form); // will connect with backend later
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-lavender/20">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-ink text-center">Login</h2>
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-6">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <form className="space-y-4">
           <input
             type="email"
-            name="email"
             placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-primary"
-            required
+            className="w-full p-3 border rounded-lg"
           />
           <input
             type="password"
-            name="password"
             placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-primary"
-            required
+            className="w-full p-3 border rounded-lg"
           />
-          <button
-            type="submit"
-            className="w-full bg-primary text-white py-2 rounded-xl hover:bg-ink transition"
-          >
+          <button className="w-full bg-primary text-white py-3 rounded-lg hover:bg-ink transition">
             Login
           </button>
         </form>
-        <p className="text-sm text-center mt-4">
-          Don’t have an account?{" "}
+        <p className="text-center mt-4">
+          Don't have an account?{" "}
           <Link to="/signup" className="text-primary hover:underline">
             Sign up
           </Link>

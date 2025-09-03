@@ -1,17 +1,18 @@
+// src/pages/Profile.jsx
 import React from "react";
 
 const Profile = () => {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
-      <h2 className="text-3xl font-bold text-ink">Your Profile</h2>
-
-      <div className="bg-white p-6 rounded-xl shadow-md mt-6">
-        <p><span className="font-semibold">Name:</span> Vansh Tambi</p>
-        <p><span className="font-semibold">Email:</span> vansh@example.com</p>
-        <p><span className="font-semibold">Location:</span> Jaipur</p>
-        <button className="mt-4 bg-primary text-white px-6 py-2 rounded-xl hover:bg-ink transition">
-          Edit Profile
-        </button>
+    <div className="max-w-5xl mx-auto px-6 py-12">
+      <h1 className="text-3xl font-bold mb-6">My Profile</h1>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold mb-2">Vansh Tambi</h2>
+        <p className="text-gray-600 mb-4">Email: vansh@example.com</p>
+        <h3 className="font-semibold mb-2">My Rentals</h3>
+        <ul className="list-disc ml-6 text-gray-600">
+          <li>Luxury Suit - Rented on Jan 2025</li>
+          <li>Classic Watch - Purchased on Dec 2024</li>
+        </ul>
       </div>
     </div>
   );

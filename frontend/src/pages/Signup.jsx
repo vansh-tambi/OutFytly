@@ -1,58 +1,38 @@
-import React, { useState } from "react";
+// src/pages/Signup.jsx
+import React from "react";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Signup Data:", form); // will connect with backend later
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-lavender/20">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-ink text-center">Create Account</h2>
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-6">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+        <form className="space-y-4">
           <input
             type="text"
-            name="name"
             placeholder="Full Name"
-            value={form.name}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-primary"
-            required
+            className="w-full p-3 border rounded-lg"
           />
           <input
             type="email"
-            name="email"
             placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-primary"
-            required
+            className="w-full p-3 border rounded-lg"
           />
           <input
             type="password"
-            name="password"
             placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-primary"
-            required
+            className="w-full p-3 border rounded-lg"
           />
-          <button
-            type="submit"
-            className="w-full bg-primary text-white py-2 rounded-xl hover:bg-ink transition"
-          >
-            Sign Up
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className="w-full p-3 border rounded-lg"
+          />
+          <button className="w-full bg-primary text-white py-3 rounded-lg hover:bg-ink transition">
+            Create Account
           </button>
         </form>
-        <p className="text-sm text-center mt-4">
+        <p className="text-center mt-4">
           Already have an account?{" "}
           <Link to="/login" className="text-primary hover:underline">
             Login

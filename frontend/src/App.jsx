@@ -25,7 +25,6 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="*" element={<NotFound />} />
-
       </Route>
     </Routes>
   );

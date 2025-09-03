@@ -1,42 +1,37 @@
+// src/pages/ItemDetails.jsx
 import React from "react";
-import { useParams, Link } from "react-router-dom";
-
-const mockItems = {
-  1: { title: "Luxury Suit", price: 1500, location: "Delhi", description: "Perfect for weddings and formal events.", image: "https://picsum.photos/600/400?suit" },
-  2: { title: "Elegant Dress", price: 1200, location: "Mumbai", description: "Beautiful dress for evening parties.", image: "https://picsum.photos/600/400?dress" },
-  3: { title: "Classic Watch", price: 800, location: "Bangalore", description: "Timeless style with modern elegance.", image: "https://picsum.photos/600/400?watch" },
-  4: { title: "Trendy Shoes", price: 600, location: "Hyderabad", description: "Comfortable and stylish for all-day wear.", image: "https://picsum.photos/600/400?shoes" },
-};
+import { useParams } from "react-router-dom";
 
 const ItemDetails = () => {
   const { id } = useParams();
-  const item = mockItems[id];
-
-  if (!item) return <p className="text-center mt-20 text-xl">Item not found</p>;
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-10">
-      {/* Image */}
-      <div className="rounded-2xl overflow-hidden shadow-lg">
-        <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-      </div>
+    <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Image */}
+        <img
+          src={`https://picsum.photos/600/500?random=${id}`}
+          alt="Item"
+          className="rounded-lg shadow-md"
+        />
 
-      {/* Content */}
-      <div className="flex flex-col justify-between">
+        {/* Details */}
         <div>
-          <h2 className="text-3xl font-bold text-ink">{item.title}</h2>
-          <p className="text-plum mt-2">{item.location}</p>
-          <p className="text-primary font-bold text-2xl mt-4">₹{item.price} / day</p>
-          <p className="mt-6 text-gray-700">{item.description}</p>
-        </div>
-
-        <div className="mt-8 flex gap-4">
-          <button className="bg-primary text-white px-6 py-3 rounded-xl hover:bg-lavender transition">
-            Rent Now
-          </button>
-          <Link to="/browse" className="px-6 py-3 rounded-xl border border-primary text-primary hover:bg-primary hover:text-white transition">
-            Back to Browse
-          </Link>
+          <h1 className="text-3xl font-bold mb-4">Luxury Outfit #{id}</h1>
+          <p className="text-gray-600 mb-6">
+            Perfect for parties, weddings, and special occasions. High-quality
+            fabric and premium design.
+          </p>
+          <p className="text-2xl font-semibold text-primary mb-4">₹1500</p>
+          <p className="mb-6">📍 Location: Delhi</p>
+          <div className="flex gap-4">
+            <button className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-ink transition">
+              Rent Now
+            </button>
+            <button className="bg-lavender text-plum px-6 py-3 rounded-lg hover:bg-primary hover:text-white transition">
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
     </div>
