@@ -1,5 +1,5 @@
-// src/components/BlogSection.jsx
 import React from "react";
+import { motion } from "framer-motion";
 
 const blogs = [
   {
@@ -24,25 +24,29 @@ const blogs = [
 
 const BlogSection = () => {
   return (
-    <section className="py-16 px-6">
-      <h2 className="text-3xl font-bold text-center mb-10 text-plum">
+    <section className="py-20 px-6 bg-gray-50">
+      <h2 className="text-4xl font-bold text-center mb-12 text-plum">
         Fashion Insights
       </h2>
-      <div className="grid md:grid-cols-3 gap-8">
-        {blogs.map((blog) => (
-          <div
+      <div className="grid md:grid-cols-3 gap-10">
+        {blogs.map((blog, i) => (
+          <motion.div
             key={blog.id}
-            className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.2, duration: 0.5 }}
+            viewport={{ once: true }}
+            className="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-xl transition"
           >
-            <img src={blog.img} alt={blog.title} className="h-48 w-full object-cover" />
-            <div className="p-5">
+            <img src={blog.img} alt={blog.title} className="h-52 w-full object-cover" />
+            <div className="p-6">
               <h3 className="text-xl font-semibold mb-2 text-ink">{blog.title}</h3>
               <p className="text-gray-600 text-sm">{blog.desc}</p>
-              <button className="mt-4 text-primary font-medium hover:underline">
+              <button className="mt-5 text-primary font-medium hover:underline">
                 Read More →
               </button>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

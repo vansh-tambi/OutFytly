@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // src/components/sections/Categories.jsx
 import React from "react";
 import { motion } from "framer-motion";

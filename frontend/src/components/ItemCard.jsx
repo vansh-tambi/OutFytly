@@ -1,32 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const ItemCard = ({ id, title, price, location, image }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition">
+    <motion.div
+      whileHover={{ scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 200 }}
+      className="bg-ink text-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl"
+    >
       {/* Image */}
       <Link to={`/item/${id}`}>
-        <img
+        <motion.img
+          whileHover={{ scale: 1.05 }}
           src={image}
           alt={title}
-          className="w-full h-48 object-cover"
+          className="w-full h-56 object-cover transition-transform"
         />
       </Link>
 
       {/* Content */}
-      <div className="p-4">
-        <h3 className="text-ink font-semibold text-lg truncate">{title}</h3>
-        <p className="text-plum text-sm mb-2">{location}</p>
+      <div className="p-5">
+        <h3 className="text-lg font-semibold truncate">{title}</h3>
+        <p className="text-gray-300 text-sm mb-2">{location}</p>
         <p className="text-primary font-bold">₹{price} / day</p>
 
         <Link
           to={`/item/${id}`}
-          className="inline-block mt-3 w-full bg-primary text-white text-center py-2 rounded-xl hover:bg-lavender transition"
+          className="inline-block mt-4 w-full bg-primary text-white text-center py-2 rounded-xl font-semibold hover:bg-lavender hover:text-plum transition"
         >
           View Details
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
