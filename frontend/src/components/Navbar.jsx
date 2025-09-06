@@ -43,7 +43,25 @@ const Navbar = () => {
         <NavLink to="/browse" className={navLinkClasses}>
           Browse
         </NavLink>
+        <NavLink to="/about" className={navLinkClasses}>
+          About
+        </NavLink>
+        <NavLink to="/contact" className={navLinkClasses}>
+          Contact
+        </NavLink>
+        <NavLink to="/faq" className={navLinkClasses}>
+          FAQ
+        </NavLink>
+        <NavLink to="/careers" className={navLinkClasses}>
+          Careers
+        </NavLink>
+        <NavLink to="/help" className={navLinkClasses}>
+          Help
+        </NavLink>
+      </div>
 
+      {/* Auth / User Links */}
+      <div className="flex gap-6 items-center">
         {isLoggedIn ? (
           <>
             <NavLink to="/cart" className={navLinkClasses}>
@@ -58,7 +76,7 @@ const Navbar = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
-              className="ml-4 bg-lavender text-plum px-3 py-1 rounded-md hover:bg-primary hover:text-white transition"
+              className="ml-2 bg-lavender text-plum px-3 py-1 rounded-md hover:bg-primary hover:text-white transition"
             >
               Logout
             </motion.button>

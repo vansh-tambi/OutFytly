@@ -32,11 +32,11 @@ const AppDownload = () => {
           className="flex justify-center gap-5"
         >
           <a href="#" className="bg-black px-6 py-3 rounded-xl flex items-center gap-3 shadow-lg hover:scale-105 transition">
-            <img src="/google-play.png" alt="Google Play" className="h-6" />
+            <img src="/playstore.png" alt="Google Play" className="h-6" />
             <span className="text-white font-medium">Google Play</span>
           </a>
           <a href="#" className="bg-black px-6 py-3 rounded-xl flex items-center gap-3 shadow-lg hover:scale-105 transition">
-            <img src="/app-store.png" alt="App Store" className="h-6" />
+            <img src="/appstore.png" alt="App Store" className="h-6" />
             <span className="text-white font-medium">App Store</span>
           </a>
         </motion.div>

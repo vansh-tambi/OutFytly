@@ -15,40 +15,58 @@ const Cart = () => {
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6 }}
       className="max-w-6xl mx-auto px-6 py-16"
     >
-      <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
+      <h1 className="text-4xl font-bold mb-10">🛒 Your Cart</h1>
+
       {cartItems.length === 0 ? (
-        <p className="text-gray-500">Your cart is empty.</p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-gray-400 text-lg"
+        >
+          Your cart is empty.
+        </motion.p>
       ) : (
         <div className="space-y-6">
           {cartItems.map((item, i) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.2 }}
-              className="flex items-center gap-6 bg-white p-4 rounded-xl shadow"
+              transition={{ delay: i * 0.15 }}
+              className="flex items-center gap-6 bg-lavender p-5 rounded-xl shadow-lg"
             >
-              <img src={item.image} alt={item.title} className="w-28 h-20 object-cover rounded-lg" />
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-28 h-20 object-cover rounded-lg"
+              />
               <div className="flex-1">
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-                <p className="text-gray-600">₹{item.price}</p>
+                <h3 className="text-lg font-semibold text-ink">{item.title}</h3>
+                <p className="text-gray-700">₹{item.price}</p>
               </div>
-              <button className="text-red-500 hover:underline">Remove</button>
+              <button className="text-red-500 font-medium hover:underline transition">
+                Remove
+              </button>
             </motion.div>
           ))}
 
-          <div className="flex justify-between items-center bg-ink text-white p-6 rounded-xl shadow-lg">
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex justify-between items-center bg-ink text-white p-6 rounded-xl shadow-lg"
+          >
             <p className="text-2xl font-bold">Total: ₹{total}</p>
             <Link
               to="/checkout"
-              className="bg-primary px-8 py-3 rounded-lg font-medium hover:bg-lavender hover:text-plum transition"
+              className="bg-primary px-8 py-3 rounded-lg font-semibold hover:bg-lavender hover:text-plum transition"
             >
-              Proceed to Checkout
+              Proceed to Checkout →
             </Link>
-          </div>
+          </motion.div>
         </div>
       )}
     </motion.div>
