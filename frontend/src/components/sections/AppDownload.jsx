@@ -1,13 +1,37 @@
 // src/components/sections/AppDownload.jsx
 import React from "react";
 import { motion } from "framer-motion";
+import { FaGooglePlay, FaApple } from "react-icons/fa"; // Using react-icons for scalability
+
+// A reusable button component for the stores
+const StoreButton = ({ href, icon: Icon, storeName }) => (
+  <a href={href} className="bg-black/80 backdrop-blur-sm px-5 py-3 rounded-xl flex items-center gap-3 shadow-lg hover:scale-105 hover:bg-black transition-all transform">
+    <Icon size={24} className="text-white" />
+    <div>
+      <p className="text-xs text-gray-300 leading-none">GET IT ON</p>
+      <p className="text-white font-semibold text-lg leading-tight">{storeName}</p>
+    </div>
+  </a>
+);
 
 const AppDownload = () => {
   return (
-    <section className="py-14 bg-primary text-white text-center relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="py-20 bg-primary text-white text-center relative overflow-hidden">
+      {/* --- Animated Decorative Blobs --- */}
+      <motion.div
+        animate={{ y: [0, -15, 0], x: [0, 10, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -bottom-16 -right-16 w-64 h-64 bg-lavender/10 rounded-full blur-3xl"
+      />
+      <motion.div
+        animate={{ y: [0, 15, 0], x: [0, -10, 0] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        className="absolute -top-16 -left-16 w-64 h-64 bg-plum/20 rounded-full blur-3xl"
+      />
+      
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.h2
-          initial={{ opacity: 0, y: -40 }}
+          initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
@@ -20,30 +44,24 @@ const AppDownload = () => {
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-lg text-lavender mb-6 max-w-2xl mx-auto"
+          className="text-lg text-lavender mb-8 max-w-2xl mx-auto"
         >
           Get exclusive deals, faster checkout, and outfit recommendations tailored just for you.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
+          transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="flex justify-center gap-5"
+          // This ensures buttons stack on small screens and go side-by-side on larger ones
+          className="flex flex-col sm:flex-row justify-center items-center gap-5"
         >
-          <a href="#" className="bg-black px-6 py-3 rounded-xl flex items-center gap-3 shadow-lg hover:scale-105 transition">
-            <img src="/playstore.png" alt="Google Play" className="h-6" />
-            <span className="text-white font-medium">Google Play</span>
-          </a>
-          <a href="#" className="bg-black px-6 py-3 rounded-xl flex items-center gap-3 shadow-lg hover:scale-105 transition">
-            <img src="/appstore.png" alt="App Store" className="h-6" />
-            <span className="text-white font-medium">App Store</span>
-          </a>
+          <StoreButton href="#" icon={FaGooglePlay} storeName="Google Play" />
+          <StoreButton href="#" icon={FaApple} storeName="App Store" />
         </motion.div>
       </div>
-      <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-lavender opacity-20 rounded-full blur-3xl"></div>
-      <div className="absolute -top-16 -left-16 w-64 h-64 bg-plum opacity-20 rounded-full blur-3xl"></div>
     </section>
   );
 };
+
 export default AppDownload;

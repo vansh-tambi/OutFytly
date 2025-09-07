@@ -1,31 +1,47 @@
-import React from "react";
-import { motion } from "framer-motion";
+// src/pages/Terms.jsx
+import React from 'react';
+import StaticPageLayout from '../components/layouts/StaticPageLayout';
+
+// A reusable component for each section (can be moved to a shared file)
+const PolicySection = ({ title, children }) => (
+  <div className="mb-6">
+    <h2 className="text-2xl font-semibold text-primary mb-3">{title}</h2>
+    <div className="space-y-4">{children}</div>
+  </div>
+);
 
 const Terms = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="max-w-5xl mx-auto px-6 py-16"
+    <StaticPageLayout
+      title="Terms & Conditions 📜"
+      subtitle="By using OutFytly, you agree to follow our guidelines. Please read carefully before renting, buying, or listing items."
     >
-      <h1 className="text-4xl font-bold mb-6 text-center">Terms & Conditions 📜</h1>
-      <p className="text-center mb-10 max-w-3xl mx-auto">
-        By using <span className="text-primary font-semibold">Rent. Style. Repeat.</span>, 
-        you agree to follow our guidelines. Please read carefully before proceeding.
-      </p>
+      <p className="text-sm text-lavender/60 !mb-6">Last Updated: September 8, 2025</p>
 
-      <div className="bg-lavender p-8 rounded-2xl shadow-lg space-y-5">
-        <h2 className="text-xl font-semibold text-ink">Usage</h2>
-        <p className="text-gray-700">All rentals are subject to availability. Items must be returned in good condition.</p>
+      <PolicySection title="1. User Agreement">
+        <p>
+          This agreement is a binding contract between you and OutFytly. By accessing or using our services, you agree to be bound by these terms. If you do not agree, you may not use our services. You must be at least 18 years old to create an account.
+        </p>
+      </PolicySection>
 
-        <h2 className="text-xl font-semibold text-ink">Liability</h2>
-        <p className="text-gray-700">Users are responsible for damages, delays, or misuse of rented items.</p>
+      <PolicySection title="2. Item Rentals">
+        <p>
+          All rentals are subject to availability and the terms set by the item's owner (the "Lister"). The rental period begins when the item is delivered and ends when it is postmarked for return. Items must be returned in the same condition they were received, barring normal wear and tear.
+        </p>
+      </PolicySection>
+      
+      <PolicySection title="3. Damages and Liability">
+        <p>
+          Renters are solely responsible for any damage, loss, or theft of rented items. Fees equivalent to the full retail value of the item may be charged for items that are not returned or are returned with significant damage.
+        </p>
+      </PolicySection>
 
-        <h2 className="text-xl font-semibold text-ink">Updates</h2>
-        <p className="text-gray-700">We may update these terms anytime. Stay informed by checking this page regularly.</p>
-      </div>
-    </motion.div>
+      <PolicySection title="4. Policy Updates">
+        <p>
+          We reserve the right to modify these terms at any time. We will notify users of any significant changes, but it is your responsibility to review this page periodically. Continued use of the service after changes constitutes your acceptance of the new terms.
+        </p>
+      </PolicySection>
+    </StaticPageLayout>
   );
 };
 

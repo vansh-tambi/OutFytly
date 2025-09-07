@@ -1,65 +1,84 @@
-/* eslint-disable no-unused-vars */
 // src/components/sections/Categories.jsx
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 const categories = [
-  { id: 1, name: "Men", image: "/images/men.jpg" },
-  { id: 2, name: "Women", image: "/images/women.jpg" },
-  { id: 3, name: "Kids", image: "/images/kids.jpg" },
-  { id: 4, name: "Accessories", image: "/images/accessories.jpg" },
+  { name: 'Women', image: 'https://images.unsplash.com/photo-1581044777550-4cfa6ce24628?w=500', size: 'large' },
+  { name: 'Men', image: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?w=500', size: 'small' },
+  { name: 'Accessories', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500', size: 'small' },
+  { name: 'Shoes', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ab?w=500', size: 'small' },
+  { name: 'Kids', image: 'https://images.unsplash.com/photo-1519238263530-99bdd1965342?w=500', size: 'small' },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0 },
+const containerVariant = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
 };
+
+const itemVariant = {
+  hidden: { opacity: 0, scale: 0.9 },
+  show: { opacity: 1, scale: 1 },
+};
+
+const CategoryCard = ({ name, image, size }) => {
+  const isLarge = size === 'large';
+  return (
+    <Link 
+      to={`/browse?category=${name.toLowerCase()}`} 
+      className={`
+        relative rounded-2xl overflow-hidden shadow-2xl shadow-plum/50 group border-2 border-transparent hover:border-primary transition-all
+        ${isLarge ? 'md:col-span-2 md:row-span-2' : ''}
+      `}
+    >
+      <motion.div variants={itemVariant} whileHover={{ scale: 1.05 }} className="h-full">
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
+          <h3 className={`font-bold text-white ${isLarge ? 'text-4xl' : 'text-2xl'}`}>{name}</h3>
+          <div className="flex items-center gap-2 text-primary font-semibold mt-2 opacity-0 group-hover:opacity-100 transform -translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+            Shop Now <ArrowRight size={18} />
+          </div>
+        </div>
+      </motion.div>
+    </Link>
+  );
+};
+
 
 const Categories = () => {
   return (
-    <section className="py-14 bg-gradient-to-r from-plum via-ink to-primary text-white relative overflow-hidden">
-      {/* subtle blob bg */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.15 }}
-        transition={{ duration: 1.5 }}
-        className="absolute inset-0 bg-[url('/images/pattern.svg')] bg-cover bg-center opacity-10"
-      />
+    <section className="py-24 bg-ink">
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white">
+            Curated for Your Style
+          </h2>
+          <p className="text-lavender/70 mt-3 max-w-2xl mx-auto">
+            From statement pieces to everyday essentials, discover collections that tell your story.
+          </p>
+        </motion.div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <motion.h2
-          variants={fadeUp}
+        <motion.div
+          variants={containerVariant}
           initial="hidden"
           whileInView="show"
-          transition={{ duration: 0.7 }}
-          className="text-3xl md:text-4xl font-bold mb-12 text-center"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-6 h-[600px]"
         >
-          Shop by <span className="text-lavender">Category</span>
-        </motion.h2>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
-          {categories.map((cat, i) => (
-            <motion.div
-              key={cat.id}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              transition={{ duration: 0.5, delay: i * 0.2 }}
-              className="relative rounded-2xl overflow-hidden shadow-lg group cursor-pointer border border-lavender/20 hover:border-lavender/50"
-            >
-              <img
-                src={cat.image}
-                alt={cat.name}
-                className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition flex items-center justify-center">
-                <p className="text-lg md:text-xl font-semibold tracking-wide group-hover:scale-110 transform transition">
-                  {cat.name}
-                </p>
-              </div>
-            </motion.div>
+          {categories.map((cat) => (
+            <CategoryCard key={cat.name} {...cat} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

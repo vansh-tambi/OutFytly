@@ -1,75 +1,106 @@
-// src/pages/Cart.jsx
-import React from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from '../context/CartContext';
+import { Trash2, Plus, Minus } from 'lucide-react';
 
 const Cart = () => {
-  const cartItems = [
-    { id: 1, title: "Luxury Suit", price: 1500, image: "https://picsum.photos/200/150?suit" },
-    { id: 2, title: "Elegant Dress", price: 1200, image: "https://picsum.photos/200/150?dress" },
-  ];
+  const { cart, dispatch } = useCart();
 
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+  const handleRemove = (id, size) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: { id, size } });
+  };
+
+  const handleQuantityChange = (id, size, quantity) => {
+    dispatch({ type: 'UPDATE_QUANTITY', payload: { id, size, quantity } });
+  };
+
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shipping = 50; // Example shipping cost
+  const total = subtotal + shipping;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="max-w-6xl mx-auto px-6 py-16"
-    >
-      <h1 className="text-4xl font-bold mb-10">🛒 Your Cart</h1>
-
-      {cartItems.length === 0 ? (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-gray-400 text-lg"
+    <div className="bg-ink min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-3xl md:text-4xl font-bold text-white mb-10"
         >
-          Your cart is empty.
-        </motion.p>
-      ) : (
-        <div className="space-y-6">
-          {cartItems.map((item, i) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.15 }}
-              className="flex items-center gap-6 bg-lavender p-5 rounded-xl shadow-lg"
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-28 h-20 object-cover rounded-lg"
-              />
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-ink">{item.title}</h3>
-                <p className="text-gray-700">₹{item.price}</p>
-              </div>
-              <button className="text-red-500 font-medium hover:underline transition">
-                Remove
-              </button>
-            </motion.div>
-          ))}
+          🛒 Your Shopping Cart
+        </motion.h1>
 
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex justify-between items-center bg-ink text-white p-6 rounded-xl shadow-lg"
-          >
-            <p className="text-2xl font-bold">Total: ₹{total}</p>
-            <Link
-              to="/checkout"
-              className="bg-primary px-8 py-3 rounded-lg font-semibold hover:bg-lavender hover:text-plum transition"
-            >
-              Proceed to Checkout →
+        {cart.length === 0 ? (
+          <div className="text-center py-20 bg-plum/30 rounded-lg">
+            <h2 className="text-2xl font-semibold text-white">Your cart is empty.</h2>
+            <p className="text-lavender/70 mt-2">Looks like you haven't added anything yet!</p>
+            <Link to="/browse">
+              <motion.button whileHover={{ scale: 1.05 }} className="mt-6 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
+                Start Shopping
+              </motion.button>
             </Link>
-          </motion.div>
-        </div>
-      )}
-    </motion.div>
+          </div>
+        ) : (
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            {/* --- Cart Items --- */}
+            <div className="lg:col-span-2 space-y-4">
+              <AnimatePresence>
+                {cart.map((item) => (
+                  <motion.div
+                    key={`${item.id}-${item.size}`}
+                    layout
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 50, transition: { duration: 0.3 } }}
+                    className="flex items-start gap-4 bg-plum/50 p-4 rounded-xl border border-lavender/20"
+                  >
+                    <img src={item.image} alt={item.title} className="w-24 h-24 object-cover rounded-lg" />
+                    <div className="flex-grow">
+                      <h3 className="font-semibold text-white">{item.title}</h3>
+                      <p className="text-sm text-lavender/70">Size: {item.size}</p>
+                      <p className="text-primary font-semibold mt-1">₹{item.price.toLocaleString()}</p>
+                    </div>
+                    <div className="flex flex-col items-end justify-between h-full">
+                       <div className="flex items-center gap-2 bg-ink px-2 py-1 rounded-md">
+                         <button onClick={() => handleQuantityChange(item.id, item.size, item.quantity - 1)} className="text-lavender"><Minus size={16}/></button>
+                         <span className="font-bold text-white w-4 text-center">{item.quantity}</span>
+                         <button onClick={() => handleQuantityChange(item.id, item.size, item.quantity + 1)} className="text-lavender"><Plus size={16}/></button>
+                       </div>
+                       <button onClick={() => handleRemove(item.id, item.size)} className="text-red-400 hover:text-red-500 transition-colors flex items-center gap-1 text-sm">
+                         <Trash2 size={14} /> Remove
+                       </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {/* --- Order Summary --- */}
+            <div className="lg:col-span-1 sticky top-24">
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-plum/50 p-6 rounded-xl border border-lavender/20"
+              >
+                <h2 className="text-2xl font-bold text-white mb-4">Order Summary</h2>
+                <div className="space-y-3 text-lavender/80">
+                  <div className="flex justify-between"><span>Subtotal</span> <span className="text-white">₹{subtotal.toLocaleString()}</span></div>
+                  <div className="flex justify-between"><span>Shipping</span> <span className="text-white">₹{shipping.toLocaleString()}</span></div>
+                  <div className="border-t border-lavender/20 my-2"></div>
+                  <div className="flex justify-between text-xl font-bold text-white"><span>Total</span> <span>₹{total.toLocaleString()}</span></div>
+                </div>
+                <Link to="/checkout">
+                  <motion.button whileHover={{ scale: 1.03 }} className="w-full mt-6 bg-primary px-6 py-3 rounded-lg font-semibold text-white">
+                    Proceed to Checkout
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

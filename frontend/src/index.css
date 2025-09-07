@@ -6,3 +6,29 @@
     --color-plum:#201825;
     --color-lavender:#BEA0D3;
 }
+/* 2. Define your custom, reusable component classes */
+@layer components {
+  .filter-select {
+    @apply w-full px-4 py-2 rounded-lg bg-ink border border-lavender/30 text-white focus:outline-none focus:ring-2 focus:ring-primary appearance-none;
+  }
+
+    .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .form-input {
+    @apply w-full p-3 rounded-lg bg-ink text-white border border-lavender/40 focus:ring-2 focus:ring-primary outline-none transition-shadow;
+  }
+  
+  .form-error {
+    @apply text-red-400 text-sm mt-1;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-lavender/80;
+  }
+}

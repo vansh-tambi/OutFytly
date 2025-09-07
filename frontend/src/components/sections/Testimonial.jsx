@@ -1,43 +1,102 @@
 // src/components/sections/Testimonials.jsx
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-coverflow';
 
 const testimonials = [
-  { id: 1, name: "Aarav Sharma", text: "OutFytly has completely changed my shopping experience. Love the quality!" },
-  { id: 2, name: "Priya Mehta", text: "Super stylish collection, fast delivery, and smooth browsing. Totally recommend!" },
-  { id: 3, name: "Rahul Verma", text: "Best fashion marketplace. The UI is so smooth and products are top-notch." },
+  { id: 1, name: 'Aarav Sharma', location: 'Delhi', text: 'OutFytly has completely changed my shopping experience. The quality of the outfits is amazing, and the entire process is incredibly smooth. Love it!', avatar: 'https://i.pravatar.cc/150?u=aarav', rating: 5 },
+  { id: 2, name: 'Priya Mehta', location: 'Mumbai', text: 'I found the perfect dress for a wedding in minutes! Super stylish collection, fast delivery, and a beautiful user interface. Totally recommend!', avatar: 'https://i.pravatar.cc/150?u=priya', rating: 5 },
+  { id: 3, name: 'Rahul Verma', location: 'Bangalore', text: "As someone who lists clothes, this is the best fashion marketplace I've used. The seller dashboard is easy to navigate and my items get rented out quickly.", avatar: 'https://i.pravatar.cc/150?u=rahul', rating: 5 },
+  { id: 1, name: 'Aarav Sharma', location: 'Delhi', text: 'OutFytly has completely changed my shopping experience. The quality of the outfits is amazing, and the entire process is incredibly smooth. Love it!', avatar: 'https://i.pravatar.cc/150?u=aarav', rating: 5 },
+  { id: 4, name: 'Ananya Iyer', location: 'Hyderabad', text: "The variety is unmatched and the sustainability aspect makes me feel good about my choices. A fantastic platform!", avatar: 'https://i.pravatar.cc/150?u=ananya', rating: 5 },
+  { id: 2, name: 'Priya Mehta', location: 'Mumbai', text: 'I found the perfect dress for a wedding in minutes! Super stylish collection, fast delivery, and a beautiful user interface. Totally recommend!', avatar: 'https://i.pravatar.cc/150?u=priya', rating: 5 },
 ];
+
+const StarRating = ({ rating }) => (
+  <div className="flex gap-1 text-yellow-500">
+    {[...Array(rating)].map((_, i) => (
+      <Star key={i} size={16} fill="currentColor" />
+    ))}
+  </div>
+);
 
 const Testimonials = () => {
   return (
-    <section className="py-14 bg-lavender text-ink">
+    <section className="py-24 bg-ink overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 text-center">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="text-3xl font-bold mb-8"
+          className="text-3xl md:text-4xl font-bold mb-12 text-white"
         >
-          What Our Customers Say
+          💬 What Our <span className="text-primary">Community</span> Says
         </motion.h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={t.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.2, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-xl shadow-lg p-5 hover:shadow-xl transition"
-            >
-              <p className="text-gray-600 italic mb-3">“{t.text}”</p>
-              <h3 className="font-semibold text-primary">{t.name}</h3>
-            </motion.div>
-          ))}
+
+        <div className="relative group">
+          <Swiper
+            effect="coverflow"
+            grabCursor
+            centeredSlides
+            slidesPerView="auto"
+            loop
+            autoplay={{ delay: 2000, disableOnInteraction: false }}
+            coverflowEffect={{ rotate: 50, stretch: 0, depth: 100, modifier: 1, slideShadows: false }}
+            pagination={{ clickable: true, el: '.swiper-pagination' }}
+            navigation={{ nextEl: '.custom-swiper-next', prevEl: '.custom-swiper-prev' }}
+            modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
+            className="!pb-16"
+          >
+            {testimonials.map((t) => (
+              <SwiperSlide key={t.id} className="!w-full max-w-lg select-none">
+                <div className="bg-plum/50 backdrop-blur-sm rounded-xl shadow-lg p-8 text-left border border-primary/30 h-full flex flex-col">
+                  <Quote className="text-primary/50 mb-4" size={32} />
+                  <p className="text-lavender/80 italic mb-6 leading-relaxed flex-grow">"{t.text}"</p>
+                  <div className="flex items-center gap-4 mt-auto">
+                    <img src={t.avatar} alt={t.name} className="w-14 h-14 rounded-full object-cover border-2 border-primary/50" />
+                    <div>
+                      <h3 className="font-semibold text-white text-lg">{t.name}</h3>
+                      <p className="text-sm text-lavender/60">{t.location}</p>
+                    </div>
+                    <div className="ml-auto">
+                      <StarRating rating={t.rating} />
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Custom navigation arrows */}
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="custom-swiper-prev absolute top-1/2 -translate-y-1/2 left-0 sm:left-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-primary border border-white/30 cursor-pointer opacity-0 group-hover:opacity-100"
+          >
+            <ChevronLeft className="text-white" size={16} />
+          </motion.div>
+
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="custom-swiper-next absolute top-1/2 -translate-y-1/2 right-0 sm:right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-primary border border-white/30 cursor-pointer opacity-0 group-hover:opacity-100"
+          >
+            <ChevronRight className="text-white" size={16} />
+          </motion.div>
+
+          {/* Pagination dots */}
+          <div className="swiper-pagination !bottom-0 !relative mt-8"></div>
         </div>
       </div>
     </section>
   );
 };
+
 export default Testimonials;

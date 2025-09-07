@@ -1,73 +1,86 @@
+// src/App.jsx
+import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout.jsx";
 
+// A simple loading spinner component for suspense fallback
+const PageLoader = () => (
+  <div className="min-h-screen bg-ink flex justify-center items-center">
+    <div className="w-12 h-12 rounded-full border-4 border-t-primary border-lavender/30 animate-spin"></div>
+  </div>
+);
+
+// --- Lazy-loaded Pages ---
+
 // Core Pages
-import Home from "./pages/Home.jsx";
-import Browse from "./pages/Browse.jsx";
-import ItemDetails from "./pages/ItemDetails.jsx";
-import About from "./pages/About.jsx";
-import Contact from "./components/sections/Contact.jsx";
-import FAQ from "./components/sections/FAQ.jsx";
+const Home = React.lazy(() => import("./pages/Home.jsx"));
+const Browse = React.lazy(() => import("./pages/Browse.jsx"));
+const ItemDetails = React.lazy(() => import("./pages/ItemDetails.jsx"));
 
-// Auth
-import Login from "./pages/Login.jsx";
-import Signup from "./pages/Signup.jsx";
+// Auth Pages
+const Login = React.lazy(() => import("./pages/Login.jsx"));
+const Signup = React.lazy(() => import("./pages/Signup.jsx"));
 
-// User
-import Profile from "./pages/Profile.jsx";
-import Cart from "./pages/Cart.jsx";
-import Checkout from "./pages/Checkout.jsx";
+// Account Hub Pages
+const AccountPage = React.lazy(() => import("./pages/AccountPage.jsx"));
+const Profile = React.lazy(() => import("./pages/Profile.jsx"));
+const Dashboard = React.lazy(() => import("./pages/Dashboard.jsx"));
 
-// Seller
-import Dashboard from "./pages/Dashboard.jsx";
+// Static & Info Pages
+const About = React.lazy(() => import("./pages/About.jsx"));
+const Contact = React.lazy(() => import("./components/sections/Contact.jsx"));
+const FAQ = React.lazy(() => import("./components/sections/FAQ.jsx"));
+const Careers = React.lazy(() => import("./pages/Careers.jsx"));
+const Privacy = React.lazy(() => import("./pages/Privacy.jsx"));
+const Refund = React.lazy(() => import("./pages/Refund.jsx"));
+const Help = React.lazy(() => import("./pages/Help.jsx"));
+const Terms = React.lazy(() => import("./pages/Terms.jsx"));
 
-// Static / Info Pages
-import Terms from "./pages/Terms.jsx";
-import Privacy from "./pages/Privacy.jsx";
-import Help from "./pages/Help.jsx";
-import Refund from "./pages/Refund.jsx";
-import Careers from "./pages/Careers.jsx";
-
-// Utility
-import NotFound from "./pages/NotFound.jsx";
-
-import "./App.css";
-import "./index.css";
+// Utility Pages
+const NotFound = React.lazy(() => import("./pages/NotFound.jsx"));
+const Cart = React.lazy(() => import("./pages/Cart.jsx"));
+const Checkout = React.lazy(() => import("./pages/Checkout.jsx"));
 
 export default function App() {
   return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        {/* Public Pages */}
-        <Route path="/" element={<Home />} />
-        <Route path="/browse" element={<Browse />} />
-        <Route path="/item/:id" element={<ItemDetails />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/faq" element={<FAQ />} />
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        {/* --- All pages that use the Main Navbar and Footer --- */}
+        <Route element={<MainLayout />}>
+          {/* Core Public Pages */}
+          <Route path="/" element={<Home />} />
+          <Route path="/browse" element={<Browse />} />
+          <Route path="/item/:id" element={<ItemDetails />} />
 
-        {/* Auth */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+          {/* Auth Pages */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
-        {/* User */}
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
+          {/* User Cart & Checkout */}
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
 
-        {/* Seller */}
-        <Route path="/dashboard" element={<Dashboard />} />
+          {/* Account Hub with Sidebar */}
+          <Route path="/account" element={<AccountPage />}>
+            <Route index element={<Profile />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="dashboard" element={<Dashboard />} />
+          </Route>
 
-        {/* Static / Info */}
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/help" element={<Help />} />
-        <Route path="/returns" element={<Refund />} />
-        <Route path="/careers" element={<Careers />} />
+          {/* Static Informational Pages */}
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/returns" element={<Refund />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/terms" element={<Terms />} />
 
-        {/* 404 */}
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+          {/* Catch-all 404 Page */}
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }
