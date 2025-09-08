@@ -1,41 +1,33 @@
 // src/pages/Browse.jsx
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ItemCard from '../components/ItemCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { fetchProducts } from '../api/productService';
+import toast from 'react-hot-toast';
 
-// --- Mock Data & Options ---
-const allItems = [
-    { id: "1", title: "Designer Saree", price: 2000, location: "Mumbai", category: "Party Wear", image: "https://images.unsplash.com/photo-1727430228383-aa1fb59db8bf?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: "2", title: "Luxury Heels", price: 900, location: "Delhi", category: "Shoes", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500" },
-    { id: "3", title: "Formal Blazer", price: 1500, location: "Bangalore", category: "Party Wear", image: "https://images.unsplash.com/photo-1723063640943-2b7b4379e1ee?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: "4", title: "Smart Watch", price: 700, location: "Hyderabad", category: "Watches", image: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: "5", title: "Leather Handbag", price: 1100, location: "Delhi", category: "Accessories", image: "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=500" },
-    { id: "6", title: "Running Sneakers", price: 850, location: "Mumbai", category: "Shoes", image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=500" },
-    { id: "7", title: "Gold Bracelet", price: 1800, location: "Bangalore", category: "Accessories", image: "https://images.unsplash.com/photo-1689397136362-dce64e557fcc?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: "8", title: "Aviator Sunglasses", price: 400, location: "Hyderabad", category: "Accessories", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500" },
-    { id: "9", title: "Classic Tuxedo", price: 2500, location: "Delhi", category: "Party Wear", image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500" },
-    { id: "10", title: "Chronograph Watch", price: 3000, location: "Mumbai", category: "Watches", image: "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=500" },
-    { id: "11", title: "Leather Boots", price: 1600, location: "Bangalore", category: "Shoes", image: "https://images.unsplash.com/photo-1534233650908-b471f2350922?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: "12", title: "Evening Gown", price: 2200, location: "Hyderabad", category: "Party Wear", image: "https://images.unsplash.com/photo-1631291887694-0bd5d4d610be?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-];
+// --- Filter Options ---
 const locations = ["All Locations", "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Bhopal"];
 const categories = ["All Categories", "Party Wear", "Watches", "Shoes", "Accessories"];
-const sortOptions = [ { value: "relevance", label: "Relevance" }, { value: "price-asc", label: "Price: Low to High" }, { value: "price-desc", label: "Price: High to Low" }];
-const ITEMS_PER_PAGE = 8;
+const sortOptions = [
+  { value: "relevance", label: "Relevance" },
+  { value: "price_asc", label: "Price: Low to High" },
+  { value: "price_desc", label: "Price: High to Low" },
+  { value: "newest", label: "Newest Arrivals" },
+];
 
-
-const FilterSidebar = ({ filters, setFilters }) => {
-    const { searchTerm, location, category, price, sortBy } = filters;
-    const { setSearchTerm, setLocation, setCategory, setPrice, setSortBy } = setFilters;
+// --- Filter Sidebar Component ---
+const FilterSidebar = ({ filters, setFilters, loading }) => {
+    const { keyword, location, category, sortBy } = filters;
+    const { setKeyword, setLocation, setCategory, setSortBy } = setFilters;
 
     return (
         <div className="space-y-6">
             <div>
                 <label className="form-label mb-2">Search</label>
                 <div className="relative">
-                    <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="form-input pl-10" />
+                    <input type="text" placeholder="Search..." value={keyword} onChange={(e) => setKeyword(e.target.value)} disabled={loading} className="form-input pl-10" />
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-lavender/50" size={20} />
                 </div>
             </div>
@@ -44,7 +36,7 @@ const FilterSidebar = ({ filters, setFilters }) => {
                 <label className="form-label mb-2">Category</label>
                 <div className="space-y-2">
                     {categories.map(cat => (
-                        <button key={cat} onClick={() => setCategory(cat)} className={`w-full text-left px-3 py-2 rounded-md text-sm transition ${category === cat ? 'bg-primary text-white font-semibold' : 'hover:bg-plum/50 text-lavender'}`}>
+                        <button key={cat} onClick={() => setCategory(cat)} disabled={loading} className={`w-full text-left px-3 py-2 rounded-md text-sm transition ${category === cat ? 'bg-primary text-white font-semibold' : 'hover:bg-plum/50 text-lavender'}`}>
                             {cat}
                         </button>
                     ))}
@@ -52,22 +44,15 @@ const FilterSidebar = ({ filters, setFilters }) => {
             </div>
 
             <div>
-                <label htmlFor="price" className="form-label flex justify-between mb-2">
-                    <span>Price</span> <span className="text-white">up to ₹{price.toLocaleString()}</span>
-                </label>
-                <input id="price" type="range" min="400" max="3000" step="50" value={price} onChange={(e) => setPrice(Number(e.target.value))} className="w-full h-2 bg-ink rounded-lg cursor-pointer accent-primary" />
-            </div>
-
-            <div>
                 <label className="form-label mb-2">Location</label>
-                <select value={location} onChange={(e) => setLocation(e.target.value)} className="form-input">
+                <select value={location} onChange={(e) => setLocation(e.target.value)} disabled={loading} className="form-input">
                     {locations.map(loc => <option key={loc} className="bg-plum">{loc}</option>)}
                 </select>
             </div>
 
             <div>
                 <label className="form-label mb-2">Sort By</label>
-                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="form-input">
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} disabled={loading} className="form-input">
                     {sortOptions.map(opt => <option key={opt.value} value={opt.value} className="bg-plum">{opt.label}</option>)}
                 </select>
             </div>
@@ -75,63 +60,95 @@ const FilterSidebar = ({ filters, setFilters }) => {
     );
 };
 
+// --- Pagination Component ---
+const Pagination = ({ page, pages, onPageChange, loading }) => {
+  if (pages <= 1) return null;
+  return (
+    <div className="mt-12 flex justify-center items-center gap-2">
+      {[...Array(pages).keys()].map((p) => (
+        <button
+          key={p + 1}
+          onClick={() => onPageChange(p + 1)}
+          disabled={loading}
+          className={`w-10 h-10 rounded-md transition font-semibold ${page === p + 1 ? 'bg-primary text-white' : 'bg-plum/50 text-lavender hover:bg-primary/50'}`}
+        >
+          {p + 1}
+        </button>
+      ))}
+    </div>
+  );
+};
 
+// --- Main Browse Component ---
 const Browse = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState({ page: 1, pages: 1 });
+
   const [filters, setFilters] = useState({
-    searchTerm: '',
-    location: 'All Locations',
+    keyword: searchParams.get('search') || '',
     category: searchParams.get('category')?.replace(/-/g, ' ') || 'All Categories',
-    price: 3000,
-    sortBy: 'relevance',
+    sort: 'relevance',
+    location: 'All Locations'
   });
 
-  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
-
   useEffect(() => {
+    // Sync filters from URL to state on initial load
     const categoryFromURL = searchParams.get('category')?.replace(/-/g, ' ');
-    if (categoryFromURL) {
-      const matchingCategory = categories.find(c => c.toLowerCase() === categoryFromURL.toLowerCase());
-      if (matchingCategory && filters.category !== matchingCategory) {
-        setFilters(prevFilters => ({ ...prevFilters, category: matchingCategory }));
-      }
-    } else if (filters.category !== 'All Categories') {
-      setFilters(prevFilters => ({ ...prevFilters, category: 'All Categories' }));
-    }
+    const searchFromURL = searchParams.get('search');
+
+    setFilters(prev => ({
+        ...prev,
+        category: categories.find(c => c.toLowerCase() === categoryFromURL?.toLowerCase()) || 'All Categories',
+        keyword: searchFromURL || ''
+    }));
+    setPagination(p => ({...p, page: 1}));
   }, [searchParams]);
 
+  useEffect(() => {
+    const getProducts = async () => {
+      setLoading(true);
+      setError(null);
+      
+      const apiParams = {
+          page: pagination.page,
+          keyword: filters.keyword,
+          sort: filters.sort,
+          ...(filters.category !== 'All Categories' && { category: filters.category }),
+      };
 
-  const filteredItems = useMemo(() => {
-    let items = allItems
-      .filter(item => item.price <= filters.price)
-      .filter(item => filters.category === 'All Categories' || item.category === filters.category)
-      .filter(item => filters.location === 'All Locations' || item.location === filters.location)
-      .filter(item => item.title.toLowerCase().includes(filters.searchTerm.toLowerCase()));
+      try {
+        const data = await fetchProducts(apiParams);
+        setProducts(data.products);
+        setPagination({ page: data.page, pages: data.pages });
+      } catch (err) {
+        setError(err.toString());
+        toast.error("Could not fetch products.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    const sortedItems = [...items];
-    switch (filters.sortBy) {
-      case 'price-asc': sortedItems.sort((a, b) => a.price - b.price); break;
-      case 'price-desc': sortedItems.sort((a, b) => b.price - a.price); break;
-      default: break;
-    }
-    return sortedItems;
-  }, [filters]);
+    getProducts();
+  }, [filters, pagination.page]);
 
   const setSingleFilter = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
-    setVisibleCount(ITEMS_PER_PAGE);
+    setPagination(prev => ({ ...prev, page: 1 }));
   };
 
   const filterSetters = {
-    setSearchTerm: (val) => setSingleFilter('searchTerm', val),
+    setKeyword: (val) => setSingleFilter('keyword', val),
     setLocation: (val) => setSingleFilter('location', val),
     setCategory: (val) => setSingleFilter('category', val),
     setPrice: (val) => setSingleFilter('price', val),
-    setSortBy: (val) => setSingleFilter('sortBy', val),
+    setSortBy: (val) => setSingleFilter('sort', val),
   };
-
+  
   return (
     <div className="bg-ink min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
@@ -144,47 +161,49 @@ const Browse = () => {
             <aside className="hidden lg:block lg:col-span-1">
                 <div className="sticky top-24 bg-plum/30 p-6 rounded-xl border border-lavender/20">
                     <h3 className="text-2xl font-semibold text-white mb-4">Filters</h3>
-                    <FilterSidebar filters={filters} setFilters={filterSetters} />
+                    <FilterSidebar filters={filters} setFilters={filterSetters} loading={loading}/>
                 </div>
             </aside>
 
             <main className="lg:col-span-3">
                 <div className="flex justify-between items-center mb-6 lg:hidden">
-                    <p className="text-lavender">{filteredItems.length} items found</p>
+                    <p className="text-lavender">{!loading && `${products.length} items found`}</p>
                     <button onClick={() => setMobileFiltersOpen(true)} className="flex items-center gap-2 bg-plum/50 px-4 py-2 rounded-md text-white">
                         <SlidersHorizontal size={18} /> Filters
                     </button>
                 </div>
+                
+                {loading ? (
+                    <div className="flex justify-center items-center h-96">
+                        <div className="w-12 h-12 rounded-full border-4 border-t-primary border-lavender/30 animate-spin"></div>
+                    </div>
+                ) : error ? (
+                    <div className="text-center py-20 text-red-400">
+                        <h3 className="text-2xl font-semibold">Could Not Load Products</h3>
+                        <p>{error}</p>
+                    </div>
+                ) : (
+                    <>
+                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 min-h-[500px]">
+                            <AnimatePresence>
+                                {products.map((itemData) => (
+                                    <motion.div layout initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.3 }} key={itemData._id}>
+                                        <ItemCard {...itemData} id={itemData._id} price={itemData.rentalPrice} />
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
+                        </motion.div>
 
-                <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                    <AnimatePresence>
-                        {filteredItems.slice(0, visibleCount).map((itemData) => (
-                            <motion.div layout initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.3 }} key={itemData.id}>
-                                <ItemCard {...itemData} />
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </motion.div>
-
-                <div className="mt-12 text-center">
-                    {filteredItems.length === 0 ? (
-                        <div className="py-12">
-                            <h3 className="text-2xl font-semibold text-white">No Items Found</h3>
-                            <p className="text-lavender/70 mt-2">Try adjusting your filters to find what you're looking for.</p>
-                        </div>
-                    ) : (
-                        visibleCount < filteredItems.length && (
-                            <motion.button
-                                onClick={() => setVisibleCount(prevCount => prevCount + ITEMS_PER_PAGE)}
-                                whileHover={{ scale: 1.05, y: -3 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="bg-primary text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg hover:bg-primary/90 transition"
-                            >
-                                Load More
-                            </motion.button>
-                        )
-                    )}
-                </div>
+                        {products.length === 0 && !loading && (
+                            <div className="text-center py-20">
+                                <h3 className="text-2xl font-semibold text-white">No Items Found</h3>
+                                <p className="text-lavender/70 mt-2">Try adjusting your filters to find what you're looking for.</p>
+                            </div>
+                        )}
+                        
+                        <Pagination page={pagination.page} pages={pagination.pages} onPageChange={(p) => setPagination(prev => ({...prev, page: p}))} loading={loading} />
+                    </>
+                )}
             </main>
         </div>
       </div>
@@ -197,7 +216,7 @@ const Browse = () => {
                         <h3 className="text-2xl font-semibold text-white">Filters</h3>
                         <button onClick={() => setMobileFiltersOpen(false)}><X/></button>
                     </div>
-                    <FilterSidebar filters={filters} setFilters={filterSetters} />
+                    <FilterSidebar filters={filters} setFilters={filterSetters} loading={loading} />
                 </motion.div>
             </motion.div>
         )}

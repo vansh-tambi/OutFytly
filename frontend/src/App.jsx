@@ -15,7 +15,9 @@ import Help from "./pages/Help.jsx";
 import Terms from "./pages/Terms.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import FAQ from "./pages/FAQ.jsx";
-
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 // --- Lazy-loaded Pages ---
 const PageLoader = () => (
   <div className="min-h-screen bg-ink flex justify-center items-center">
@@ -58,6 +60,9 @@ export default function App() {
             <Route path="/item/:id" element={<ItemDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+             <Route element={<ProtectedRoute />}>
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/account" element={<AccountPage />}>
@@ -65,6 +70,9 @@ export default function App() {
               <Route path="profile" element={<Profile />} />
               <Route path="dashboard" element={<Dashboard />} />
             </Route>
+          </Route>
+
+
 
             {/* --- Fallback --- */}
             <Route path="*" element={<NotFound />} />

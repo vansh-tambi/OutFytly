@@ -87,42 +87,58 @@ export const getUserProfile = async (req, res) => {
 // @route   POST /api/auth/forgot-password
 // @access  Public
 export const forgotPassword = async (req, res) => {
+  let user; // Define user here to access it in the catch block
   try {
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(404).json({ message: "User not found" });
+    user = await User.findOne({ email: req.body.email });
 
-    // Generate reset token
-    const resetToken = crypto.randomBytes(20).toString("hex");
+    if (user) {
+      const resetToken = crypto.randomBytes(20).toString("hex");
 
-    // Hash & save token
-    user.resetPasswordToken = crypto
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex");
-    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 min
+      user.resetPasswordToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+      user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 min
 
-    await user.save();
+      await user.save({ validateBeforeSave: false });
+      const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    // Reset URL
-    const resetUrl = `${req.protocol}://${req.get("host")}/api/auth/reset-password/${resetToken}`;
+      const message = `
+        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+          <div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+            <h1 style="color: #8A2BE1; text-align: center;">OutFytly Password Reset</h1>
+            <p>You requested a password reset. Please click the button below to set a new password:</p>
+            <div style="text-align: center; margin: 20px 0;">
+              <a href="${resetUrl}" target="_blank" style="padding: 12px 25px; color: white; background-color: #8A2BE1; text-decoration: none; border-radius: 5px; font-weight: bold;">Reset Password</a>
+            </div>
+            <p>This link is valid for 15 minutes.</p>
+            <p>If you didn’t request this, please ignore this email. Your password will not be changed.</p>
+            <hr style="border: none; border-top: 1px solid #eee;" />
+            <p style="font-size: 0.9em; color: #777;">Thank you,<br/>The OutFytly Team</p>
+          </div>
+        </div>
+      `;
 
-    // Email content
-    const message = `
-      <h1>Password Reset Request</h1>
-      <p>You requested a password reset. Click below:</p>
-      <a href="${resetUrl}" target="_blank">${resetUrl}</a>
-      <p>If you didn’t request this, ignore this email.</p>
-    `;
+      await sendEmail({
+        to: user.email,
+        subject: "Password Reset Request",
+        html: message,
+      });
+    }
 
-    await sendEmail({
-      to: user.email,
-      subject: "Password Reset Request",
-      html: message,
-    });
-
-    res.json({ message: "Reset link sent to email" });
+    res
+      .status(200)
+      .json({
+        message:
+          "If an account with that email exists, a reset link has been sent.",
+      });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (user) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+    }
+    res.status(500).json({ message: "An error occurred. Please try again." });
   }
 };
 

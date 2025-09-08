@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
 // Import Swiper React components and styles
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -20,22 +22,27 @@ const carouselImages = [
 const Signup = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm();
   const navigate = useNavigate();
+  const { signup } = useAuth();
   const password = watch("password");
   
+  // --- FIX: Restored missing state for password visibility ---
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Form Data:", data);
-    // navigate('/login');
+    try {
+      await signup(data.fullName, data.email, data.password);
+      toast.success('Account created successfully!');
+      navigate('/');
+    } catch (error) {
+      toast.error(String(error));
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-ink p-4">
       <div className="relative flex w-full max-w-4xl min-h-[650px] bg-plum/50 rounded-2xl shadow-2xl shadow-plum/50 overflow-hidden border border-lavender/20">
         
-        {/* --- Left Column: Image Carousel --- */}
         <div className="hidden lg:block w-1/2 relative">
            <Swiper
              modules={[Autoplay, EffectFade]}
@@ -53,7 +60,6 @@ const Signup = () => {
            <div className="absolute inset-0 bg-gradient-to-t from-plum via-plum/50 to-transparent"></div>
         </div>
 
-        {/* --- Right Column: Signup Form --- */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center p-8 sm:p-12">
             <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }}>
               <Link to="/" className="text-2xl font-bold flex gap-2 items-center text-white mb-6">

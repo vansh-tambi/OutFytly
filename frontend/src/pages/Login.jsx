@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
-
+import { useAuth } from '../context/AuthContext'; // ✅ IMPORT
+import toast from 'react-hot-toast'; // ✅ IMPORT
 // Import Swiper React components and styles
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
@@ -20,12 +21,17 @@ const carouselImages = [
 const Login = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth(); // ✅ GET LOGIN FUNCTION
+  const [showPassword, setShowPassword] = useState(false); // ✅ STATE FOR PASSWORD VISIBILITY
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Form Data:", data);
-    // navigate('/');
+    try {
+      await login(data.email, data.password);
+      toast.success('Logged in successfully!');
+      navigate('/'); // Redirect to homepage on success
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   return (

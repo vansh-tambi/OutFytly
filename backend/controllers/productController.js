@@ -16,7 +16,7 @@ export const createProduct = async (req, res) => {
       category,
       sizes: sizes ? sizes.split(",") : [], // "S,M,L" → ["S","M","L"]
       images,
-      createdBy: req.user._id, // ✅ consistent field
+      user: req.user._id, // ✅ consistent field
     });
 
     await product.save();

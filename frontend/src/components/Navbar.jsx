@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
-import { Home, Info, Mail, Briefcase, HelpCircle, ArrowRight, Search } from 'lucide-react';
+import { Home, Info, Mail, Briefcase, HelpCircle, ArrowRight, Search, ShoppingCart } from 'lucide-react';
+import { useAuth } from '../context/AuthContext'; // For login state
+import { useCart } from '../context/CartContext';   // For cart item count
 
 // --- Data for Navigation & Dropdowns ---
 const navItems = [
@@ -14,14 +16,12 @@ const navItems = [
     { path: "/careers", label: "Careers", icon: Briefcase, dropdownContent: [{ title: "Join Our Team", desc: "Explore open positions.", href: "/careers" }] },
     { path: "/faq", label: "FAQ", icon: HelpCircle, dropdownContent: [{ title: "Find Answers", desc: "See our frequently asked questions.", href: "/faq" }] },
 ];
-
 const megaMenuCategories = [
-    { name: 'Party Wear', href: '/browse?category=party wear', image: 'https://images.unsplash.com/photo-1723063640943-2b7b4379e1ee?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-    { name: 'Watches', href: '/browse?category=watches', image: 'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-    { name: 'Shoes', href: '/browse?category=shoes', image: 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=500' },
-    { name: 'Accessories', href: '/browse?category=accessories', image: 'https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=500' },
+    { name: 'Party Wear', href: '/browse?category=party-wear', image: 'https://images.unsplash.com/photo-1599403485304-4f494f1f5a9e?w=200' },
+    { name: 'Watches', href: '/browse?category=watches', image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=200' },
+    { name: 'Shoes', href: '/browse?category=shoes', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ab?w=200' },
+    { name: 'Accessories', href: '/browse?category=accessories', image: 'https://images.unsplash.com/photo-1588444968368-a3159b3b879a?w=200' },
 ];
-
 const authLinks = [
     { path: "/login", label: "Login" },
     { path: "/account/cart", label: "Cart" },
@@ -35,7 +35,12 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const isLoggedIn = false;
+
+  // --- LOGIC UPDATE ---
+  const { user, logout } = useAuth(); // Get user and logout function from AuthContext
+  const { cart } = useCart();         // Get cart items from CartContext
+  const isLoggedIn = !!user;         // Check if user object exists to determine login state
+  const itemCount = cart.reduce((total, item) => total + item.quantity, 0); // Calculate total items in cart
 
   const handleMouseEnter = (label) => setOpenDropdown(label);
   const handleMouseLeave = () => setOpenDropdown(null);
@@ -50,24 +55,13 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        setIsSearchOpen(false);
-      }
-    };
-    if (isSearchOpen) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleKeyDown);
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'auto';
-    };
+    const handleKeyDown = (event) => { if (event.key === 'Escape') { setIsSearchOpen(false); } };
+    if (isSearchOpen) { document.body.style.overflow = 'hidden'; window.addEventListener('keydown', handleKeyDown); }
+    else { document.body.style.overflow = 'auto'; }
+    return () => { window.removeEventListener('keydown', handleKeyDown); document.body.style.overflow = 'auto'; };
   }, [isSearchOpen]);
 
-  const mobileNavLinks = isLoggedIn ? [...navItems.map(i => ({path: i.path, label: i.label})), ...authLinks.slice(1)] : [...navItems.map(i => ({path: i.path, label: i.label})), authLinks[0]];
+  const mobileNavLinks = isLoggedIn ? [...navItems.map(i => ({path: i.path, label: i.label})), authLinks[1], authLinks[2]] : [...navItems.map(i => ({path: i.path, label: i.label})), authLinks[0]];
   const navLinkClasses = ({isActive}) => isActive ? "text-primary font-semibold" : "text-white hover:text-primary transition-colors";
 
   return (
@@ -75,7 +69,6 @@ const Navbar = () => {
       <div className="bg-primary text-white text-center text-sm font-semibold p-2">
         Free Shipping On All Orders Above ₹2000!
       </div>
-
       <motion.nav
         initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }}
         onMouseLeave={handleMouseLeave}
@@ -96,9 +89,7 @@ const Navbar = () => {
           <div className="hidden lg:flex flex-grow justify-center items-center gap-8 relative">
             {navItems.map((item) => (
               <motion.div key={item.label} onMouseEnter={() => handleMouseEnter(item.label)} className="relative py-2">
-                <NavLink to={item.path} className={navLinkClasses}>
-                  {item.label}
-                </NavLink>
+                <NavLink to={item.path} className={navLinkClasses}>{item.label}</NavLink>
                 {location.pathname === item.path && (
                   <motion.div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" layoutId="underline" />
                 )}
@@ -107,15 +98,20 @@ const Navbar = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
-            <button onClick={() => setIsSearchOpen(true)} className="text-white hover:text-primary transition-colors">
-              <Search size={22} />
-            </button>
+            <button onClick={() => setIsSearchOpen(true)} className="text-white hover:text-primary transition-colors"><Search size={22} /></button>
             <div className="w-px h-6 bg-lavender/30"></div>
             {isLoggedIn ? (
               <>
-                <NavLink to="/account/cart" className={navLinkClasses}>Cart</NavLink>
+                <NavLink to="/account/cart" className="relative text-white hover:text-primary transition-colors">
+                  <ShoppingCart size={24} />
+                  {itemCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                      {itemCount}
+                    </span>
+                  )}
+                </NavLink>
                 <NavLink to="/account/profile" className={navLinkClasses}>Profile</NavLink>
-                <motion.button whileHover={{ scale: 1.05 }} className="bg-lavender text-plum px-4 py-2 rounded-md text-sm font-semibold hover:bg-white transition">Logout</motion.button>
+                <motion.button onClick={logout} whileHover={{ scale: 1.05 }} className="bg-lavender text-plum px-4 py-2 rounded-md text-sm font-semibold hover:bg-white transition">Logout</motion.button>
               </>
             ) : (
               <>
@@ -126,10 +122,9 @@ const Navbar = () => {
               </>
             )}
           </div>
-
           <div className="lg:hidden flex items-center gap-4">
-             <button onClick={() => setIsSearchOpen(true)} className="text-2xl text-lavender hover:text-primary"><Search /></button>
-             <button onClick={() => setMobileMenuOpen(true)} className="text-3xl text-lavender hover:text-primary"><HiMenuAlt3 /></button>
+            <button onClick={() => setIsSearchOpen(true)} className="text-2xl text-lavender hover:text-primary"><Search /></button>
+            <button onClick={() => setMobileMenuOpen(true)} className="text-3xl text-lavender hover:text-primary"><HiMenuAlt3 /></button>
           </div>
         </div>
         
@@ -204,33 +199,28 @@ const Navbar = () => {
       
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-plum/70 backdrop-blur-xl lg:hidden" onClick={() => setMobileMenuOpen(false)}>
-            <motion.div
-              initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="fixed top-0 right-0 h-full w-full max-w-xs bg-ink p-6 flex flex-col"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex justify-between items-center mb-10">
-                <h2 className="text-xl font-bold text-primary">Menu</h2>
-                <button onClick={() => setMobileMenuOpen(false)} className="text-4xl text-lavender"><HiX /></button>
-              </div>
-              <nav className="flex flex-col items-center gap-8 text-xl flex-grow">
-                {mobileNavLinks.map((link, i) => (
-                  <motion.div key={link.path} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="w-full text-center">
-                    <NavLink to={link.path} onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? "text-primary font-semibold" : "text-white hover:text-primary"}>{link.label}</NavLink>
-                  </motion.div>
-                ))}
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + mobileNavLinks.length * 0.08 }} className="mt-auto w-full">
-                  {isLoggedIn ? (
-                     <button className="w-full py-3 bg-lavender text-plum rounded-md font-semibold">Logout</button>
-                  ) : (
-                     <NavLink to="/signup" onClick={() => setMobileMenuOpen(false)} className="block w-full text-center py-3 bg-primary text-white rounded-md font-semibold">Signup</NavLink>
-                  )}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-plum/70 backdrop-blur-xl lg:hidden" onClick={() => setMobileMenuOpen(false)}>
+                <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.3, ease: "easeInOut" }} className="fixed top-0 right-0 h-full w-full max-w-xs bg-ink p-6 flex flex-col" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex justify-between items-center mb-10">
+                        <h2 className="text-xl font-bold text-primary">Menu</h2>
+                        <button onClick={() => setMobileMenuOpen(false)} className="text-4xl text-lavender"><HiX /></button>
+                    </div>
+                    <nav className="flex flex-col items-center gap-8 text-xl flex-grow">
+                        {mobileNavLinks.map((link, i) => (
+                            <motion.div key={link.path} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="w-full text-center">
+                                <NavLink to={link.path} onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? "text-primary font-semibold" : "text-white hover:text-primary"}>{link.label}</NavLink>
+                            </motion.div>
+                        ))}
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + mobileNavLinks.length * 0.08 }} className="mt-auto w-full">
+                            {isLoggedIn ? (
+                                <button onClick={logout} className="w-full py-3 bg-lavender text-plum rounded-md font-semibold">Logout</button>
+                            ) : (
+                                <NavLink to="/signup" onClick={() => setMobileMenuOpen(false)} className="block w-full text-center py-3 bg-primary text-white rounded-md font-semibold">Signup</NavLink>
+                            )}
+                        </motion.div>
+                    </nav>
                 </motion.div>
-              </nav>
             </motion.div>
-          </motion.div>
         )}
       </AnimatePresence>
     </>
