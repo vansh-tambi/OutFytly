@@ -1,36 +1,47 @@
 // src/components/sections/Hero.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 const Hero = () => {
   const x = useMotionValue(200);
   const y = useMotionValue(200);
 
+  const springX = useSpring(x, { stiffness: 80, damping: 15 });
+const springY = useSpring(y, { stiffness: 80, damping: 15 });
+
   // General 3D rotation for the entire container
-  const rotateX = useTransform(y, [0, 400], [15, -15]);
-  const rotateY = useTransform(x, [0, 400], [-15, 15]);
+const rotateX = useTransform(springY, [-200, 200], [15, -15]);
+const rotateY = useTransform(springX, [-200, 200], [-15, 15]);
 
-  // Individual card translations for a richer, more sensitive effect
-  const card1X = useTransform(x, [0, 400], [40, -40]); 
-  const card1Y = useTransform(y, [0, 400], [40, -40]); 
-  
-  const card2X = useTransform(x, [0, 400], [-35, 35]);
-  const card2Y = useTransform(y, [0, 400], [-35, 35]);
+const card1X = useTransform(springX, [-200, 200], [40, -40]);
+const card1Y = useTransform(springY, [-200, 200], [40, -40]);
 
-  const card3X = useTransform(x, [0, 400], [-45, 45]);
-  const card3Y = useTransform(y, [0, 400], [25, -25]);
+const card2X = useTransform(springX, [-200, 200], [-35, 35]);
+const card2Y = useTransform(springY, [-200, 200], [-35, 35]);
 
-  const card4X = useTransform(x, [0, 400], [30, -30]);
-  const card4Y = useTransform(y, [0, 400], [-20, 20]);
+const card3X = useTransform(springX, [-200, 200], [-45, 45]);
+const card3Y = useTransform(springY, [-200, 200], [25, -25]);
+
+const card4X = useTransform(springX, [-200, 200], [30, -30]);
+const card4Y = useTransform(springY, [-200, 200], [-20, 20]);
 
 
-  function handleMouse(event) {
-    const rect = event.currentTarget.getBoundingClientRect();
-    x.set(event.clientX - rect.left);
-    y.set(event.clientY - rect.top);
-  }
+
+function handleMouse(event) {
+  const rect = event.currentTarget.getBoundingClientRect();
+  const offsetX = event.clientX - rect.left;
+  const offsetY = event.clientY - rect.top;
+
+  // Normalize to -200 → 200 range
+  const normalizedX = ((offsetX / rect.width) - 0.5) * 400;
+  const normalizedY = ((offsetY / rect.height) - 0.5) * 400;
+
+  x.set(normalizedX);
+  y.set(normalizedY);
+}
+
 
   const sentence = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.15 } } };
   const word = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };

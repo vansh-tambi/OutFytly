@@ -1,1 +1,25 @@
-@import "tailwindcss";
+/* ===== Custom Global Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f1a; /* ink */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(138, 43, 225, 0.6); /* primary */
+  border-radius: 8px;
+  border: 2px solid #0f0f1a; /* gives spacing effect */
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(138, 43, 225, 0.9); /* brighter on hover */
+}
+
+::-webkit-scrollbar-corner {
+  background: #0f0f1a; /* matches theme for bottom corner */
+}

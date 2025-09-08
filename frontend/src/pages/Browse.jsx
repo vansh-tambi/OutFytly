@@ -1,25 +1,24 @@
 // src/pages/Browse.jsx
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ItemCard from '../components/ItemCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 
-// --- Mock Data & Options (Unchanged) ---
-
+// --- Mock Data & Options ---
 const allItems = [
-{ id: "1", title: "Designer Saree", price: 2000, location: "Mumbai", category: "Party Wear", image: "https://images.unsplash.com/photo-1623547372431-9549154a15a0?w=500" },
-{ id: "2", title: "Luxury Heels", price: 900, location: "Delhi", category: "Shoes", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500" },
-{ id: "3", title: "Formal Blazer", price: 1500, location: "Bangalore", category: "Party Wear", image: "https://images.unsplash.com/photo-1519758364993-5db3c8c73445?w=500" },
-{ id: "4", title: "Smart Watch", price: 700, location: "Hyderabad", category: "Watches", image: "https://images.unsplash.com/photo-1508685096489-7f740657155d?w=500" },
-{ id: "5", title: "Leather Handbag", price: 1100, location: "Delhi", category: "Accessories", image: "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=500" },
-{ id: "6", title: "Running Sneakers", price: 850, location: "Mumbai", category: "Shoes", image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=500" },
-{ id: "7", title: "Gold Bracelet", price: 1800, location: "Bangalore", category: "Accessories", image: "https://images.unsplash.com/photo-1611652022417-a54676537844?w=500" },
-{ id: "8", title: "Aviator Sunglasses", price: 400, location: "Hyderabad", category: "Accessories", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500" },
-{ id: "9", title: "Classic Tuxedo", price: 2500, location: "Delhi", category: "Party Wear", image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500" },
-{ id: "10", title: "Chronograph Watch", price: 3000, location: "Mumbai", category: "Watches", image: "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=500" },
-{ id: "11", title: "Leather Boots", price: 1600, location: "Bangalore", category: "Shoes", image: "https://images.unsplash.com/photo-1608256247739-83942398b6a3?w=500" },
-{ id: "12", title: "Evening Gown", price: 2200, location: "Hyderabad", category: "Party Wear", image: "https://images.unsplash.com/photo-1535303311164-664fc7ec6532?w=500" },
+    { id: "1", title: "Designer Saree", price: 2000, location: "Mumbai", category: "Party Wear", image: "https://images.unsplash.com/photo-1727430228383-aa1fb59db8bf?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { id: "2", title: "Luxury Heels", price: 900, location: "Delhi", category: "Shoes", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500" },
+    { id: "3", title: "Formal Blazer", price: 1500, location: "Bangalore", category: "Party Wear", image: "https://images.unsplash.com/photo-1723063640943-2b7b4379e1ee?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { id: "4", title: "Smart Watch", price: 700, location: "Hyderabad", category: "Watches", image: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { id: "5", title: "Leather Handbag", price: 1100, location: "Delhi", category: "Accessories", image: "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=500" },
+    { id: "6", title: "Running Sneakers", price: 850, location: "Mumbai", category: "Shoes", image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=500" },
+    { id: "7", title: "Gold Bracelet", price: 1800, location: "Bangalore", category: "Accessories", image: "https://images.unsplash.com/photo-1689397136362-dce64e557fcc?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { id: "8", title: "Aviator Sunglasses", price: 400, location: "Hyderabad", category: "Accessories", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500" },
+    { id: "9", title: "Classic Tuxedo", price: 2500, location: "Delhi", category: "Party Wear", image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500" },
+    { id: "10", title: "Chronograph Watch", price: 3000, location: "Mumbai", category: "Watches", image: "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=500" },
+    { id: "11", title: "Leather Boots", price: 1600, location: "Bangalore", category: "Shoes", image: "https://images.unsplash.com/photo-1534233650908-b471f2350922?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { id: "12", title: "Evening Gown", price: 2200, location: "Hyderabad", category: "Party Wear", image: "https://images.unsplash.com/photo-1631291887694-0bd5d4d610be?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
 ];
 const locations = ["All Locations", "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Bhopal"];
 const categories = ["All Categories", "Party Wear", "Watches", "Shoes", "Accessories"];
@@ -33,7 +32,6 @@ const FilterSidebar = ({ filters, setFilters }) => {
 
     return (
         <div className="space-y-6">
-            {/* Search */}
             <div>
                 <label className="form-label mb-2">Search</label>
                 <div className="relative">
@@ -42,7 +40,6 @@ const FilterSidebar = ({ filters, setFilters }) => {
                 </div>
             </div>
             
-            {/* Category */}
             <div>
                 <label className="form-label mb-2">Category</label>
                 <div className="space-y-2">
@@ -54,7 +51,6 @@ const FilterSidebar = ({ filters, setFilters }) => {
                 </div>
             </div>
 
-            {/* Price */}
             <div>
                 <label htmlFor="price" className="form-label flex justify-between mb-2">
                     <span>Price</span> <span className="text-white">up to ₹{price.toLocaleString()}</span>
@@ -62,7 +58,6 @@ const FilterSidebar = ({ filters, setFilters }) => {
                 <input id="price" type="range" min="400" max="3000" step="50" value={price} onChange={(e) => setPrice(Number(e.target.value))} className="w-full h-2 bg-ink rounded-lg cursor-pointer accent-primary" />
             </div>
 
-            {/* Location */}
             <div>
                 <label className="form-label mb-2">Location</label>
                 <select value={location} onChange={(e) => setLocation(e.target.value)} className="form-input">
@@ -70,7 +65,6 @@ const FilterSidebar = ({ filters, setFilters }) => {
                 </select>
             </div>
 
-            {/* Sort By */}
             <div>
                 <label className="form-label mb-2">Sort By</label>
                 <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="form-input">
@@ -86,35 +80,48 @@ const Browse = () => {
   const [searchParams] = useSearchParams();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   
-  // All filter states are managed here
   const [filters, setFilters] = useState({
     searchTerm: '',
     location: 'All Locations',
-    category: searchParams.get('category') || 'All Categories',
+    category: searchParams.get('category')?.replace(/-/g, ' ') || 'All Categories',
     price: 3000,
     sortBy: 'relevance',
   });
 
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
+  useEffect(() => {
+    const categoryFromURL = searchParams.get('category')?.replace(/-/g, ' ');
+    if (categoryFromURL) {
+      const matchingCategory = categories.find(c => c.toLowerCase() === categoryFromURL.toLowerCase());
+      if (matchingCategory && filters.category !== matchingCategory) {
+        setFilters(prevFilters => ({ ...prevFilters, category: matchingCategory }));
+      }
+    } else if (filters.category !== 'All Categories') {
+      setFilters(prevFilters => ({ ...prevFilters, category: 'All Categories' }));
+    }
+  }, [searchParams]);
+
+
   const filteredItems = useMemo(() => {
     let items = allItems
       .filter(item => item.price <= filters.price)
-      .filter(item => filters.category === 'All Categories' || item.category.toLowerCase() === filters.category.toLowerCase())
+      .filter(item => filters.category === 'All Categories' || item.category === filters.category)
       .filter(item => filters.location === 'All Locations' || item.location === filters.location)
       .filter(item => item.title.toLowerCase().includes(filters.searchTerm.toLowerCase()));
 
+    const sortedItems = [...items];
     switch (filters.sortBy) {
-        case 'price-asc': items.sort((a, b) => a.price - b.price); break;
-        case 'price-desc': items.sort((a, b) => b.price - a.price); break;
-        default: break;
+      case 'price-asc': sortedItems.sort((a, b) => a.price - b.price); break;
+      case 'price-desc': sortedItems.sort((a, b) => b.price - a.price); break;
+      default: break;
     }
-    return items;
+    return sortedItems;
   }, [filters]);
 
   const setSingleFilter = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
-    setVisibleCount(ITEMS_PER_PAGE); // Reset pagination on filter change
+    setVisibleCount(ITEMS_PER_PAGE);
   };
 
   const filterSetters = {
@@ -134,7 +141,6 @@ const Browse = () => {
         </div>
 
         <div className="grid lg:grid-cols-4 lg:gap-8">
-            {/* --- Desktop Filter Sidebar --- */}
             <aside className="hidden lg:block lg:col-span-1">
                 <div className="sticky top-24 bg-plum/30 p-6 rounded-xl border border-lavender/20">
                     <h3 className="text-2xl font-semibold text-white mb-4">Filters</h3>
@@ -142,7 +148,6 @@ const Browse = () => {
                 </div>
             </aside>
 
-            {/* --- Main Content: Grid + Mobile Filter Button --- */}
             <main className="lg:col-span-3">
                 <div className="flex justify-between items-center mb-6 lg:hidden">
                     <p className="text-lavender">{filteredItems.length} items found</p>
@@ -151,7 +156,6 @@ const Browse = () => {
                     </button>
                 </div>
 
-                {/* --- Fluid Item Grid --- */}
                 <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                     <AnimatePresence>
                         {filteredItems.slice(0, visibleCount).map((itemData) => (
@@ -162,13 +166,29 @@ const Browse = () => {
                     </AnimatePresence>
                 </motion.div>
 
-                {/* Pagination & No Results */}
-                {/* ... (Load More Button and No Results message logic remains the same) ... */}
+                <div className="mt-12 text-center">
+                    {filteredItems.length === 0 ? (
+                        <div className="py-12">
+                            <h3 className="text-2xl font-semibold text-white">No Items Found</h3>
+                            <p className="text-lavender/70 mt-2">Try adjusting your filters to find what you're looking for.</p>
+                        </div>
+                    ) : (
+                        visibleCount < filteredItems.length && (
+                            <motion.button
+                                onClick={() => setVisibleCount(prevCount => prevCount + ITEMS_PER_PAGE)}
+                                whileHover={{ scale: 1.05, y: -3 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="bg-primary text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg hover:bg-primary/90 transition"
+                            >
+                                Load More
+                            </motion.button>
+                        )
+                    )}
+                </div>
             </main>
         </div>
       </div>
       
-      {/* --- Mobile Filter Off-Canvas Menu --- */}
       <AnimatePresence>
         {mobileFiltersOpen && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileFiltersOpen(false)} className="fixed inset-0 bg-black/60 z-50 lg:hidden">

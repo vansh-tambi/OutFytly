@@ -32,7 +32,7 @@ const ItemCard = ({ id, title, price, location, image }) => {
           <span>{location}</span>
         </div>
         
-        <p className="text-primary font-bold text-xl">
+        <p className="text-white font-bold text-xl">
           ₹{formatPrice(price)} <span className="text-sm font-normal text-gray-400">/ day</span>
         </p>
 

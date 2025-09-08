@@ -25,19 +25,63 @@ import { Wind, Infinity, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // --- Data ---
 const categories = [
-    { title: "Party Wear", image: "https://images.unsplash.com/photo-1599403485304-4f494f1f5a9e?w=500" },
-    { title: "Watches", image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500" },
-    { title: "Shoes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ab?w=500" },
-    { title: "Accessories", image: "https://images.unsplash.com/photo-1588444968368-a3159b3b879a?w=500" },
-    { title: "Casual Wear", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500" },
-    { title: "Formal Wear", image: "https://images.unsplash.com/photo-1521334884684-d80222895322?w=500" },
+  {
+    title: "Party Wear",
+    image: "https://images.unsplash.com/photo-1723016347027-39d37df73f18?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    title: "Watches",
+    image: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    title: "Shoes",
+    image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    title: "Accessories",
+    image: "https://images.unsplash.com/3/www.madebyvadim.com.jpg?q=80&w=2082&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    title: "Casual Wear",
+    image: "https://images.unsplash.com/photo-1716004360220-213371f51df1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    title: "Formal Wear",
+    image: "https://images.unsplash.com/photo-1593765762957-d8d876a1beeb?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
 ];
+
 const popularItems = [
-    { id: "1", title: "Luxury Suit", price: "1500", location: "Delhi", image: "https://images.unsplash.com/photo-1593032583849-5db2699a0e63?w=500" },
-    { id: "2", title: "Elegant Dress", price: "1200", location: "Mumbai", image: "https://images.unsplash.com/photo-1595500479312-d98f7a6f363c?w=500" },
-    { id: "3", title: "Classic Watch", price: "800", location: "Bangalore", image: "https://images.unsplash.com/photo-1620625442228-5654a81b3929?w=500" },
-    { id: "4", title: "Trendy Shoes", price: "600", location: "Hyderabad", image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=500" },
+  {
+    id: "1",
+    title: "Luxury Suit",
+    price: "1500",
+    location: "Delhi",
+    image: "https://images.unsplash.com/photo-1580657018950-c7f7d6a6d990?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    id: "2",
+    title: "Elegant Dress",
+    price: "1200",
+    location: "Mumbai",
+    image: "https://images.unsplash.com/photo-1626818590159-04cb9274a5e0?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    id: "3",
+    title: "Classic Watch",
+    price: "800",
+    location: "Bangalore",
+    image: "https://images.unsplash.com/photo-1694656937152-b2377c0b5de7?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    id: "4",
+    title: "Trendy Shoes",
+    price: "600",
+    location: "Hyderabad",
+    image: "https://images.unsplash.com/photo-1724365314431-d9e00de5b258?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
 ];
+
 const whyChooseUs = [
     { icon: Wind, title: 'Sustainable Style', description: 'Reduce fashion waste by renting instead of buying. Look good while doing good for the planet.' },
     { icon: Infinity, title: 'Limitless Wardrobe', description: 'Access thousands of designer outfits for a fraction of the retail price.' },

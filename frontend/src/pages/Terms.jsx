@@ -1,6 +1,6 @@
 // src/pages/Terms.jsx
 import React from 'react';
-import StaticPageLayout from '../components/layouts/StaticPageLayout';
+import StaticPageLayout from '../layouts/StaticPageLayout';
 
 // A reusable component for each section (can be moved to a shared file)
 const PolicySection = ({ title, children }) => (

@@ -11,8 +11,7 @@
   .filter-select {
     @apply w-full px-4 py-2 rounded-lg bg-ink border border-lavender/30 text-white focus:outline-none focus:ring-2 focus:ring-primary appearance-none;
   }
-
-    .scrollbar-hide::-webkit-scrollbar {
+    .scrollbar-hide::-webkit-scrollbar {  
     display: none;
   }
   .scrollbar-hide {
