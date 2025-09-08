@@ -6,22 +6,22 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/productController.js";
-import { protect } from "../middleware/authMiddleware.js";
-import upload from "../middleware/uploadMiddleware.js"; // ⬅️ import multer middleware
+import { protect, admin } from "../middleware/authMiddleware.js";
+import { upload } from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
-// ✅ Get all products | Create new product with image upload
+// ✅ /api/products
 router
   .route("/")
   .get(getProducts)
-  .post(protect, upload.array("images", 4), createProduct); // max 4 images
+  .post(protect, admin, upload.array("images", 5), createProduct); // multiple images
 
-// ✅ Get single product | Update product | Delete product
+// ✅ /api/products/:id
 router
   .route("/:id")
   .get(getProductById)
-  .put(protect, upload.array("images", 4), updateProduct) // allow updating images too
-  .delete(protect, deleteProduct);
+  .put(protect, admin, upload.array("images", 5), updateProduct)
+  .delete(protect, admin, deleteProduct);
 
 export default router;
