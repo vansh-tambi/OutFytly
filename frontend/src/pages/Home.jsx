@@ -26,10 +26,6 @@ import { Wind, Infinity, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 // --- Data ---
 const categories = [
   {
-    title: "Party Wear",
-    image: "https://images.unsplash.com/photo-1723016347027-39d37df73f18?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
     title: "Watches",
     image: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
@@ -44,6 +40,10 @@ const categories = [
   {
     title: "Casual Wear",
     image: "https://images.unsplash.com/photo-1716004360220-213371f51df1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+{
+    title: "Party Wear",
+    image: "https://images.unsplash.com/photo-1723016347027-39d37df73f18?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     title: "Formal Wear",
@@ -111,7 +111,7 @@ const Home = () => {
                             loop={true}
                             modules={[EffectCards, Navigation, Autoplay]}
                             navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
-                            autoplay={{ delay: 3000, disableOnInteraction: false }}
+                            autoplay={{ delay: 1500, disableOnInteraction: false }}
                             className="!w-full max-w-sm h-96"
                         >
                             {categories.map((category) => (

@@ -43,33 +43,36 @@ const About = () => {
             {/* --- The Storytelling Timeline --- */}
             <section className="py-20 px-6">
                 <div className="max-w-4xl mx-auto">
-                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-lavender">
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-20 text-lavender"> {/* ✅ Increased space */}
                         Our Journey
                     </h2>
                     <div className="relative">
                         <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-lavender/20"></div>
-                        {timelineEvents.map((event, i) => (
-                            <div key={i} className="relative mb-12 min-h-[180px]"> {/* ✅ min-height prevents jump */}
-                                <motion.div 
-                                    initial={{ opacity: 0, y: 40 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, amount: 0.4 }}
-                                    transition={{ duration: 0.7 }}
-                                    className={`flex items-center ${i % 2 === 0 ? 'flex-row-reverse' : ''}`}
-                                >
-                                    <div className="flex-1">
-                                        <div className={`p-6 rounded-lg bg-plum/50 border border-lavender/20 ${i % 2 === 0 ? 'text-left' : 'text-right'}`}>
-                                            <h3 className="text-2xl font-bold text-primary mb-2">{event.title}</h3>
-                                            <p className="text-lavender/80">{event.text}</p>
+                        {timelineEvents.map((event, i) => {
+                            const Icon = event.icon; // ✅ THE FIX: Assign icon to a capitalized variable
+                            return (
+                                <div key={i} className="relative mb-12 min-h-[180px]"> {/* ✅ min-height prevents jump */}
+                                    <motion.div 
+                                        initial={{ opacity: 0, y: 40 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true, amount: 0.4 }} // ✅ Smoother trigger
+                                        transition={{ duration: 0.7 }}
+                                        className={`flex items-center ${i % 2 === 0 ? 'flex-row-reverse' : ''}`}
+                                    >
+                                        <div className="flex-1">
+                                            <div className={`p-6 rounded-lg bg-plum/50 border border-lavender/20 ${i % 2 === 0 ? 'text-left' : 'text-right'}`}>
+                                                <h3 className="text-2xl font-bold text-primary mb-2">{event.title}</h3>
+                                                <p className="text-lavender/80">{event.text}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="absolute left-1/2 -translate-x-1/2 bg-ink p-3 rounded-full border-2 border-primary shadow-md">
-                                        <event.icon className="text-primary" size={22} />
-                                    </div>
-                                    <div className="flex-1"></div>
-                                </motion.div>
-                            </div>
-                        ))}
+                                        <div className="absolute left-1/2 -translate-x-1/2 bg-ink p-3 rounded-full border-2 border-primary shadow-md">
+                                            <Icon className="text-primary" size={22} /> {/* ✅ Use the capitalized variable */}
+                                        </div>
+                                        <div className="flex-1"></div>
+                                    </motion.div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>

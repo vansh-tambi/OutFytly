@@ -16,10 +16,10 @@ const navItems = [
 ];
 
 const megaMenuCategories = [
-    { name: 'Party Wear', href: '/browse?category=party wear', image: 'https://images.unsplash.com/photo-1599403485304-4f494f1f5a9e?w=200' },
-    { name: 'Watches', href: '/browse?category=watches', image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=200' },
-    { name: 'Shoes', href: '/browse?category=shoes', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ab?w=200' },
-    { name: 'Accessories', href: '/browse?category=accessories', image: 'https://images.unsplash.com/photo-1588444968368-a3159b3b879a?w=200' },
+    { name: 'Party Wear', href: '/browse?category=party wear', image: 'https://images.unsplash.com/photo-1723063640943-2b7b4379e1ee?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+    { name: 'Watches', href: '/browse?category=watches', image: 'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+    { name: 'Shoes', href: '/browse?category=shoes', image: 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=500' },
+    { name: 'Accessories', href: '/browse?category=accessories', image: 'https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=500' },
 ];
 
 const authLinks = [
