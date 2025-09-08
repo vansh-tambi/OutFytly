@@ -15,7 +15,7 @@ import CTA from '../components/CTA';
 
 // --- Swiper.js Imports (Corrected) ---
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCards, Navigation, Autoplay } from 'swiper/modules';
+import { EffectCards, Pagination,Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import 'swiper/css/navigation';
@@ -94,46 +94,61 @@ const Home = () => {
             <Hero />
 
             {/* --- "Shop By Category" Section with 3D Card Stack --- */}
-            <section className="py-24 px-6 bg-gradient-to-b from-ink to-plum">
-                <div className="max-w-5xl mx-auto">
-                    <SectionTitle title="A Category for Every Story" subtitle="Discover curated collections that perfectly match your unique style and occasion." />
-                    <motion.div 
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.8 }}
-                        className="relative mt-12"
-                    >
-                        <Swiper
-                            effect={'cards'}
-                            grabCursor={true}
-                            centeredSlides={true}
-                            loop={true}
-                            modules={[EffectCards, Navigation, Autoplay]}
-                            navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
-                            autoplay={{ delay: 1500, disableOnInteraction: false }}
-                            className="!w-full max-w-sm h-96"
-                        >
-                            {categories.map((category) => (
-                                <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
-                                    <Link to={`/browse?category=${category.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                                        <img src={category.image} alt={category.title} className="w-full h-full object-cover" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                                            <h3 className="text-white text-3xl font-bold">{category.title}</h3>
-                                        </div>
-                                    </Link>
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
-                        <div className="swiper-button-prev-cat absolute top-1/2 -translate-y-1/2 left-0 sm:-left-20 z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer">
-                            <ChevronLeft className="text-white w-6 h-6" />
-                        </div>
-                        <div className="swiper-button-next-cat absolute top-1/2 -translate-y-1/2 right-0 sm:-right-20 z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer">
-                            <ChevronRight className="text-white w-6 h-6" />
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
+
+{/* --- Upgraded "Shop By Category" Section --- */}
+
+{/* --- "Shop By Category" Section (No Dots) --- */}
+<section className="py-24 px-6 bg-gradient-to-b from-ink to-plum">
+    <div className="max-w-5xl mx-auto">
+        <SectionTitle title="A Category for Every Story" subtitle="Discover curated collections that perfectly match your unique style and occasion." />
+        
+        <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8 }}
+            className="relative mt-12 group"
+        >
+            {/* The container for the swiper and buttons is now shorter as the dots are gone */}
+            <div className="relative max-w-sm mx-auto">
+                <Swiper
+                    speed={800}
+                    autoplay={{ delay: 3500, disableOnInteraction: false }}
+                    // --- THE FIX ---
+                    // 1. Removed the `pagination` prop
+                    effect={'cards'}
+                    grabCursor={true}
+                    centeredSlides={true}
+                    loop={true}
+                    modules={[EffectCards, Navigation, Autoplay]} // 2. Removed `Pagination` from modules
+                    navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
+                    className="!w-full h-96"
+                >
+                    {categories.map((category) => (
+                        <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
+                            <Link to={`/browse?category=${category.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                                <img src={category.image} alt={category.title} className="w-full h-full object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                                    <h3 className="text-white text-3xl font-bold">{category.title}</h3>
+                                </div>
+                            </Link>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </div>
+            
+            {/* --- Navigation Buttons --- */}
+            <div className="swiper-button-prev-cat absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-[calc(14rem+4rem)] z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block">
+                <ChevronLeft className="text-white w-6 h-6" />
+            </div>
+            <div className="swiper-button-next-cat absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-[calc(14rem+4rem)] z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block">
+                <ChevronRight className="text-white w-6 h-6" />
+            </div>
+
+            {/* 3. The <div> for the pagination dots has been removed */}
+        </motion.div>
+    </div>
+</section>
 
             {/* --- "Why Choose Us?" Section --- */}
             <section className="py-24 px-6">
