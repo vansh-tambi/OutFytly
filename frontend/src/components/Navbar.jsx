@@ -4,7 +4,8 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
 import { Home, Info, Mail, Briefcase, HelpCircle, ArrowRight, Search, ShoppingCart } from 'lucide-react';
-import { useAuth } from '../context/AuthContext'; // For login state
+import { useContext } from 'react';                   // 1. Import useContext from React
+import { AuthContext } from '../context/AuthContext'; // For login state
 import { useCart } from '../context/CartContext';   // For cart item count
 
 // --- Data for Navigation & Dropdowns ---
@@ -35,12 +36,12 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-
+  
   // --- LOGIC UPDATE ---
-  const { user, logout } = useAuth(); // Get user and logout function from AuthContext
-  const { cart } = useCart();         // Get cart items from CartContext
+  const { user, logout } = useContext(AuthContext); // Get user and logout function from AuthContext        // Get cart items from CartContext
   const isLoggedIn = !!user;         // Check if user object exists to determine login state
-  const itemCount = cart.reduce((total, item) => total + item.quantity, 0); // Calculate total items in cart
+  const { cart } = useCart();
+  const itemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
 
   const handleMouseEnter = (label) => setOpenDropdown(label);
   const handleMouseLeave = () => setOpenDropdown(null);

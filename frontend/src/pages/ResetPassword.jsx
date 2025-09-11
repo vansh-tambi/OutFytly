@@ -1,13 +1,14 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useContext } from 'react';                   // 1. Import useContext from React
+import { AuthContext } from '../context/AuthContext';
 import AuthLayout from '../layouts/AuthLayout';
 import toast from 'react-hot-toast';
 
 const ResetPassword = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm();
-  const { resetPassword } = useAuth();
+  const { resetPassword } = useContext(AuthContext);
   const { token } = useParams(); // Get token from URL
   const navigate = useNavigate();
   const newPassword = watch("password");

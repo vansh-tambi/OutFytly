@@ -1,3 +1,4 @@
+// backend/models/User.js
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
@@ -7,9 +8,14 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+
+    // --- ✅ THE FIX ---
+    // Add the missing fields to the schema
+    bio: { type: String, default: "" },
+    avatar: { type: String, }, // Optional: set a default image
+
     resetPasswordToken: String,
     resetPasswordExpire: Date,
-
     wishlist: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,7 +26,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Password hashing middleware
+// Password hashing middleware (unchanged)
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
@@ -28,7 +34,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Password match method
+// Password match method (unchanged)
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

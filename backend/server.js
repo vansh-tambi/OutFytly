@@ -53,9 +53,10 @@ app.use("/api/addresses", addressRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/admin", analyticsRoutes);
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 app.get("/", (req, res) => {

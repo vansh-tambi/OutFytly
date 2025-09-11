@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '../context/AuthContext'; // ✅ IMPORT
+import { useContext } from 'react';                   // 1. Import useContext from React
+import { AuthContext } from '../context/AuthContext';
 import toast from 'react-hot-toast'; // ✅ IMPORT
 // Import Swiper React components and styles
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -21,7 +22,7 @@ const carouselImages = [
 const Login = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
   const navigate = useNavigate();
-  const { login } = useAuth(); // ✅ GET LOGIN FUNCTION
+  const { login } = useContext(AuthContext); // ✅ GET LOGIN FUNCTION
   const [showPassword, setShowPassword] = useState(false); // ✅ STATE FOR PASSWORD VISIBILITY
 
   const onSubmit = async (data) => {

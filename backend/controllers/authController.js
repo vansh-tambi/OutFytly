@@ -59,6 +59,7 @@ export const loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
+        avatar: user.avatar,
         token: generateToken(user._id),
       });
     } else {

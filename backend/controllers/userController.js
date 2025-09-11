@@ -1,9 +1,8 @@
+// backend/controllers/userController.js
 import User from "../models/User.js";
 import Product from "../models/Product.js";
 
 // @desc    Get logged-in user profile
-// @route   GET /api/users/profile
-// @access  Private
 export const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
@@ -17,16 +16,19 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+
+
 // @desc    Update user profile
-// @route   PUT /api/users/profile
-// @access  Private
 export const updateUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
     if (user) {
       user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
+      // ✅ THE FIX: Added logic to update bio and avatar
+      user.bio = req.body.bio ?? user.bio; // Use ?? to allow empty strings
+      user.avatar = req.body.avatar || user.avatar;
+
       if (req.body.password) {
         user.password = req.body.password;
       }
@@ -37,6 +39,8 @@ export const updateUserProfile = async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
+        bio: updatedUser.bio,
+        avatar: updatedUser.avatar,
       });
     } else {
       res.status(404).json({ message: "User not found" });
@@ -80,9 +84,7 @@ export const removeFromWishlist = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
-    user.wishlist = user.wishlist.filter(
-      (p) => p.toString() !== req.params.id
-    );
+    user.wishlist = user.wishlist.filter((p) => p.toString() !== req.params.id);
 
     await user.save();
     res.json(user.wishlist);

@@ -5,19 +5,24 @@ import {
   getProductById,
   updateProduct,
   deleteProduct,
+  getMyListings, // Make sure this is imported
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
-// ✅ /api/products
+// --- THE FIX ---
+// Define the specific '/my-listings' route first.
+router.get("/my-listings", protect, getMyListings);
+
+// Now, define the routes for the base '/' path.
 router
   .route("/")
   .get(getProducts)
-  .post(protect, admin, upload.array("images", 5), createProduct); // multiple images
+  .post(protect, admin, upload.array("images", 5), createProduct);
 
-// ✅ /api/products/:id
+// Routes for '/:id' remain the same.
 router
   .route("/:id")
   .get(getProductById)

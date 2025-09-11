@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useContext } from 'react';                   // 1. Import useContext from React
+import { AuthContext } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 // Import Swiper React components and styles
@@ -22,7 +23,7 @@ const carouselImages = [
 const Signup = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm();
   const navigate = useNavigate();
-  const { signup } = useAuth();
+  const { signup } = useContext(AuthContext); // ✅ GET SIGNUP FUNCTION
   const password = watch("password");
   
   // --- FIX: Restored missing state for password visibility ---

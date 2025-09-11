@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuth } from '../context/AuthContext';
+import { useContext } from 'react';                   // 1. Import useContext from React
+import { AuthContext } from '../context/AuthContext';
 import AuthLayout from '../layouts/AuthLayout';
 import toast from 'react-hot-toast';
 
 const ForgotPassword = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
-  const { forgotPassword } = useAuth();
+  const { forgotPassword } = useContext(AuthContext);
   const [message, setMessage] = useState('');
 
   const onSubmit = async (data) => {
