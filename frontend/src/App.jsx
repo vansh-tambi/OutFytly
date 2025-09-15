@@ -1,9 +1,9 @@
-// src/App.jsx
 import React, { Suspense } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import MainLayout from "./layouts/MainLayout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
 
 // --- Statically Imported Pages ---
 import Home from "./pages/Home.jsx";
@@ -33,10 +33,15 @@ const Signup = React.lazy(() => import("./pages/Signup.jsx"));
 const AccountPage = React.lazy(() => import("./pages/AccountPage.jsx"));
 const ProfileSettings = React.lazy(() => import("./components/ProfileSettings.jsx"));
 const WishlistView = React.lazy(() => import("./components/WishlistView.jsx"));
-const OrderHistory = React.lazy(() => import("./components/OrderHistory.jsx")); // Assuming you'll create this
+const OrderHistory = React.lazy(() => import("./components/OrderHistory.jsx"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard.jsx"));
 const Cart = React.lazy(() => import("./pages/Cart.jsx"));
 const Checkout = React.lazy(() => import("./pages/Checkout.jsx"));
+const AdminDashboard = React.lazy(() => import("./pages/AdminDashboard.jsx"));
+const UserList = React.lazy(() => import('./components/admin/UserList.jsx'));
+const AdminStats = React.lazy(() => import('./components/admin/AdminStats.jsx'));
+const OrderList = React.lazy(() => import('./components/admin/OrderList.jsx'));
+const ProductList = React.lazy(() => import('./components/admin/ProductList.jsx')); // ✅ THE FIX: Added the missing import
 
 export default function App() {
   const location = useLocation();
@@ -63,17 +68,26 @@ export default function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
 
-            {/* --- Protected Routes --- */}
+            {/* --- Protected Routes (for regular users) --- */}
             <Route element={<ProtectedRoute />}>
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
-              
               <Route path="/account" element={<AccountPage />}>
                 <Route index element={<ProfileSettings />} />
                 <Route path="profile" element={<ProfileSettings />} />
                 <Route path="wishlist" element={<WishlistView />} />
                 <Route path="orders" element={<OrderHistory />} />
                 <Route path="dashboard" element={<Dashboard />} />
+              </Route>
+            </Route>
+            
+            {/* --- Admin Routes --- */}
+            <Route element={<AdminRoute />}>
+              <Route path="/admin/dashboard" element={<AdminDashboard />}>
+                <Route index element={<AdminStats />} />
+                <Route path="users" element={<UserList />} />
+                <Route path="orders" element={<OrderList />} />
+                <Route path="products" element={<ProductList />} />
               </Route>
             </Route>
 

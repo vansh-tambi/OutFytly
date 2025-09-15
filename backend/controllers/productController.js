@@ -1,6 +1,8 @@
 import Product from "../models/Product.js";
 import cloudinary from "../config/cloudinary.js";
 import User from "../models/User.js";
+import Cart from "../models/Cart.js";
+import Review from "../models/Review.js";
 // @desc    Create product
 // @route   POST /api/products
 // @access  Private/Admin
@@ -117,15 +119,22 @@ export const getMyListings = async (req, res) => {
 // @access  Public
 export const getProductById = async (req, res) => {
   try {
-    // ✅ THE FIX: Changed "createdBy" to "user" to match your schema
-    const product = await Product.findById(req.params.id).populate(
-      "user",
-      "name email"
-    );
-    if (!product) return res.status(404).json({ message: "Product not found" });
+    const product = await Product.findById(req.params.id)
+      .populate("user", "name email")
+      // ✅ THE FIX: Add a nested populate to get full review details
+      .populate({
+        path: 'reviews',
+        populate: {
+          path: 'user',
+          select: 'name avatar' // Select which user fields to send
+        }
+      });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
     res.json(product);
   } catch (error) {
-    console.error("GET PRODUCT BY ID ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -153,17 +162,19 @@ export const updateProduct = async (req, res) => {
 // @route   DELETE /api/products/:id
 export const deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
+    // Authorization check: only the user who created the product can delete it
     if (product.user.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: "Not authorized" });
     }
 
-    // This part now works because 'cloudinary' is imported
+    // 1. Delete images from Cloudinary
     if (product.images && product.images.length > 0) {
       const publicIds = product.images.map((url) => {
         const parts = url.split("/");
@@ -173,10 +184,64 @@ export const deleteProduct = async (req, res) => {
       await cloudinary.api.delete_resources(publicIds);
     }
 
+    // ✅ 2. Clean up references in all Carts
+    // This finds all carts and pulls any item from the 'items' array that matches the productId
+    await Cart.updateMany(
+      {},
+      { $pull: { items: { product: productId } } }
+    );
+    
+    // ✅ 3. Clean up references in all User Wishlists
+    // This finds all users and pulls the productId from their 'wishlist' array
+    await User.updateMany(
+      {},
+      { $pull: { wishlist: productId } }
+    );
+
+    // 4. Finally, delete the product itself
     await product.deleteOne();
-    res.json({ message: "Product removed" });
+
+    res.json({ message: "Product removed and all references cleared" });
   } catch (error) {
-    console.error("DELETE PRODUCT ERROR:", error); // Better logging
+    console.error("DELETE PRODUCT ERROR:", error);
     res.status(500).json({ message: error.message });
+  }
+};
+
+export const createProductReview = async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Check if the user has already reviewed this product
+    const existingReview = await Review.findOne({ user: req.user._id, product: req.params.id });
+    if (existingReview) {
+      return res.status(400).json({ message: "You have already reviewed this product" });
+    }
+
+    const review = new Review({
+      rating,
+      comment,
+      user: req.user._id,
+      product: req.params.id,
+    });
+
+    await review.save();
+
+    // Update the product's reviews array and average rating
+    const reviews = await Review.find({ product: req.params.id });
+    product.reviews = reviews.map(r => r._id);
+    product.averageRating = reviews.reduce((acc, item) => item.rating + acc, 0) / reviews.length;
+
+    await product.save();
+
+    res.status(201).json({ message: "Review added" });
+  } catch (error) {
+    console.error("CREATE REVIEW ERROR:", error);
+    res.status(500).json({ message: "Server Error" });
   }
 };

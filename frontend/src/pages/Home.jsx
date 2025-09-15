@@ -72,53 +72,60 @@ const Home = () => {
         <div className="bg-ink text-white">
             <Hero />
 
-            {/* --- "Shop By Category" Section --- */}
-            <section className="py-24 px-6 bg-gradient-to-b from-ink to-plum">
-                <div className="max-w-5xl mx-auto">
-                    <SectionTitle title="A Category for Every Story" subtitle="Discover curated collections that perfectly match your unique style and occasion." />
-                    
-                    <motion.div 
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.8 }}
-                        className="relative mt-12 group"
-                    >
-                        <div className="relative max-w-sm mx-auto">
-                            <Swiper
-                                speed={800}
-                                autoplay={{ delay: 3500, disableOnInteraction: false }}
-                                effect={'cards'}
-                                grabCursor={true}
-                                centeredSlides={true}
-                                loop={true}
-                                modules={[EffectCards, Navigation, Autoplay]}
-                                navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
-                                className="!w-full h-96"
-                            >
-                                {categories.map((category) => (
-                                    <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
-                                        <Link to={`/browse?category=${category.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                                            <img src={category.image} alt={category.title} className="w-full h-full object-cover" />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                                                <h3 className="text-white text-3xl font-bold">{category.title}</h3>
-                                            </div>
-                                        </Link>
-                                    </SwiperSlide>
-                                ))}
-                            </Swiper>
-                        </div>
-                        
-                        <div className="swiper-button-prev-cat absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-[calc(14rem+4rem)] z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block">
-                            <ChevronLeft className="text-white w-6 h-6" />
-                        </div>
-                        <div className="swiper-button-next-cat absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-[calc(14rem+4rem)] z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block">
-                            <ChevronRight className="text-white w-6 h-6" />
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
+            {/* --- "Shop By Category" Section --- */}     
 
+<section className="py-24 px-6 bg-gradient-to-b from-ink to-plum overflow-hidden">
+  <div className="max-w-5xl mx-auto">
+    <SectionTitle 
+      title="A Category for Every Story" 
+      subtitle="Discover curated collections that perfectly match your unique style and occasion." 
+    />
+    
+    <motion.div 
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.8 }}
+      animate={{ y: [0, -8, 0] }}
+      className="relative mt-12 group"
+    >
+      <div className="relative max-w-sm mx-auto flex items-center justify-center">
+        <div className="swiper-button-prev-cat z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block mr-15">
+            <ChevronLeft className="text-white w-6 h-6" />
+        </div>
+        
+        <Swiper
+            speed={800}
+            autoplay={{ delay: 3500, disableOnInteraction: false }}
+            effect={'cards'}
+            grabCursor={true}
+            centeredSlides={true}
+            loop={true}
+            initialSlide={0}
+            modules={[EffectCards, Navigation, Autoplay]}
+            navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
+            className="!w-72 md:!w-80 h-96"
+        >
+            {categories.map((category) => (
+                <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
+                    {/* ✅ FIX: The Link now points directly to /browse */}
+                    <Link to="/browse">
+                        <img src={category.image} alt={category.title} className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                            <h3 className="text-white text-3xl font-bold">{category.title}</h3>
+                        </div>
+                    </Link>
+                </SwiperSlide>
+            ))}
+        </Swiper>
+
+        <div className="swiper-button-next-cat z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block ml-15">
+            <ChevronRight className="text-white w-6 h-6" />
+        </div>
+      </div>
+    </motion.div>
+  </div>
+</section>
             {/* --- "Why Choose Us?" Section --- */}
             <section className="py-24 px-6">
                  <div className="max-w-5xl mx-auto">

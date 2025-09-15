@@ -19,9 +19,9 @@ export const getAllUsers = async (req, res) => {
 // @access  Private/Admin
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find()
+    const orders = await Order.find({})
       .populate("user", "name email")
-      .populate("items.product", "title rentalPrice");
+      .sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -70,16 +70,30 @@ export const getStats = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const totalOrders = await Order.countDocuments();
-    const totalRevenue = await Order.aggregate([
+    const totalRevenueResult = await Order.aggregate([
+      { $match: { status: 'Delivered' } }, // Only count revenue from delivered orders
       { $group: { _id: null, total: { $sum: "$totalPrice" } } },
     ]);
-
     res.json({
       totalUsers,
       totalOrders,
-      totalRevenue: totalRevenue[0]?.total || 0,
+      totalRevenue: totalRevenueResult[0]?.total || 0,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+export const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (user) {
+            // Add logic here to prevent deleting an admin if you want
+            await user.deleteOne();
+            res.json({ message: 'User removed' });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };

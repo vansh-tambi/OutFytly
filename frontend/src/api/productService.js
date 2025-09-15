@@ -50,3 +50,12 @@ export const deleteProduct = async (id) => {
     throw error.response.data.message || error.message;
   }
 };
+
+export const createProductReview = async (productId, reviewData) => {
+  try {
+    const { data } = await api.post(`/api/products/${productId}/reviews`, reviewData);
+    return data;
+  } catch (error) {
+    throw error.response.data.message || error.message;
+  }
+};

@@ -1,23 +1,22 @@
-// src/components/ItemCard.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Heart } from 'lucide-react';      // ✅ 1. Import Heart icon
-import { useWishlist } from '../context/WishlistContext'; // ✅ 1. Import Wishlist context
+import { MapPin, Heart } from 'lucide-react';
+import { useWishlist } from '../context/WishlistContext';
 
 const ItemCard = ({ _id, title, rentalPrice, images, category, user }) => {
-  // ✅ 2. Get wishlist functions and check if this item is in the wishlist
-  const { toggleWishlistItem, isItemInWishlist } = useWishlist();
+  // ✅ 1. Get the 'isToggling' state from the context
+  const { toggleWishlistItem, isItemInWishlist, isToggling } = useWishlist();
   const isInWishlist = isItemInWishlist(_id);
 
   const imageUrl = images && images.length > 0
     ? images[0]
     : 'https://via.placeholder.com/300x300.png?text=No+Image';
 
-  // ✅ 3. Create a handler to toggle the item in the wishlist
   const handleWishlistToggle = (e) => {
-    e.preventDefault(); // Prevent the link from navigating
-    e.stopPropagation(); // Stop the event from bubbling up
+    e.preventDefault();
+    e.stopPropagation();
+    if (isToggling) return; // Prevent action if already processing
     toggleWishlistItem(_id);
   };
 
@@ -27,11 +26,11 @@ const ItemCard = ({ _id, title, rentalPrice, images, category, user }) => {
       transition={{ type: "spring", stiffness: 300 }}
       className="relative bg-ink text-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-primary/30 flex flex-col"
     >
-      {/* ✅ 4. Add the Wishlist Button */}
       <motion.button
         whileTap={{ scale: 0.9 }}
         onClick={handleWishlistToggle}
-        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/40 backdrop-blur-sm"
+        disabled={isToggling} // ✅ 2. Disable the button when toggling
+        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/40 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label="Toggle Wishlist"
       >
         <Heart 

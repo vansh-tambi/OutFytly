@@ -4,49 +4,43 @@ import Product from "../models/Product.js";
 // @desc    Add a review
 // @route   POST /api/reviews/:productId
 // @access  Private
-export const addReview = async (req, res) => {
+export const createProductReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
-    const { productId } = req.params;
+    const product = await Product.findById(req.params.id);
 
-    const product = await Product.findById(productId);
-    if (!product) return res.status(404).json({ message: "Product not found" });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
-    // Check duplicate review by same user
-    const alreadyReviewed = await Review.findOne({
-      user: req.user._id,
-      product: productId,
-    });
-
-    if (alreadyReviewed) {
-      return res.status(400).json({ message: "Already reviewed this product" });
+    // Check if the user has already reviewed this product
+    const existingReview = await Review.findOne({ user: req.user._id, product: req.params.id });
+    if (existingReview) {
+      return res.status(400).json({ message: "You have already reviewed this product" });
     }
 
     const review = new Review({
-      user: req.user._id,
-      product: productId,
       rating,
       comment,
+      user: req.user._id,
+      product: req.params.id,
     });
 
     await review.save();
 
-    // Link review to product
-    product.reviews.push(review._id);
-
-    // Recalculate average rating
-    const reviews = await Review.find({ product: productId });
-    product.averageRating =
-      reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length;
+    // Update the product's reviews and average rating
+    const reviews = await Review.find({ product: req.params.id });
+    product.reviews = reviews.map(r => r._id);
+    product.averageRating = reviews.reduce((acc, item) => item.rating + acc, 0) / reviews.length;
 
     await product.save();
 
-    res.status(201).json(review);
+    res.status(201).json({ message: "Review added" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("CREATE REVIEW ERROR:", error);
+    res.status(500).json({ message: "Server Error" });
   }
 };
-
 // @desc    Get reviews for a product
 // @route   GET /api/reviews/:productId
 // @access  Public

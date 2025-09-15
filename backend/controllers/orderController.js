@@ -1,47 +1,64 @@
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
 import  sendEmail  from "../utils/sendEmail.js";
+import Cart from "../models/Cart.js";
 
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
 export const createOrder = async (req, res) => {
   try {
-    const { items, totalPrice, shippingAddress } = req.body;
+    const { shippingAddress, paymentMethod } = req.body;
 
-    if (!items || items.length === 0) {
-      return res.status(400).json({ message: "No items in order" });
+    // 1. Get the user's cart from the DB
+    const cart = await Cart.findOne({ user: req.user._id });
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: 'Your cart is empty' });
     }
 
+    // 2. Prepare order items and calculate total price from backend data (for security)
+    let totalPrice = 0;
+    const orderItems = [];
+
+    for (const item of cart.items) {
+      const product = await Product.findById(item.product);
+      if (!product) {
+        return res.status(404).json({ message: `Product with ID ${item.product} not found` });
+      }
+      const itemPrice = product.rentalPrice * item.quantity;
+      totalPrice += itemPrice;
+      orderItems.push({
+        product: item.product,
+        size: item.size,
+        quantity: item.quantity,
+        price: product.rentalPrice,
+        seller: product.user, // Important for your dashboard stats!
+      });
+    }
+
+    // Add shipping cost
+    const shippingCost = 50;
+    totalPrice += shippingCost;
+
+    // 3. Create the new order object
     const order = new Order({
       user: req.user._id,
-      items: items.map((i) => ({
-        product: i.product,
-        size: i.size,
-        quantity: i.quantity,
-      })),
-      totalPrice,
+      orderItems,
       shippingAddress,
+      paymentMethod,
+      totalPrice,
     });
 
+    // 4. Save the order to the database
     const createdOrder = await order.save();
 
-    // ✅ Send confirmation email
-    const emailContent = `
-      <h2>Order Confirmation</h2>
-      <p>Thank you for your order!</p>
-      <p><strong>Total:</strong> ₹${totalPrice}</p>
-      <p><strong>Status:</strong> Pending</p>
-    `;
-    await sendEmail(
-      shippingAddress.email,
-      "Your Order is Confirmed - OutFytly",
-      emailContent
-    );
+    // 5. Clear the user's cart
+    await Cart.findOneAndDelete({ user: req.user._id });
 
     res.status(201).json(createdOrder);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('CREATE ORDER ERROR:', error);
+    res.status(500).json({ message: 'Server Error' });
   }
 };
 

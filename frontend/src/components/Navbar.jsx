@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
-import { Home, Info, Mail, Briefcase, HelpCircle, ArrowRight, ShoppingCart } from 'lucide-react';
+import { Home, Info, Mail, Briefcase, HelpCircle, ArrowRight, ShoppingCart, ShieldCheck } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { fetchProducts } from '../api/productService';
 
-// --- Data for Navigation ---
+// --- Data for Navigation & Dropdowns ---
 const navItems = [
     { path: "/", label: "Home", icon: Home, dropdownContent: [{ title: "Homepage", desc: "Return to where it all begins.", href: "/" }] },
     { path: "/browse", label: "Browse", dropdownType: 'mega' },
@@ -15,12 +15,6 @@ const navItems = [
     { path: "/contact", label: "Contact", icon: Mail, dropdownContent: [{ title: "Contact Us", desc: "Get in touch with our team.", href: "/contact" }] },
     { path: "/careers", label: "Careers", icon: Briefcase, dropdownContent: [{ title: "Join Our Team", desc: "Explore open positions.", href: "/careers" }] },
     { path: "/faq", label: "FAQ", icon: HelpCircle, dropdownContent: [{ title: "Find Answers", desc: "See our frequently asked questions.", href: "/faq" }] },
-];
-
-const authLinks = [
-    { path: "/login", label: "Login" },
-    { path: "/cart", label: "Cart" },
-    { path: "/account/profile", label: "Profile" },
 ];
 
 const Navbar = () => {
@@ -51,8 +45,17 @@ const Navbar = () => {
   const handleMouseLeave = () => setOpenDropdown(null);
 
   const mobileNavLinks = isLoggedIn 
-    ? [...navItems.map(i => ({path: i.path, label: i.label})), { path: "/cart", label: "Cart" }, { path: "/account/profile", label: "Profile" }] 
-    : [...navItems.map(i => ({path: i.path, label: i.label})), authLinks[0]];
+    ? [
+        { path: "/", label: "Home" },
+        { path: "/browse", label: "Browse" },
+        { path: "/cart", label: "Cart" },
+        { path: "/account/profile", label: "My Account" },
+      ] 
+    : [
+        { path: "/", label: "Home" },
+        { path: "/browse", label: "Browse" },
+        { path: "/login", label: "Login" },
+      ];
 
   const navLinkClasses = ({isActive}) => isActive ? "text-primary font-semibold" : "text-white hover:text-primary transition-colors";
 
@@ -92,6 +95,12 @@ const Navbar = () => {
           <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
             {isLoggedIn ? (
               <>
+                {user.isAdmin && (
+                    <NavLink to="/admin/dashboard" className="flex items-center gap-1 text-yellow-400 hover:text-yellow-300 font-semibold">
+                        <ShieldCheck size={20} />
+                        Admin
+                    </NavLink>
+                )}
                 <NavLink to="/cart" className="relative text-white hover:text-primary transition-colors">
                   <ShoppingCart size={24} />
                   {itemCount > 0 && (

@@ -25,7 +25,7 @@ export const getCart = async (req, res) => {
 // @access  Private
 export const addToCart = async (req, res) => {
   try {
-    const { product, size, quantity } = req.body;
+    const { product, size, quantity, startDate, endDate } = req.body;
 
     let cart = await Cart.findOne({ user: req.user._id });
     if (!cart) {
@@ -39,7 +39,7 @@ export const addToCart = async (req, res) => {
     if (itemIndex > -1) {
       cart.items[itemIndex].quantity += quantity;
     } else {
-      cart.items.push({ product, size, quantity });
+      cart.items.push({ product, size, quantity, startDate, endDate });
     }
 
     await cart.save();

@@ -12,6 +12,8 @@ const cartSchema = new mongoose.Schema(
         product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
         size: { type: String, required: true },
         quantity: { type: Number, required: true, default: 1 },
+        startDate: { type: Date, required: true }, // ✅ ADD THIS
+        endDate: { type: Date, required: true }, 
       },
     ],
   },

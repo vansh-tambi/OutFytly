@@ -61,18 +61,17 @@ const CTA = () => {
           <p className="text-lg md:text-xl mb-8 text-lavender/80">
             Join a community where style meets sustainability. Discover unique pieces and give your own fashion a new life.
           </p>
-          <motion.div
-            whileHover={{ scale: 1.05, y: -3, boxShadow: "0px 10px 30px rgba(138, 43, 225, 0.4)" }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-block"
-          >
-            <Link
-              to="/signup"
-              className="bg-primary text-white px-8 py-3 rounded-full font-semibold text-lg inline-flex items-center gap-2"
-            >
-              Join OutFytly Now <ArrowRight size={20} />
-            </Link>
-          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }}>
+  <Link to="/signup">
+    <motion.button 
+      whileHover={{ scale: 1.05, y: -3, boxShadow: "0px 10px 30px rgba(138, 43, 225, 0.4)" }} 
+      whileTap={{ scale: 0.95 }} 
+      className="bg-primary text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg inline-flex items-center gap-2"
+    >
+      Join OutFytly Now <ArrowRight size={20} />
+    </motion.button>
+  </Link>
+</motion.div>
         </motion.div>
 
         {/* --- Right Column: Key Feature Highlights --- */}

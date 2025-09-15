@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';
-import { getCart, addItemToCart, removeItemFromCart, updateItemQuantity } from '../api/cartService';
+import { getCart, addItemToCart, removeItemFromCart, updateItemQuantity, clearCart as clearCartAPI } from '../api/cartService';
 import toast from 'react-hot-toast';
 
 export const CartContext = createContext();
@@ -53,7 +53,7 @@ export const CartProvider = ({ children }) => {
   
   const removeItem = async (itemId) => {
     try {
-      // ✅ THE FIX: Don't destructure { data: ... }
+      // ✅ FIX: Correctly get the updated cart from the response
       const updatedCart = await removeItemFromCart(itemId);
       dispatch({ type: 'SET_CART', payload: updatedCart });
       toast.success('Item removed from cart.');
@@ -67,15 +67,25 @@ export const CartProvider = ({ children }) => {
       return removeItem(itemId);
     }
     try {
-      // ✅ THE FIX: Don't destructure { data: ... }
+      // ✅ FIX: Correctly get the updated cart from the response
       const updatedCart = await updateItemQuantity(itemId, quantity);
       dispatch({ type: 'SET_CART', payload: updatedCart });
     } catch (error) {
       toast.error('Could not update quantity.');
     }
   };
+
+  // ✅ NEW: Function to clear the cart
+  const clearCart = async () => {
+    try {
+        await clearCartAPI();
+        dispatch({ type: 'SET_CART', payload: { items: [] } });
+    } catch (error) {
+        toast.error('Could not clear cart.');
+    }
+  };
   
-  const value = { cart, loading, addItem, removeItem, updateQuantity };
+  const value = { cart, loading, addItem, removeItem, updateQuantity, clearCart };
 
   return (
     <CartContext.Provider value={value}>

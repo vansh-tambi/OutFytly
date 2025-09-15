@@ -8,35 +8,38 @@ export const useWishlist = () => useContext(WishlistContext);
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true); // For initial page load
+  const [isToggling, setIsToggling] = useState(false); // For button clicks
   const { user } = useContext(AuthContext);
 
-  // Load the wishlist when the user logs in
   useEffect(() => {
     const loadWishlist = async () => {
       if (user) {
+        setLoading(true); // Use the main loading state for the initial fetch
         try {
           const { data } = await getWishlist();
-          // The API returns full product objects, but we only need their IDs for our state
           const wishlistIds = data.map(item => item._id);
           setWishlist(wishlistIds);
         } catch (error) {
           console.error("Failed to fetch wishlist", error);
+        } finally {
+          setLoading(false); // ✅ FIX: Set loading to false after the fetch is complete
         }
       } else {
-        // Clear wishlist on logout
         setWishlist([]);
+        setLoading(false);
       }
     };
     loadWishlist();
   }, [user]);
 
-  // Check if an item is in the wishlist
   const isItemInWishlist = (productId) => {
     return wishlist.includes(productId);
   };
 
-  // The main function to add or remove an item
   const toggleWishlistItem = async (productId) => {
+    if (isToggling) return; // Prevent multiple clicks
+    setIsToggling(true);
     const inWishlist = isItemInWishlist(productId);
     try {
       if (inWishlist) {
@@ -50,12 +53,14 @@ export const WishlistProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error('Could not update wishlist.');
-      console.error("Failed to toggle wishlist item", error);
+    } finally {
+      setIsToggling(false);
     }
   };
-
+  
+  // Expose the 'isToggling' state for the button to use
   return (
-    <WishlistContext.Provider value={{ wishlist, toggleWishlistItem, isItemInWishlist }}>
+    <WishlistContext.Provider value={{ wishlist, loading, isToggling, toggleWishlistItem, isItemInWishlist }}>
       {children}
     </WishlistContext.Provider>
   );
