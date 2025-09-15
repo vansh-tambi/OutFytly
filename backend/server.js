@@ -1,12 +1,12 @@
-// ✅ STEP 1: Load environment variables IMMEDIATELY
+// ✅ STEP 1: Load environment variables
 import dotenv from "dotenv";
 dotenv.config();
 
-// ✅ STEP 2: Import core modules
+// ✅ STEP 2: Core modules
 import express from "express";
 import cors from "cors";
 
-// ✅ STEP 3: Import DB + routes
+// ✅ STEP 3: DB + routes
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
@@ -30,24 +30,27 @@ connectDB();
 
 const app = express();
 
-// ✅ CORS configuration
+// ✅ CORS config
 const allowedOrigins = [
-  "http://localhost:5173",           // Local Vite
-  "https://outfytly.vercel.app",     // Production frontend (replace if your domain differs)
+  "http://localhost:5173",                 // Local Vite
+  "https://outfytly.vercel.app",           // Main production
+  /\.vercel\.app$/,                        // Any Vercel preview deployment
 ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("❌ Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.some((rule) => 
+            rule instanceof RegExp ? rule.test(origin) : rule === origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("❌ Not allowed by CORS: " + origin));
+      }
+    },
+    credentials: true,
+  })
+);
 
-app.use(cors(corsOptions));
 app.use(express.json());
 
 // ✅ API Routes
@@ -64,7 +67,7 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/checkout", checkoutRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/coupons", couponRoutes);
-app.use("/api/analytics", analyticsRoutes); // ✅ fixed duplicate /api/admin
+app.use("/api/analytics", analyticsRoutes);
 
 // ✅ Root route
 app.get("/", (req, res) => {
@@ -73,6 +76,6 @@ app.get("/", (req, res) => {
 
 // ✅ Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
