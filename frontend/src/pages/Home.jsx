@@ -1,5 +1,5 @@
 // src/pages/Home.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // ✅ 1. Import hooks
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -13,9 +13,13 @@ import Testimonials from '../components/sections/Testimonial';
 import Brands from '../components/Brands';
 import CTA from '../components/CTA';
 
-// --- Swiper.js Imports (Corrected) ---
+// --- API & Toast Imports ---
+import { fetchProducts } from '../api/productService'; // ✅ 1. Import fetch function
+import toast from 'react-hot-toast';                  // ✅ 1. Import toast
+
+// --- Swiper.js Imports ---
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCards, Pagination,Navigation, Autoplay } from 'swiper/modules';
+import { EffectCards, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import 'swiper/css/navigation';
@@ -23,63 +27,14 @@ import 'swiper/css/navigation';
 // --- Icon Imports ---
 import { Wind, Infinity, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 
-// --- Data ---
+// --- Static Data ---
 const categories = [
-  {
-    title: "Watches",
-    image: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Shoes",
-    image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Accessories",
-    image: "https://images.unsplash.com/3/www.madebyvadim.com.jpg?q=80&w=2082&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Casual Wear",
-    image: "https://images.unsplash.com/photo-1716004360220-213371f51df1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-{
-    title: "Party Wear",
-    image: "https://images.unsplash.com/photo-1723016347027-39d37df73f18?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Formal Wear",
-    image: "https://images.unsplash.com/photo-1593765762957-d8d876a1beeb?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
-
-const popularItems = [
-  {
-    id: "1",
-    title: "Luxury Suit",
-    price: "1500",
-    location: "Delhi",
-    image: "https://images.unsplash.com/photo-1580657018950-c7f7d6a6d990?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: "2",
-    title: "Elegant Dress",
-    price: "1200",
-    location: "Mumbai",
-    image: "https://images.unsplash.com/photo-1626818590159-04cb9274a5e0?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: "3",
-    title: "Classic Watch",
-    price: "800",
-    location: "Bangalore",
-    image: "https://images.unsplash.com/photo-1694656937152-b2377c0b5de7?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: "4",
-    title: "Trendy Shoes",
-    price: "600",
-    location: "Hyderabad",
-    image: "https://images.unsplash.com/photo-1724365314431-d9e00de5b258?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
+    { title: "Watches", image: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { title: "Shoes", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { title: "Accessories", image: "https://images.unsplash.com/3/www.madebyvadim.com.jpg?q=80&w=2082&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { title: "Casual Wear", image: "https://images.unsplash.com/photo-1716004360220-213371f51df1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { title: "Party Wear", image: "https://images.unsplash.com/photo-1723016347027-39d37df73f18?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { title: "Formal Wear", image: "https://images.unsplash.com/photo-1593765762957-d8d876a1beeb?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
 ];
 
 const whyChooseUs = [
@@ -89,66 +44,80 @@ const whyChooseUs = [
 ];
 
 const Home = () => {
+    // ✅ 2. Remove hardcoded 'popularItems' and add state for live data
+    const [popularItems, setPopularItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // ✅ 3. Fetch data with useEffect when the component loads
+    useEffect(() => {
+        const getPopularItems = async () => {
+            try {
+                setLoading(true);
+                // Fetch the 8 newest products to show as "trending"
+                const data = await fetchProducts({ sort: 'newest', limit: 8 });
+                setPopularItems(data.products);
+            } catch (err) {
+                setError('Could not load items.');
+                toast.error('Could not load popular items.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getPopularItems();
+    }, []); // Empty array ensures this runs only once
+
     return (
         <div className="bg-ink text-white">
             <Hero />
 
-            {/* --- "Shop By Category" Section with 3D Card Stack --- */}
-
-{/* --- Upgraded "Shop By Category" Section --- */}
-
-{/* --- "Shop By Category" Section (No Dots) --- */}
-<section className="py-24 px-6 bg-gradient-to-b from-ink to-plum">
-    <div className="max-w-5xl mx-auto">
-        <SectionTitle title="A Category for Every Story" subtitle="Discover curated collections that perfectly match your unique style and occasion." />
-        
-        <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8 }}
-            className="relative mt-12 group"
-        >
-            {/* The container for the swiper and buttons is now shorter as the dots are gone */}
-            <div className="relative max-w-sm mx-auto">
-                <Swiper
-                    speed={800}
-                    autoplay={{ delay: 3500, disableOnInteraction: false }}
-                    // --- THE FIX ---
-                    // 1. Removed the `pagination` prop
-                    effect={'cards'}
-                    grabCursor={true}
-                    centeredSlides={true}
-                    loop={true}
-                    modules={[EffectCards, Navigation, Autoplay]} // 2. Removed `Pagination` from modules
-                    navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
-                    className="!w-full h-96"
-                >
-                    {categories.map((category) => (
-                        <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
-                            <Link to={`/browse?category=${category.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                                <img src={category.image} alt={category.title} className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                                    <h3 className="text-white text-3xl font-bold">{category.title}</h3>
-                                </div>
-                            </Link>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-            </div>
-            
-            {/* --- Navigation Buttons --- */}
-            <div className="swiper-button-prev-cat absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-[calc(14rem+4rem)] z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block">
-                <ChevronLeft className="text-white w-6 h-6" />
-            </div>
-            <div className="swiper-button-next-cat absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-[calc(14rem+4rem)] z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block">
-                <ChevronRight className="text-white w-6 h-6" />
-            </div>
-
-            {/* 3. The <div> for the pagination dots has been removed */}
-        </motion.div>
-    </div>
-</section>
+            {/* --- "Shop By Category" Section --- */}
+            <section className="py-24 px-6 bg-gradient-to-b from-ink to-plum">
+                <div className="max-w-5xl mx-auto">
+                    <SectionTitle title="A Category for Every Story" subtitle="Discover curated collections that perfectly match your unique style and occasion." />
+                    
+                    <motion.div 
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.8 }}
+                        className="relative mt-12 group"
+                    >
+                        <div className="relative max-w-sm mx-auto">
+                            <Swiper
+                                speed={800}
+                                autoplay={{ delay: 3500, disableOnInteraction: false }}
+                                effect={'cards'}
+                                grabCursor={true}
+                                centeredSlides={true}
+                                loop={true}
+                                modules={[EffectCards, Navigation, Autoplay]}
+                                navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
+                                className="!w-full h-96"
+                            >
+                                {categories.map((category) => (
+                                    <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
+                                        <Link to={`/browse?category=${category.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                                            <img src={category.image} alt={category.title} className="w-full h-full object-cover" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                                                <h3 className="text-white text-3xl font-bold">{category.title}</h3>
+                                            </div>
+                                        </Link>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                        </div>
+                        
+                        <div className="swiper-button-prev-cat absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-[calc(14rem+4rem)] z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block">
+                            <ChevronLeft className="text-white w-6 h-6" />
+                        </div>
+                        <div className="swiper-button-next-cat absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-[calc(14rem+4rem)] z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block">
+                            <ChevronRight className="text-white w-6 h-6" />
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
 
             {/* --- "Why Choose Us?" Section --- */}
             <section className="py-24 px-6">
@@ -181,13 +150,22 @@ const Home = () => {
                             </Link>
                         </motion.div>
                         <div className="lg:col-span-2">
-                             <HorizontalCarousel>
-                                {popularItems.map((p_item) => (
-                                    <div key={p_item.id} className="flex-shrink-0 w-72">
-                                        <ItemCard {...p_item} />
-                                    </div>
-                                ))}
-                            </HorizontalCarousel>
+                            {/* ✅ 4. Handle loading and error states before rendering items */}
+                            {loading ? (
+                              <div className="flex justify-center items-center h-72">
+                                <div className="w-10 h-10 rounded-full border-4 border-t-primary border-lavender/30 animate-spin"></div>
+                              </div>
+                            ) : error ? (
+                              <div className="text-center text-red-400 p-8 bg-plum/20 rounded-lg">{error}</div>
+                            ) : (
+                                <HorizontalCarousel>
+                                    {popularItems.map((p_item) => (
+                                        <div key={p_item._id} className="flex-shrink-0 w-72">
+                                            <ItemCard {...p_item} />
+                                        </div>
+                                    ))}
+                                </HorizontalCarousel>
+                            )}
                         </div>
                     </div>
                 </div>

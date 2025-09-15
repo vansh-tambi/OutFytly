@@ -21,8 +21,6 @@ export const fetchProductById = async (id) => {
   }
 };
 
-// --- ✅ NEW FUNCTIONS ---
-
 // Fetch only the listings for the logged-in user
 export const fetchMyListings = async () => {
   try {
@@ -36,9 +34,8 @@ export const fetchMyListings = async () => {
 // Create a new product
 export const createProduct = async (productData) => {
   try {
-    const { data } = await api.post("/api/products", productData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    // ✅ THE FIX IS HERE: The manual headers object has been removed.
+    const { data } = await api.post("/api/products", productData);
     return data;
   } catch (error) {
     throw error.response.data.message || error.message;

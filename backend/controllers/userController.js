@@ -1,6 +1,8 @@
 // backend/controllers/userController.js
 import User from "../models/User.js";
 import Product from "../models/Product.js";
+import Order from "../models/Order.js";
+import mongoose from "mongoose";
 
 // @desc    Get logged-in user profile
 export const getUserProfile = async (req, res) => {
@@ -16,7 +18,37 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+export const getDashboardStats = async (req, res) => {
+  try {
+    const sellerId = new mongoose.Types.ObjectId(req.user._id);
 
+    // 1. Calculate Total Earnings
+    const earningsPipeline = [
+      { $unwind: '$orderItems' }, // Deconstruct the orderItems array
+      { $match: { 'orderItems.seller': sellerId } }, // Find items sold by the current user
+      { $group: { _id: null, total: { $sum: '$orderItems.price' } } }, // Sum up the prices
+    ];
+    const earningsResult = await Order.aggregate(earningsPipeline);
+    const totalEarnings = earningsResult.length > 0 ? earningsResult[0].total : 0;
+
+    // 2. Calculate Items Rented
+    const rentedPipeline = [
+      { $unwind: '$orderItems' },
+      { $match: { 'orderItems.seller': sellerId } },
+      { $count: 'total' },
+    ];
+    const rentedResult = await Order.aggregate(rentedPipeline);
+    const itemsRented = rentedResult.length > 0 ? rentedResult[0].total : 0;
+
+    res.json({
+      totalEarnings,
+      itemsRented,
+    });
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
 
 // @desc    Update user profile
 export const updateUserProfile = async (req, res) => {

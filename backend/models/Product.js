@@ -6,7 +6,7 @@ const productSchema = new mongoose.Schema(
     description: { type: String, required: true },
     rentalPrice: { type: Number, required: true },
     category: { type: String, required: true },
-    sizes: [{ type: String, required: true }],
+    sizes: [{ type: String }],
     images: [{ type: String }],
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 

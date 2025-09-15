@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    location: { type: String, required: true },
 
     // --- ✅ THE FIX ---
     // Add the missing fields to the schema

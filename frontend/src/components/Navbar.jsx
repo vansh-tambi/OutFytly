@@ -1,14 +1,13 @@
-// src/components/Navbar.jsx
-import React, { useState, useEffect } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
-import { Home, Info, Mail, Briefcase, HelpCircle, ArrowRight, Search, ShoppingCart } from 'lucide-react';
-import { useContext } from 'react';                   // 1. Import useContext from React
-import { AuthContext } from '../context/AuthContext'; // For login state
-import { useCart } from '../context/CartContext';   // For cart item count
+import { Home, Info, Mail, Briefcase, HelpCircle, ArrowRight, ShoppingCart } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import { fetchProducts } from '../api/productService';
 
-// --- Data for Navigation & Dropdowns ---
+// --- Data for Navigation ---
 const navItems = [
     { path: "/", label: "Home", icon: Home, dropdownContent: [{ title: "Homepage", desc: "Return to where it all begins.", href: "/" }] },
     { path: "/browse", label: "Browse", dropdownType: 'mega' },
@@ -17,52 +16,44 @@ const navItems = [
     { path: "/careers", label: "Careers", icon: Briefcase, dropdownContent: [{ title: "Join Our Team", desc: "Explore open positions.", href: "/careers" }] },
     { path: "/faq", label: "FAQ", icon: HelpCircle, dropdownContent: [{ title: "Find Answers", desc: "See our frequently asked questions.", href: "/faq" }] },
 ];
-const megaMenuCategories = [
-    { name: 'Party Wear', href: '/browse?category=party-wear', image: 'https://images.unsplash.com/photo-1599403485304-4f494f1f5a9e?w=200' },
-    { name: 'Watches', href: '/browse?category=watches', image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=200' },
-    { name: 'Shoes', href: '/browse?category=shoes', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ab?w=200' },
-    { name: 'Accessories', href: '/browse?category=accessories', image: 'https://images.unsplash.com/photo-1588444968368-a3159b3b879a?w=200' },
-];
+
 const authLinks = [
     { path: "/login", label: "Login" },
-    { path: "/account/cart", label: "Cart" },
+    { path: "/cart", label: "Cart" },
     { path: "/account/profile", label: "Profile" },
 ];
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
-  const navigate = useNavigate();
   
-  // --- LOGIC UPDATE ---
-  const { user, logout } = useContext(AuthContext); // Get user and logout function from AuthContext        // Get cart items from CartContext
-  const isLoggedIn = !!user;         // Check if user object exists to determine login state
+  const { user, logout } = useContext(AuthContext);
+  const isLoggedIn = !!user;
   const { cart } = useCart();
   const itemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
+  
+  const [browsePreviewItems, setBrowsePreviewItems] = useState([]);
+
+  useEffect(() => {
+    const getPreviewItems = async () => {
+      try {
+        const data = await fetchProducts({ limit: 4, sort: 'newest' });
+        setBrowsePreviewItems(data.products);
+      } catch (error) {
+        console.error("Failed to fetch navbar preview items:", error);
+      }
+    };
+    getPreviewItems();
+  }, []);
 
   const handleMouseEnter = (label) => setOpenDropdown(label);
   const handleMouseLeave = () => setOpenDropdown(null);
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate(`/browse?category=${encodeURIComponent(searchTerm.trim().toLowerCase())}`);
-      setIsSearchOpen(false);
-      setSearchTerm("");
-    }
-  };
+  const mobileNavLinks = isLoggedIn 
+    ? [...navItems.map(i => ({path: i.path, label: i.label})), { path: "/cart", label: "Cart" }, { path: "/account/profile", label: "Profile" }] 
+    : [...navItems.map(i => ({path: i.path, label: i.label})), authLinks[0]];
 
-  useEffect(() => {
-    const handleKeyDown = (event) => { if (event.key === 'Escape') { setIsSearchOpen(false); } };
-    if (isSearchOpen) { document.body.style.overflow = 'hidden'; window.addEventListener('keydown', handleKeyDown); }
-    else { document.body.style.overflow = 'auto'; }
-    return () => { window.removeEventListener('keydown', handleKeyDown); document.body.style.overflow = 'auto'; };
-  }, [isSearchOpen]);
-
-  const mobileNavLinks = isLoggedIn ? [...navItems.map(i => ({path: i.path, label: i.label})), authLinks[1], authLinks[2]] : [...navItems.map(i => ({path: i.path, label: i.label})), authLinks[0]];
   const navLinkClasses = ({isActive}) => isActive ? "text-primary font-semibold" : "text-white hover:text-primary transition-colors";
 
   return (
@@ -99,11 +90,9 @@ const Navbar = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
-            <button onClick={() => setIsSearchOpen(true)} className="text-white hover:text-primary transition-colors"><Search size={22} /></button>
-            <div className="w-px h-6 bg-lavender/30"></div>
             {isLoggedIn ? (
               <>
-                <NavLink to="/account/cart" className="relative text-white hover:text-primary transition-colors">
+                <NavLink to="/cart" className="relative text-white hover:text-primary transition-colors">
                   <ShoppingCart size={24} />
                   {itemCount > 0 && (
                     <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -124,7 +113,6 @@ const Navbar = () => {
             )}
           </div>
           <div className="lg:hidden flex items-center gap-4">
-            <button onClick={() => setIsSearchOpen(true)} className="text-2xl text-lavender hover:text-primary"><Search /></button>
             <button onClick={() => setMobileMenuOpen(true)} className="text-3xl text-lavender hover:text-primary"><HiMenuAlt3 /></button>
           </div>
         </div>
@@ -138,12 +126,12 @@ const Navbar = () => {
             >
               {openDropdown === 'Browse' ? (
                 <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-                  {megaMenuCategories.map(cat => (
-                    <Link to={cat.href} key={cat.name} className="group text-center" onClick={handleMouseLeave}>
+                  {browsePreviewItems.map(item => (
+                    <Link to="/browse" key={item._id} className="group text-center" onClick={handleMouseLeave}>
                       <div className="rounded-lg overflow-hidden mb-2 border-2 border-transparent group-hover:border-primary transition-all">
-                        <img src={cat.image} alt={cat.name} className="w-full h-32 object-cover" />
+                        <img src={item.images[0]} alt={item.title} className="w-full h-32 object-cover" />
                       </div>
-                      <h4 className="font-semibold text-white group-hover:text-primary transition-colors">{cat.name}</h4>
+                      <h4 className="font-semibold text-white group-hover:text-primary transition-colors truncate">{item.title}</h4>
                     </Link>
                   ))}
                 </div>
@@ -167,36 +155,6 @@ const Navbar = () => {
           )}
         </AnimatePresence>
       </motion.nav>
-      
-      <AnimatePresence>
-        {isSearchOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsSearchOpen(false)} className="fixed inset-0 z-[100] bg-ink/80 backdrop-blur-lg flex items-start justify-center p-8">
-            <motion.div initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -50, opacity: 0 }} transition={{ duration: 0.4, ease: 'easeOut' }} className="w-full max-w-2xl" onClick={(e) => e.stopPropagation()}>
-              <form onSubmit={handleSearchSubmit} className="relative">
-                <input
-                  type="search"
-                  placeholder="Search for a category e.g. Shoes"
-                  className="w-full pl-14 pr-28 py-4 rounded-full bg-plum/50 border border-lavender/30 text-white text-lg placeholder-lavender/60 focus:outline-none focus:ring-2 focus:ring-primary"
-                  autoFocus
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-lavender/50" size={24} />
-                <button type="button" onClick={() => setIsSearchOpen(false)} className="absolute right-14 top-1/2 -translate-y-1/2 text-lavender p-2 rounded-full hover:bg-primary/20"><HiX size={24} /></button>
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-lavender p-2 rounded-full hover:bg-primary/20"><ArrowRight size={24} /></button>
-              </form>
-              <div className="mt-6 text-center text-lavender/80">
-                <p className="font-semibold mb-2">Popular Categories:</p>
-                <div className="flex justify-center gap-4 flex-wrap">
-                  <Link to="/browse?category=party-wear" onClick={() => setIsSearchOpen(false)} className="hover:text-primary">Party Wear</Link>
-                  <Link to="/browse?category=watches" onClick={() => setIsSearchOpen(false)} className="hover:text-primary">Watches</Link>
-                  <Link to="/browse?category=shoes" onClick={() => setIsSearchOpen(false)} className="hover:text-primary">Shoes</Link>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       
       <AnimatePresence>
         {mobileMenuOpen && (

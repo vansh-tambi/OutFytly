@@ -51,15 +51,15 @@ export const createOrder = async (req, res) => {
 export const getMyOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id }).populate(
-      "items.product",
-      "title images rentalPrice"
+      'orderItems.product',
+      'title images'
     );
     res.json(orders);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('GET MY ORDERS ERROR:', error);
+    res.status(500).json({ message: 'Server Error' });
   }
 };
-
 // @desc    Get all orders (Admin)
 // @route   GET /api/orders
 // @access  Private/Admin

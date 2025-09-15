@@ -11,7 +11,7 @@ const router = express.Router();
 
 // User routes
 router.post("/", protect, createOrder);
-router.get("/my", protect, getMyOrders);
+router.get("/myorders", protect, getMyOrders);
 
 // Admin routes
 router.get("/", protect, admin, getOrders);

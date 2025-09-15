@@ -1,39 +1,49 @@
 // src/pages/AccountPage.jsx
-import React from 'react'; // Corrected this line
+import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { User, ShoppingBag, LayoutGrid, Settings } from 'lucide-react';
-
-const accountLinks = [
-  { path: '/account/profile', label: 'Profile Settings', icon: User },
-  { path: '/account/orders', label: 'Order History', icon: ShoppingBag },
-  { path: '/account/dashboard', label: 'Seller Dashboard', icon: LayoutGrid },
-  { path: '/account/settings', label: 'Account Settings', icon: Settings },
-];
+import { User, Heart, ShoppingBag, UploadCloud } from 'lucide-react'; // ✅ 1. Import the icon
 
 const AccountPage = () => {
-  const navLinkClasses = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-lavender/80 ${
-      isActive ? 'bg-primary/20 text-white font-semibold' : 'hover:bg-plum hover:text-white'
+  const navLinkClass = ({ isActive }) =>
+    `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+      isActive
+        ? 'bg-primary text-white font-semibold'
+        : 'text-lavender/80 hover:bg-plum/50 hover:text-white'
     }`;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-      <div className="md:grid md:grid-cols-12 md:gap-8 lg:gap-12">
+    <div className="bg-ink min-h-screen text-white p-4 sm:p-8">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 items-start">
         {/* --- Sidebar Navigation --- */}
-        <aside className="md:col-span-3 lg:col-span-2 mb-8 md:mb-0">
-          <nav className="space-y-2">
-            {accountLinks.map(({ path, label, icon: Icon }) => (
-              <NavLink key={path} to={path} className={navLinkClasses} end>
-                <Icon size={20} />
-                <span>{label}</span>
-              </NavLink>
-            ))}
+        <aside className="md:col-span-1 bg-plum/30 p-4 rounded-xl border border-lavender/20">
+          <nav className="flex flex-col gap-2">
+            <NavLink to="/account/profile" className={navLinkClass}>
+              <User size={20} />
+              <span>Profile Settings</span>
+            </NavLink>
+            <NavLink to="/account/wishlist" className={navLinkClass}>
+              <Heart size={20} />
+              <span>My Wishlist</span>
+            </NavLink>
+            <NavLink to="/account/orders" className={navLinkClass}>
+              <ShoppingBag size={20} />
+              <span>Order History</span>
+            </NavLink>
+            
+            {/* ✅ 2. Add the Seller Dashboard link here */}
+            <div className="my-2 border-t border-lavender/20"></div> {/* Optional separator */}
+            <NavLink to="/account/dashboard" className={navLinkClass}>
+              <UploadCloud size={20} />
+              <span>Seller Dashboard</span>
+            </NavLink>
+
           </nav>
         </aside>
 
         {/* --- Main Content Area --- */}
-        <main className="md:col-span-9 lg:col-span-10">
-          <Outlet /> {/* Child routes will render here */}
+        <main className="md:col-span-3">
+          {/* Nested routes will be rendered here */}
+          <Outlet />
         </main>
       </div>
     </div>

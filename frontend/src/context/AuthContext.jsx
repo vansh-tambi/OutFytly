@@ -16,8 +16,19 @@ const getUserFromStorage = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(getUserFromStorage());
 
-  const signup = async (name, email, password) => {
-    const { data } = await api.post('/api/auth/register', { name, email, password });
+  // ✅ THE FIX IS HERE
+  const signup = async (formData) => {
+    // 1. Accept a single 'formData' object
+    const { fullName, email, password, location } = formData;
+
+    // 2. Send the correct fields to the backend API (fullName is mapped to name)
+    const { data } = await api.post('/api/auth/register', { 
+      name: fullName, 
+      email, 
+      password, 
+      location 
+    });
+
     localStorage.setItem('userInfo', JSON.stringify(data));
     setUser(data);
   };
@@ -45,15 +56,10 @@ export const AuthProvider = ({ children }) => {
 
   const updateUserProfile = async (profileData) => {
     const { data } = await api.put('/api/users/profile', profileData);
-
-    // Keep token and merge updated info
     const currentUserInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
     const updatedUserInfo = { ...currentUserInfo, ...data };
-
-    // Update state + storage
     localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
     setUser(updatedUserInfo);
-
     return updatedUserInfo;
   };
 

@@ -5,8 +5,8 @@ dotenv.config();
 // ✅ STEP 2: Import core modules
 import express from "express";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
+// import path from "path";
+// import { fileURLToPath } from "url";
 
 // ✅ STEP 3: Import DB + routes
 import connectDB from "./config/db.js";
@@ -54,9 +54,9 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/admin", analyticsRoutes);
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 app.get("/", (req, res) => {
