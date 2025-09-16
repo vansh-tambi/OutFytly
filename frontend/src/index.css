@@ -6,61 +6,95 @@
     --color-plum:#201825;
     --color-lavender:#BEA0D3;
 }
-/* 2. Define your custom, reusable component classes */
-@layer components {
-  .filter-select {
-    @apply w-full px-4 py-2 rounded-lg bg-ink border border-lavender/30 text-white focus:outline-none focus:ring-2 focus:ring-primary appearance-none;
-  }
-    .scrollbar-hide::-webkit-scrollbar {  
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-  
-  .form-input {
-    @apply w-full p-3 rounded-lg bg-ink text-white border border-lavender/40 focus:ring-2 focus:ring-primary outline-none transition-shadow;
-  }
-  
-  .form-error {
-    @apply text-red-400 text-sm mt-1;
-  }
+/* ... your other @layer components ... */
 
-  .form-label {
-    @apply block text-sm font-medium text-lavender/80;
-  }
-}
 
-/* ✅ --- NEW: Custom Styles for React Day Picker --- */
+/* ✅ REPLACE the old .rdp styles with this new block */
 .rdp {
   --rdp-cell-size: 40px;
   --rdp-accent-color: #8A2BE1;
-  --rdp-background-color: #a78bfa80;
-  --rdp-accent-color-dark: #7c25c9;
-  --rdp-background-color-dark: #a78bfa;
-  --rdp-outline: 2px solid var(--rdp-accent-color);
-  --rdp-outline-selected: 3px solid var(--rdp-accent-color);
   margin: 1em 0;
-  color: #c4b5fd;
 }
-.rdp-caption_label {
-  font-weight: 700;
-  color: #fff;
+.rdp-caption_label { font-weight: 700; color: #fff; }
+.rdp-nav_button { color: #c4b5fd; border-radius: 99px; }
+.rdp-nav_button:hover { background-color: rgba(190, 160, 211, 0.1); }
+.rdp-head_cell { color: #a78bfa; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; }
+.rdp-day { border-radius: 99px; transition: background-color 0.2s ease, color 0.2s ease; }
+.rdp-day_today { color: var(--rdp-accent-color); font-weight: 700; }
+.rdp-day:hover { background-color: rgba(190, 160, 211, 0.1); }
+.rdp-day_disabled { opacity: 0.2; }
+.rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover {
+    background-color: var(--rdp-accent-color) !important;
+    color: #fff !important;
+    font-weight: 600;
 }
-.rdp-nav_button {
-  color: #c4b5fd;
+.rdp-day_range_middle {
+    background-color: transparent !important;
+    color: #fff !important;
+    border-top: 1px solid var(--rdp-accent-color);
+    border-bottom: 1px solid var(--rdp-accent-color);
+    border-radius: 0;
 }
-.rdp-head_cell {
-  color: #a78bfa;
+.rdp-day_range_start { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.rdp-day_range_end { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+## Option 2: Glowing Neon
+This style uses shadows to create a high-contrast, glowing effect that matches a more futuristic theme.
+
+CSS
+
+/* --- OPTION 2: GLOWING NEON --- */
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #8A2BE1;
+  margin: 1em 0;
 }
+.rdp-caption_label { font-weight: 700; color: #201825; text-shadow: 0 0 5px var(--rdp-accent-color); }
+.rdp-nav_button { color: #c4b5fd; border-radius: 99px; }
+.rdp-head_cell { color: #a78bfa; font-weight: 600; }
+.rdp-day { border-radius: 99px; transition: all 0.2s ease; }
+.rdp-day_today { 
+    color: #fff;
+    border: 1px solid var(--rdp-accent-color);
+}
+.rdp-day:hover:not([disabled]) {
+    background-color: rgba(138, 43, 226, 0.3);
+}
+.rdp-day_disabled { opacity: 0.2; }
+.rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover {
+    background-color: var(--rdp-accent-color) !important;
+    color: #fff !important;
+    box-shadow: 0 0 15px var(--rdp-accent-color);
+}
+.rdp-day_range_middle {
+    background-color: rgba(138, 43, 226, 0.4) !important;
+    color: #e9d5ff !important;
+    border-radius: 0;
+}
+## Option 3: Modern & Clean
+This is a very clean and simple style, using solid colors and clear indicators without extra effects.
+
+CSS
+
+/* --- OPTION 3: MODERN & CLEAN --- */
+.rdp {
+  --rdp-cell-size: 42px;
+  --rdp-accent-color: #8A2BE1;
+  --rdp-background-color: rgba(190, 160, 211, 0.15);
+  margin: 1em 0;
+}
+.rdp-caption_label { font-weight: 700; color: #201825; }
+.rdp-nav_button { color: #c4b5fd; border-radius: 0.5rem; }
+.rdp-head_cell { color: #a78bfa; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+.rdp-day { border-radius: 0.5rem; transition: background-color 0.1s ease-in-out; }
+.rdp-day_today { font-weight: 900; color: var(--rdp-accent-color); }
 .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover {
     background-color: var(--rdp-accent-color) !important;
     color: #fff !important;
 }
-.rdp-day_range_start, .rdp-day_range_end {
-    background-color: var(--rdp-accent-color) !important;
-}
 .rdp-day_range_middle {
-    background-color: rgba(138, 43, 226, 0.3) !important;
+    background-color: var(--rdp-background-color) !important;
+    color: #201825 !important;
+    border-radius: 0;
 }
+.rdp-day_range_start { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.rdp-day_range_end { border-top-left-radius: 0; border-bottom-left-radius: 0; }

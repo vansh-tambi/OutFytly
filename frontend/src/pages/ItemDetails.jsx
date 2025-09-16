@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Ruler, ShoppingCart, PlusCircle, Star, Calendar, ArrowLeft, Heart } from 'lucide-react';
@@ -154,7 +154,7 @@ const ItemDetails = () => {
       setIsProcessing(false);
     }
   };
-
+  
   const handleWishlistToggle = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -286,24 +286,21 @@ const ItemDetails = () => {
               <h3 className="font-semibold mb-3 text-lavender flex items-center gap-2"><Calendar size={18} /> Rental Period</h3>
               <div className="bg-plum/30 p-2 rounded-lg flex justify-center">
                 <DayPicker
-                  mode="range"
-                  selected={dateRange}
-                  onSelect={setDateRange}
-                  numberOfMonths={1}
-                  defaultMonth={new Date()}
-                  disabled={{ before: new Date() }}
-                  modifiersClassNames={{
-                    selected: '!bg-primary',
-                    today: 'text-primary font-bold',
-                  }}
-                  footer={
-                    <p className="text-center text-primary font-semibold mt-2">
-                      {dateRange?.from && dateRange?.to 
-                        ? `Selected: ${format(dateRange.from, 'PPP')} to ${format(dateRange.to, 'PPP')}`
-                        : 'Please select your rental period.'
+                      mode="range"
+                      selected={dateRange}
+                      onSelect={setDateRange}
+                      numberOfMonths={1}
+                      defaultMonth={new Date()}
+                      disabled={{ before: new Date() }}
+                      // Removed the old modifiersClassNames to use the new CSS
+                      footer={
+                        <p className="text-center text-primary font-semibold mt-2">
+                          {dateRange?.from && dateRange?.to 
+                            ? `Selected: ${format(dateRange.from, 'PPP')} to ${format(dateRange.to, 'PPP')}`
+                            : 'Please select your rental period.'
+                          }
+                        </p>
                       }
-                    </p>
-                  }
                 />
               </div>
             </div>
