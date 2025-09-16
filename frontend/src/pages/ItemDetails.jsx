@@ -9,7 +9,7 @@ import { fetchProductById, createProductReview } from '../api/productService';
 
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 
 // Reusable Accordion Component
 const Accordion = ({ title, children }) => {
@@ -47,7 +47,7 @@ const AddReviewForm = ({ productId, onReviewAdded }) => {
             reset();
             if (onReviewAdded) onReviewAdded();
         } catch (error) {
-            toast.error(error.toString());
+            toast.error(error.message || "Failed to submit review.");
         }
     };
 
@@ -89,7 +89,10 @@ const ItemDetails = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [dateRange, setDateRange] = useState();
+  const [dateRange, setDateRange] = useState({
+    from: new Date(),
+    to: addDays(new Date(), 4)
+  });
 
   const sizeRequiredCategories = ["Party Wear", "Casual Wear", "Formal Wear", "Shoes"];
 
@@ -154,7 +157,7 @@ const ItemDetails = () => {
     }
   };
 
-  const handleRentNow = async () => {
+  const handleRentNow = () => {
     if (sizeRequiredCategories.includes(product.category) && !selectedSize) {
       toast.error("Please select a size before renting.");
       return;
@@ -170,25 +173,8 @@ const ItemDetails = () => {
       quantity: 1,
       startDate: dateRange.from,
       endDate: dateRange.to,
+      _id: product._id 
     };
-    
-    if (!existingCartItem) {
-      setIsProcessing(true);
-      try {
-        await addItem({ 
-          product: product._id, 
-          size: selectedSize || 'Standard', 
-          quantity: 1,
-          startDate: dateRange.from,
-          endDate: dateRange.to
-        });
-      } catch (error) {
-        console.error("Failed to add item before renting:", error);
-        setIsProcessing(false);
-        return;
-      }
-      setIsProcessing(false);
-    }
     
     navigate('/checkout', { state: { rentNowItem: itemToRent } });
   };
@@ -281,13 +267,19 @@ const ItemDetails = () => {
                   selected={dateRange}
                   onSelect={setDateRange}
                   numberOfMonths={1}
+                  defaultMonth={new Date()}
                   disabled={{ before: new Date() }}
+                  modifiersClassNames={{
+                    selected: '!bg-primary',
+                    today: 'text-primary font-bold',
+                  }}
                   footer={
-                    dateRange?.from && dateRange?.to && (
-                      <p className="text-center text-primary font-semibold mt-2">
-                        Selected: {format(dateRange.from, 'PPP')} to {format(dateRange.to, 'PPP')}
-                      </p>
-                    )
+                    <p className="text-center text-primary font-semibold mt-2">
+                      {dateRange?.from && dateRange?.to 
+                        ? `Selected: ${format(dateRange.from, 'PPP')} to ${format(dateRange.to, 'PPP')}`
+                        : 'Please select your rental period.'
+                      }
+                    </p>
                   }
                 />
               </div>

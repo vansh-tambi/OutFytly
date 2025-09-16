@@ -31,3 +31,36 @@
     @apply block text-sm font-medium text-lavender/80;
   }
 }
+
+/* ✅ --- NEW: Custom Styles for React Day Picker --- */
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #8A2BE1;
+  --rdp-background-color: #a78bfa80;
+  --rdp-accent-color-dark: #7c25c9;
+  --rdp-background-color-dark: #a78bfa;
+  --rdp-outline: 2px solid var(--rdp-accent-color);
+  --rdp-outline-selected: 3px solid var(--rdp-accent-color);
+  margin: 1em 0;
+  color: #c4b5fd;
+}
+.rdp-caption_label {
+  font-weight: 700;
+  color: #fff;
+}
+.rdp-nav_button {
+  color: #c4b5fd;
+}
+.rdp-head_cell {
+  color: #a78bfa;
+}
+.rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover {
+    background-color: var(--rdp-accent-color) !important;
+    color: #fff !important;
+}
+.rdp-day_range_start, .rdp-day_range_end {
+    background-color: var(--rdp-accent-color) !important;
+}
+.rdp-day_range_middle {
+    background-color: rgba(138, 43, 226, 0.3) !important;
+}

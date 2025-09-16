@@ -1,9 +1,9 @@
 import api from './axiosConfig';
 
 export const createPaymentOrder = (amount) => {
-    return api.post('/api/payment/order', { amount });
+    return api.post('/api/payments/order', { amount });
 };
 
 export const verifyPayment = (paymentData) => {
-    return api.post('/api/payment/verify', paymentData);
+    return api.post('/api/payments/verify', paymentData);
 };

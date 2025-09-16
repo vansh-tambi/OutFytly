@@ -7,9 +7,9 @@ import { createPaymentOrder, verifyPayment } from '../api/paymentService';
 import toast from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { differenceInCalendarDays } from 'date-fns';
 
 const Checkout = () => {
-  // ✅ 1. Get 'clearCart' from the context, instead of 'dispatch'
   const { cart, clearCart } = useCart();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -25,10 +25,22 @@ const Checkout = () => {
   });
 
   const itemsToCheckout = rentNowItem ? [rentNowItem] : (cart?.items || []);
-  const subtotal = itemsToCheckout.reduce((sum, item) => sum + (item.product?.rentalPrice || 0) * item.quantity, 0);
+
+  const calculateRentalDays = (startDate, endDate) => {
+    if (!startDate || !endDate) return 1;
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const days = differenceInCalendarDays(end, start) + 1;
+    return days > 0 ? days : 1;
+  };
+
+  const subtotal = itemsToCheckout.reduce((sum, item) => {
+    const rentalDays = calculateRentalDays(item.startDate, item.endDate);
+    return sum + (item.product?.rentalPrice || 0) * item.quantity * rentalDays;
+  }, 0);
+
   const shipping = itemsToCheckout.length > 0 ? 50 : 0;
   const total = subtotal + shipping;
-
   const paymentMethod = watch('paymentMethod');
 
   const onSubmit = async (formData) => {
@@ -44,8 +56,8 @@ const Checkout = () => {
         product: i.product._id,
         size: i.size,
         quantity: i.quantity,
-        price: i.product.rentalPrice,
-        seller: i.product.user,
+        startDate: i.startDate,
+        endDate: i.endDate,
       })),
       totalPrice: total,
     };
@@ -62,7 +74,6 @@ const Checkout = () => {
       await createOrder(orderDetails);
       toast.success("Order placed successfully!");
       if (!rentNowItem) {
-        // ✅ 2. Call the 'clearCart' function from the context
         clearCart();
       }
       navigate('/account/orders');
@@ -74,7 +85,6 @@ const Checkout = () => {
   const handleOnlinePayment = async (orderDetails) => {
     try {
         const { data: razorpayOrder } = await createPaymentOrder(total);
-
         const options = {
             key: import.meta.env.VITE_RAZORPAY_KEY_ID,
             amount: razorpayOrder.amount,
@@ -121,7 +131,6 @@ const Checkout = () => {
       <div className="max-w-7xl mx-auto">
         <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-bold mb-10">Checkout</motion.h1>
         <div className="grid lg:grid-cols-3 gap-8 items-start">
-          {/* --- LEFT: Shipping & Payment --- */}
           <form onSubmit={handleSubmit(onSubmit)} className="lg:col-span-2 bg-plum/30 p-8 rounded-xl border border-lavender/20 space-y-6">
             <h2 className="text-2xl font-semibold mb-4">Shipping Information</h2>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -165,21 +174,24 @@ const Checkout = () => {
             </motion.button>
           </form>
 
-          {/* --- RIGHT: Order Summary --- */}
           <div className="lg:col-span-1 sticky top-24">
             <div className="bg-plum/30 p-6 rounded-xl border border-lavender/20">
               <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
               <div className="space-y-4 max-h-64 overflow-y-auto pr-2">
-                {itemsToCheckout.map(item => (
-                  <div key={item.product._id + item.size} className="flex gap-4">
-                    <img src={item.product.images[0]} alt={item.product.title} className="w-16 h-16 rounded-md object-cover" />
-                    <div className="flex-grow">
-                      <p className="font-semibold text-white">{item.product.title}</p>
-                      <p className="text-sm text-lavender/70">Qty: {item.quantity}</p>
+                {itemsToCheckout.map(item => {
+                  const rentalDays = calculateRentalDays(item.startDate, item.endDate);
+                  const itemTotal = (item.product.rentalPrice * item.quantity * rentalDays);
+                  return (
+                    <div key={item.product._id + item.size} className="flex gap-4">
+                      <img src={item.product.images[0]} alt={item.product.title} className="w-16 h-16 rounded-md object-cover" />
+                      <div className="flex-grow">
+                        <p className="font-semibold text-white">{item.product.title}</p>
+                        <p className="text-sm text-lavender/70">{rentalDays} {rentalDays > 1 ? 'days' : 'day'}</p>
+                      </div>
+                      <p className="font-semibold text-white">₹{itemTotal.toLocaleString()}</p>
                     </div>
-                    <p className="font-semibold text-white">₹{(item.product.rentalPrice * item.quantity).toLocaleString()}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               <div className="border-t border-lavender/20 mt-4 pt-4 space-y-2">
                 <div className="flex justify-between text-lavender/80"><span>Subtotal</span><span>₹{subtotal.toLocaleString()}</span></div>

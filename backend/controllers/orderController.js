@@ -2,57 +2,55 @@ import Order from "../models/Order.js";
 import Product from "../models/Product.js";
 import  sendEmail  from "../utils/sendEmail.js";
 import Cart from "../models/Cart.js";
+import { differenceInCalendarDays } from "date-fns";
 
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
 export const createOrder = async (req, res) => {
   try {
-    const { shippingAddress, paymentMethod } = req.body;
+    // ✅ 2. Get orderItems from the request body now
+    const { orderItems, shippingAddress, paymentMethod } = req.body;
 
-    // 1. Get the user's cart from the DB
-    const cart = await Cart.findOne({ user: req.user._id });
-    if (!cart || cart.items.length === 0) {
-      return res.status(400).json({ message: 'Your cart is empty' });
+    if (!orderItems || orderItems.length === 0) {
+      return res.status(400).json({ message: 'No order items' });
     }
 
-    // 2. Prepare order items and calculate total price from backend data (for security)
-    let totalPrice = 0;
-    const orderItems = [];
+    // ✅ 3. Recalculate price on the server for security
+    let calculatedTotalPrice = 0;
+    const processedOrderItems = [];
 
-    for (const item of cart.items) {
+    for (const item of orderItems) {
       const product = await Product.findById(item.product);
       if (!product) {
-        return res.status(404).json({ message: `Product with ID ${item.product} not found` });
+        return res.status(404).json({ message: `Product not found: ${item.product}` });
       }
-      const itemPrice = product.rentalPrice * item.quantity;
-      totalPrice += itemPrice;
-      orderItems.push({
-        product: item.product,
-        size: item.size,
-        quantity: item.quantity,
-        price: product.rentalPrice,
-        seller: product.user, // Important for your dashboard stats!
-      });
+      
+      const startDate = new Date(item.startDate);
+      const endDate = new Date(item.endDate);
+      const rentalDays = differenceInCalendarDays(endDate, startDate) + 1;
+      
+      const itemTotal = product.rentalPrice * item.quantity * rentalDays;
+      calculatedTotalPrice += itemTotal;
+
+      processedOrderItems.push({ ...item, price: product.rentalPrice });
     }
 
-    // Add shipping cost
     const shippingCost = 50;
-    totalPrice += shippingCost;
+    calculatedTotalPrice += shippingCost;
 
-    // 3. Create the new order object
     const order = new Order({
       user: req.user._id,
-      orderItems,
+      orderItems: processedOrderItems,
       shippingAddress,
       paymentMethod,
-      totalPrice,
+      totalPrice: calculatedTotalPrice, // Use the server-calculated price
     });
 
-    // 4. Save the order to the database
     const createdOrder = await order.save();
-
-    // 5. Clear the user's cart
+    
+    // In a full app, you would also clear only the specific items from the cart.
+    // For now, we clear the whole cart.
     await Cart.findOneAndDelete({ user: req.user._id });
 
     res.status(201).json(createdOrder);
