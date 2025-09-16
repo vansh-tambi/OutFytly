@@ -14,7 +14,6 @@ router.post("/", protect, createOrder);
 router.get("/myorders", protect, getMyOrders);
 
 // Admin routes
-router.post('/', protect, createOrder);
 router.put("/:id/status", protect, admin, updateOrderStatus);
 
 export default router;

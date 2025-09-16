@@ -1,4 +1,3 @@
-// src/pages/About.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Eye, Sparkles, Users, Wind, Linkedin, Twitter } from 'lucide-react';
@@ -43,33 +42,33 @@ const About = () => {
             {/* --- The Storytelling Timeline --- */}
             <section className="py-20 px-6">
                 <div className="max-w-4xl mx-auto">
-                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-20 text-lavender"> {/* ✅ Increased space */}
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-20 text-lavender">
                         Our Journey
                     </h2>
                     <div className="relative">
-                        <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-lavender/20"></div>
+                        {/* The vertical line is hidden on mobile */}
+                        <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 h-full w-0.5 bg-lavender/20"></div>
+                        
                         {timelineEvents.map((event, i) => {
-                            const Icon = event.icon; // ✅ THE FIX: Assign icon to a capitalized variable
+                            const Icon = event.icon;
                             return (
-                                <div key={i} className="relative mb-12 min-h-[180px]"> {/* ✅ min-height prevents jump */}
+                                <div key={i} className="relative mb-12 flex items-center md:min-h-[180px]">
+                                    {/* On mobile, content is on the right. On desktop, it alternates. */}
                                     <motion.div 
                                         initial={{ opacity: 0, y: 40 }}
                                         whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true, amount: 0.4 }} // ✅ Smoother trigger
+                                        viewport={{ once: true, amount: 0.4 }}
                                         transition={{ duration: 0.7 }}
-                                        className={`flex items-center ${i % 2 === 0 ? 'flex-row-reverse' : ''}`}
+                                        className={`w-full md:w-1/2 ${i % 2 === 0 ? 'md:pl-12' : 'md:pr-12 md:text-right md:ml-auto'}`}
                                     >
-                                        <div className="flex-1">
-                                            <div className={`p-6 rounded-lg bg-plum/50 border border-lavender/20 ${i % 2 === 0 ? 'text-left' : 'text-right'}`}>
-                                                <h3 className="text-2xl font-bold text-primary mb-2">{event.title}</h3>
-                                                <p className="text-lavender/80">{event.text}</p>
-                                            </div>
+                                        <div className={`p-6 rounded-lg bg-plum/50 border border-lavender/20 ${i % 2 === 0 ? 'md:ml-8' : 'md:mr-8'} ml-12`}>
+                                            <h3 className="text-2xl font-bold text-primary mb-2">{event.title}</h3>
+                                            <p className="text-lavender/80">{event.text}</p>
                                         </div>
-                                        <div className="absolute left-1/2 -translate-x-1/2 bg-ink p-3 rounded-full border-2 border-primary shadow-md">
-                                            <Icon className="text-primary" size={22} /> {/* ✅ Use the capitalized variable */}
-                                        </div>
-                                        <div className="flex-1"></div>
                                     </motion.div>
+                                    <div className="absolute left-0 md:left-1/2 -translate-x-1/2 bg-ink p-3 rounded-full border-2 border-primary shadow-md">
+                                        <Icon className="text-primary" size={22} />
+                                    </div>
                                 </div>
                             );
                         })}
@@ -77,9 +76,9 @@ const About = () => {
                 </div>
             </section>
 
-            {/* --- Interactive Team Showcase (Horizontal Scroll) --- */}
+            {/* --- Interactive Team Showcase --- */}
             <section className="py-20 bg-gradient-to-t from-plum/50 to-ink">
-                <div className="max-w-7xl mx-auto">
+                <div className="max-w-7xl mx-auto px-6">
                     <motion.h2 
                         initial={{ opacity: 0, y: 20 }} 
                         whileInView={{ opacity: 1, y: 0 }} 
@@ -88,7 +87,9 @@ const About = () => {
                     >
                         The People Behind the Passion
                     </motion.h2>
-                    <div className="flex gap-6 p-4 overflow-x-auto snap-x snap-mandatory scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-plum/50">
+                    
+                    {/* ✅ FIX: This is now a responsive grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {teamMembers.map((member, index) => (
                             <motion.div
                                 key={index}
@@ -96,7 +97,7 @@ const About = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, amount: 0.4 }}
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                                className="flex-shrink-0 w-72 snap-center bg-plum p-6 rounded-2xl shadow-lg text-center border border-lavender/20"
+                                className="bg-plum p-6 rounded-2xl shadow-lg text-center border border-lavender/20"
                             >
                                 <img src={member.avatar} alt={member.name} className="w-24 h-24 mx-auto rounded-full mb-4 shadow-md border-2 border-primary/50" />
                                 <h3 className="text-xl font-semibold text-white">{member.name}</h3>

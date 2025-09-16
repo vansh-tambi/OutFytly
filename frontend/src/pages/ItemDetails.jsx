@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Ruler, ShoppingCart, PlusCircle, Star, Calendar } from 'lucide-react';
+import { ChevronDown, Ruler, ShoppingCart, PlusCircle, Star, Calendar, ArrowLeft, Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { fetchProductById, createProductReview } from '../api/productService';
@@ -78,10 +79,10 @@ const AddReviewForm = ({ productId, onReviewAdded }) => {
     );
 };
 
-
 const ItemDetails = () => {
   const { id } = useParams();
   const { cart, addItem, updateQuantity } = useCart();
+  const { toggleWishlistItem, isItemInWishlist, isToggling } = useWishlist();
   const navigate = useNavigate();
   
   const [product, setProduct] = useState(null);
@@ -94,6 +95,7 @@ const ItemDetails = () => {
     to: addDays(new Date(), 4)
   });
 
+  const isInWishlist = isItemInWishlist(id);
   const sizeRequiredCategories = ["Party Wear", "Casual Wear", "Formal Wear", "Shoes"];
 
   const getProduct = async () => {
@@ -101,12 +103,8 @@ const ItemDetails = () => {
     try {
       const data = await fetchProductById(id);
       setProduct(data);
-      if (data.images && data.images.length > 0) {
-        setSelectedImage(data.images[0]);
-      }
-      if (data.sizes && data.sizes.length > 0) {
-          setSelectedSize(data.sizes[0]);
-      }
+      if (data.images && data.images.length > 0) setSelectedImage(data.images[0]);
+      if (data.sizes && data.sizes.length > 0) setSelectedSize(data.sizes[0]);
     } catch (err) {
       toast.error("Could not load product details.");
     } finally {
@@ -157,6 +155,13 @@ const ItemDetails = () => {
     }
   };
 
+  const handleWishlistToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isToggling) return;
+    toggleWishlistItem(id);
+  };
+
   const handleRentNow = () => {
     if (sizeRequiredCategories.includes(product.category) && !selectedSize) {
       toast.error("Please select a size before renting.");
@@ -196,8 +201,13 @@ const ItemDetails = () => {
   return (
     <div className="bg-ink min-h-screen">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+        <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-lavender/80 hover:text-white transition-colors mb-8">
+            <ArrowLeft size={20} />
+            Back to results
+        </button>
+
         <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
-          <div>
+          <div className="relative">
             <AnimatePresence mode="wait">
               <motion.img
                 key={selectedImage}
@@ -210,6 +220,19 @@ const ItemDetails = () => {
                 transition={{ duration: 0.3 }}
               />
             </AnimatePresence>
+            
+            <div className="absolute top-4 right-4 flex flex-col gap-3">
+                <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    onClick={handleWishlistToggle}
+                    disabled={isToggling}
+                    className="z-10 p-3 rounded-full bg-black/40 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Toggle Wishlist"
+                >
+                    <Heart size={22} className={`transition-colors ${isInWishlist ? 'text-red-500 fill-current' : 'text-white'}`} />
+                </motion.button>
+            </div>
+
             <div className="flex gap-4 mt-4">
               {product.images.map((img) => (
                 <motion.img

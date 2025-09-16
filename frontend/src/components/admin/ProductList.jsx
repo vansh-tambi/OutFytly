@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProducts } from '../../api/productService'; // To get all products
-import { deleteProductByAdmin } from '../../api/adminService'; // To delete a product
+import { fetchProducts } from '../../api/productService';
+import { deleteProductByAdmin } from '../../api/adminService';
 import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
 
@@ -10,7 +10,8 @@ const ProductList = () => {
 
   const loadProducts = async () => {
     try {
-      const data = await fetchProducts({ limit: 100 }); // Fetch up to 100 products
+      // Fetch a large number of products for the admin view
+      const data = await fetchProducts({ limit: 200 }); 
       setProducts(data.products);
     } catch (error) {
       toast.error("Could not fetch products.");
@@ -35,12 +36,41 @@ const ProductList = () => {
     }
   };
 
-  if (loading) return <p className="text-white">Loading products...</p>;
+  if (loading) {
+    return (
+        <div className="flex justify-center items-center p-10">
+            <div className="w-10 h-10 rounded-full border-4 border-t-primary border-lavender/30 animate-spin"></div>
+        </div>
+    );
+  }
 
   return (
-    <div className="bg-plum/30 p-6 rounded-xl border border-lavender/20">
+    <div className="bg-plum/30 p-4 sm:p-6 rounded-xl border border-lavender/20">
       <h2 className="text-2xl font-bold text-white mb-4">Manage Products ({products.length})</h2>
-      <div className="overflow-x-auto">
+      
+      {/* --- Mobile Card View --- */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+        {products.map(product => (
+          <div key={product._id} className="bg-ink p-4 rounded-lg border border-lavender/20 flex flex-col">
+            <div className="flex gap-4">
+              <img src={product.images[0]} alt={product.title} className="w-16 h-16 rounded-md object-cover" />
+              <div className="flex-grow">
+                <p className="font-bold text-white">{product.title}</p>
+                <p className="text-sm text-primary">₹{product.rentalPrice}</p>
+                <p className="text-xs text-lavender/70">{product.category}</p>
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-lavender/20 flex justify-end">
+              <button onClick={() => handleDelete(product._id)} className="text-red-400 hover:text-red-500">
+                <Trash2 size={18} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* --- Desktop Table View --- */}
+      <div className="overflow-x-auto hidden md:block">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-lavender/20">

@@ -1,4 +1,5 @@
 import Cart from "../models/Cart.js";
+import Product from "../models/Product.js";
 
 // @desc    Get user's cart
 // @route   GET /api/cart
@@ -7,10 +8,10 @@ export const getCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id }).populate(
       "items.product",
-      "title images rentalPrice"
+      // ✅ THE FIX: Add 'user' to the list of fields to populate
+      "title images rentalPrice user"
     );
     if (!cart) {
-      // If no cart, return a valid empty cart structure
       return res.json({ user: req.user._id, items: [] });
     }
     res.json(cart);
@@ -37,14 +38,14 @@ export const addToCart = async (req, res) => {
     );
 
     if (itemIndex > -1) {
+      // In a real rental app, you'd check for date conflicts before increasing quantity
       cart.items[itemIndex].quantity += quantity;
     } else {
       cart.items.push({ product, size, quantity, startDate, endDate });
     }
 
     await cart.save();
-    // ✅ POPULATE before sending the response
-    await cart.populate("items.product", "title images rentalPrice");
+    await cart.populate("items.product", "title images rentalPrice user");
     res.status(201).json(cart);
   } catch (error) {
     console.error("ADD TO CART ERROR:", error);
@@ -65,10 +66,7 @@ export const updateItemQuantity = async (req, res) => {
     if (item) {
       item.quantity = quantity;
       await cart.save();
-      
-      // ✅ POPULATE before sending the response
-      await cart.populate("items.product", "title images rentalPrice");
-      
+      await cart.populate("items.product", "title images rentalPrice user");
       res.json(cart);
     } else {
       res.status(404).json({ message: "Item not found in cart" });
@@ -91,10 +89,7 @@ export const removeFromCart = async (req, res) => {
       (i) => i._id.toString() !== req.params.itemId
     );
     await cart.save();
-
-    // ✅ POPULATE before sending the response
-    await cart.populate("items.product", "title images rentalPrice");
-
+    await cart.populate("items.product", "title images rentalPrice user");
     res.json(cart);
   } catch (error) {
     console.error("REMOVE FROM CART ERROR:", error);

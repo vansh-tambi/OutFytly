@@ -146,36 +146,41 @@ const Home = () => {
 
             {/* --- "Trending Now" Section with Custom Carousel --- */}
             <section className="py-24 px-6 bg-plum/20">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid lg:grid-cols-3 gap-12 items-center">
-                        <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="lg:col-span-1">
-                            <SectionTitle align="left" title="Trending Now" subtitle="Discover the most popular outfits and accessories currently being rented and loved by our community." />
-                            <Link to="/browse">
-                                <motion.button whileHover={{ scale: 1.05 }} className="mt-4 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
-                                    Explore All
-                                </motion.button>
-                            </Link>
-                        </motion.div>
-                        <div className="lg:col-span-2">
-                            {/* ✅ 4. Handle loading and error states before rendering items */}
-                            {loading ? (
-                              <div className="flex justify-center items-center h-72">
-                                <div className="w-10 h-10 rounded-full border-4 border-t-primary border-lavender/30 animate-spin"></div>
-                              </div>
-                            ) : error ? (
-                              <div className="text-center text-red-400 p-8 bg-plum/20 rounded-lg">{error}</div>
-                            ) : (
-                                <HorizontalCarousel>
-                                    {popularItems.map((p_item) => (
-                                        <div key={p_item._id} className="flex-shrink-0 w-72">
-                                            <ItemCard {...p_item} />
-                                        </div>
-                                    ))}
-                                </HorizontalCarousel>
-                            )}
-                        </div>
-                    </div>
-                </div>
+  <div className="max-w-7xl mx-auto">
+    <div className="grid lg:grid-cols-3 gap-12 items-center">
+      <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="lg:col-span-1">
+        <SectionTitle align="left" title="Trending Now" subtitle="Discover the most popular outfits and accessories currently being rented." />
+        <Link to="/browse">
+          <motion.button whileHover={{ scale: 1.05 }} className="mt-4 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
+            Explore All
+          </motion.button>
+        </Link>
+      </motion.div>
+      <div className="lg:col-span-2">
+        {loading ? (
+          <div className="flex justify-center items-center h-72">
+            <div className="w-10 h-10 rounded-full border-4 border-t-primary border-lavender/30 animate-spin"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-400 p-8 bg-plum/20 rounded-lg">{error}</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* ✅ FIX: We map over all fetched items... */}
+            {popularItems.map((p_item, index) => (
+              <div 
+                key={p_item._id}
+                // ✅ ...but use CSS to hide/show them based on screen size.
+                // Hidden by default, visible on small (sm), but hidden after the 3rd item until large (lg) screens.
+                className={`${index >= 3 && 'hidden lg:block'} ${index >= 2 && 'hidden sm:block lg:block'}`}
+              >
+                <ItemCard {...p_item} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
             </section>
             
             {/* --- Final Assembled Sections --- */}

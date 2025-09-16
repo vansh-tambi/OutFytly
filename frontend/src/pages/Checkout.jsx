@@ -27,11 +27,11 @@ const Checkout = () => {
   const itemsToCheckout = rentNowItem ? [rentNowItem] : (cart?.items || []);
 
   const calculateRentalDays = (startDate, endDate) => {
-    if (!startDate || !endDate) return 1;
+    if (!startDate || !endDate) return 1; // Default to 1 day if dates somehow missing
     const start = new Date(startDate);
     const end = new Date(endDate);
-    const days = differenceInCalendarDays(end, start) + 1;
-    return days > 0 ? days : 1;
+    const days = differenceInCalendarDays(end, start) + 1; // +1 to include the start day in the rental period
+    return days > 0 ? days : 1; // Ensure it's at least 1 day
   };
 
   const subtotal = itemsToCheckout.reduce((sum, item) => {
@@ -58,6 +58,8 @@ const Checkout = () => {
         quantity: i.quantity,
         startDate: i.startDate,
         endDate: i.endDate,
+        price: i.product.rentalPrice, // The price per day
+        seller: i.product.user,
       })),
       totalPrice: total,
     };

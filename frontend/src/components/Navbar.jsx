@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React,{useState, useEffect, useContext } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
@@ -33,7 +33,8 @@ const Navbar = () => {
     const getPreviewItems = async () => {
       try {
         const data = await fetchProducts({ limit: 4, sort: 'newest' });
-        setBrowsePreviewItems(data.products);
+        // ✅ THE FIX: Ensure we only ever use a maximum of 4 items
+        setBrowsePreviewItems(data.products.slice(0, 4));
       } catch (error) {
         console.error("Failed to fetch navbar preview items:", error);
       }
@@ -44,18 +45,22 @@ const Navbar = () => {
   const handleMouseEnter = (label) => setOpenDropdown(label);
   const handleMouseLeave = () => setOpenDropdown(null);
 
-  const mobileNavLinks = isLoggedIn 
-    ? [
-        { path: "/", label: "Home" },
-        { path: "/browse", label: "Browse" },
-        { path: "/cart", label: "Cart" },
-        { path: "/account/profile", label: "My Account" },
-      ] 
-    : [
-        { path: "/", label: "Home" },
-        { path: "/browse", label: "Browse" },
-        { path: "/login", label: "Login" },
-      ];
+  const mobileNavLinks = [
+    { path: "/", label: "Home" },
+    { path: "/browse", label: "Browse" },
+    { path: "/about", label: "About" },
+    { path: "/contact", label: "Contact" },
+  ];
+  
+  if (isLoggedIn) {
+    if (user.isAdmin) {
+      mobileNavLinks.push({ path: "/admin/dashboard", label: "Admin Panel" });
+    }
+    mobileNavLinks.push({ path: "/cart", label: "Cart" });
+    mobileNavLinks.push({ path: "/account/profile", label: "My Account" });
+  } else {
+    mobileNavLinks.push({ path: "/login", label: "Login" });
+  }
 
   const navLinkClasses = ({isActive}) => isActive ? "text-primary font-semibold" : "text-white hover:text-primary transition-colors";
 
@@ -135,14 +140,14 @@ const Navbar = () => {
             >
               {openDropdown === 'Browse' ? (
                 <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-                  {browsePreviewItems.map(item => (
+                  {browsePreviewItems.length > 0 ? browsePreviewItems.map(item => (
                     <Link to="/browse" key={item._id} className="group text-center" onClick={handleMouseLeave}>
                       <div className="rounded-lg overflow-hidden mb-2 border-2 border-transparent group-hover:border-primary transition-all">
                         <img src={item.images[0]} alt={item.title} className="w-full h-32 object-cover" />
                       </div>
                       <h4 className="font-semibold text-white group-hover:text-primary transition-colors truncate">{item.title}</h4>
                     </Link>
-                  ))}
+                  )) : <p className="text-lavender/70 col-span-full text-center">Loading latest items...</p>}
                 </div>
               ) : (
                 <div className="max-w-7xl mx-auto px-6 py-6">
@@ -181,7 +186,7 @@ const Navbar = () => {
                         ))}
                         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + mobileNavLinks.length * 0.08 }} className="mt-auto w-full">
                             {isLoggedIn ? (
-                                <button onClick={logout} className="w-full py-3 bg-lavender text-plum rounded-md font-semibold">Logout</button>
+                                <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="w-full py-3 bg-lavender text-plum rounded-md font-semibold">Logout</button>
                             ) : (
                                 <NavLink to="/signup" onClick={() => setMobileMenuOpen(false)} className="block w-full text-center py-3 bg-primary text-white rounded-md font-semibold">Signup</NavLink>
                             )}

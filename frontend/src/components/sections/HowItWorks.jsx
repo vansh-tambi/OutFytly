@@ -1,5 +1,4 @@
-// src/components/sections/HowItWorks.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingCart, Truck, Undo2 } from "lucide-react";
 
@@ -13,8 +12,18 @@ const steps = [
 const HowItWorks = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // ✅ NEW: Automatically cycle through the steps
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % steps.length);
+    }, 5000); // Change step every 5 seconds
+
+    // Clear interval on component unmount to prevent memory leaks
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section className="py-24 bg-ink text-white">
+    <section className="py-24 bg-ink text-white overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         <motion.div
             initial={{ opacity: 0, y: -30 }}
@@ -27,7 +36,6 @@ const HowItWorks = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* --- Left Column: Step Navigation --- */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -63,7 +71,6 @@ const HowItWorks = () => {
             })}
           </motion.div>
 
-          {/* --- Right Column: Image Display --- */}
           <motion.div 
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
