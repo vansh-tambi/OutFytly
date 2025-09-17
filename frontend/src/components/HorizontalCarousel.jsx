@@ -7,7 +7,6 @@ const HorizontalCarousel = ({ children }) => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // Checks if scrolling is possible in either direction
   const checkForScrollPosition = () => {
     const el = scrollContainerRef.current;
     if (el) {
@@ -17,7 +16,6 @@ const HorizontalCarousel = ({ children }) => {
     }
   };
 
-  // Scrolls the container left or right
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
       const scrollAmount = scrollContainerRef.current.clientWidth * 0.8;
@@ -28,7 +26,6 @@ const HorizontalCarousel = ({ children }) => {
     }
   };
 
-  // Effect to add and remove scroll/resize listeners
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (scrollContainer) {
@@ -45,7 +42,6 @@ const HorizontalCarousel = ({ children }) => {
 
   return (
     <div className="relative">
-      {/* Scroll Buttons: Hidden on mobile, visible on desktop */}
       <motion.button
         onClick={() => scroll('left')}
         initial={{ opacity: 0 }}
@@ -59,10 +55,7 @@ const HorizontalCarousel = ({ children }) => {
         <ChevronLeft />
       </motion.button>
 
-      {/* ✅ THE FIX: This container is now responsive.
-        - Default: A grid that stacks items
-        - md: (desktop): A flex container that scrolls horizontally
-      */}
+      {/* ✅ THE FIX: The 'scrollbar-hide' class is added here */}
       <div
         ref={scrollContainerRef}
         className="grid grid-cols-1 sm:grid-cols-2 md:flex gap-6 md:overflow-x-auto scrollbar-hide snap-x snap-mandatory"

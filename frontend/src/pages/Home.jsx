@@ -1,9 +1,7 @@
-// src/pages/Home.jsx
-import React, { useState, useEffect } from 'react'; // ✅ 1. Import hooks
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-
-// --- Core Component Imports ---
+import useMediaQuery from '../hooks/useMediaQueries'; 
 import Hero from '../components/sections/Hero';
 import SectionTitle from '../components/SectionTitle';
 import ItemCard from '../components/ItemCard';
@@ -12,19 +10,13 @@ import HowItWorks from '../components/sections/HowItWorks';
 import Testimonials from '../components/sections/Testimonial';
 import Brands from '../components/Brands';
 import CTA from '../components/CTA';
-
-// --- API & Toast Imports ---
-import { fetchProducts } from '../api/productService'; // ✅ 1. Import fetch function
-import toast from 'react-hot-toast';                  // ✅ 1. Import toast
-
-// --- Swiper.js Imports ---
+import { fetchProducts } from '../api/productService';
+import toast from 'react-hot-toast';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import 'swiper/css/navigation';
-
-// --- Icon Imports ---
 import { Wind, Infinity, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // --- Static Data ---
@@ -44,17 +36,15 @@ const whyChooseUs = [
 ];
 
 const Home = () => {
-    // ✅ 2. Remove hardcoded 'popularItems' and add state for live data
     const [popularItems, setPopularItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const isDesktop = useMediaQuery('(min-width: 768px)');
 
-    // ✅ 3. Fetch data with useEffect when the component loads
     useEffect(() => {
         const getPopularItems = async () => {
             try {
                 setLoading(true);
-                // Fetch the 8 newest products to show as "trending"
                 const data = await fetchProducts({ sort: 'newest', limit: 8 });
                 setPopularItems(data.products);
             } catch (err) {
@@ -64,69 +54,62 @@ const Home = () => {
                 setLoading(false);
             }
         };
-
         getPopularItems();
-    }, []); // Empty array ensures this runs only once
+    }, []);
 
     return (
         <div className="bg-ink text-white">
             <Hero />
 
-            {/* --- "Shop By Category" Section --- */}     
-
-<section className="py-24 px-6 bg-gradient-to-b from-ink to-plum overflow-hidden">
-  <div className="max-w-5xl mx-auto">
-    <SectionTitle 
-      title="A Category for Every Story" 
-      subtitle="Discover curated collections that perfectly match your unique style and occasion." 
-    />
-    
-    <motion.div 
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8 }}
-      animate={{ y: [0, -8, 0] }}
-      className="relative mt-12 group"
-    >
-      <div className="relative max-w-sm mx-auto flex items-center justify-center">
-        <div className="swiper-button-prev-cat z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block mr-15">
-            <ChevronLeft className="text-white w-6 h-6" />
-        </div>
-        
-        <Swiper
-            speed={800}
-            autoplay={{ delay: 3500, disableOnInteraction: false }}
-            effect={'cards'}
-            grabCursor={true}
-            centeredSlides={true}
-            loop={true}
-            initialSlide={0}
-            modules={[EffectCards, Navigation, Autoplay]}
-            navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
-            className="!w-72 md:!w-80 h-96"
-        >
-            {categories.map((category) => (
-                <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
-                    {/* ✅ FIX: The Link now points directly to /browse */}
-                    <Link to="/browse">
-                        <img src={category.image} alt={category.title} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                            <h3 className="text-white text-3xl font-bold">{category.title}</h3>
-                        </div>
-                    </Link>
-                </SwiperSlide>
-            ))}
-        </Swiper>
-
-        <div className="swiper-button-next-cat z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block ml-15">
-            <ChevronRight className="text-white w-6 h-6" />
-        </div>
-      </div>
-    </motion.div>
-  </div>
-</section>
-            {/* --- "Why Choose Us?" Section --- */}
+            <section className="py-24 px-6 bg-gradient-to-b from-ink to-plum overflow-hidden">
+              <div className="max-w-5xl mx-auto">
+                <SectionTitle 
+                  title="A Category for Every Story" 
+                  subtitle="Discover curated collections that perfectly match your unique style and occasion." 
+                />
+                <motion.div 
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.8 }}
+                  animate={{ y: [0, -8, 0], transition: { duration: 5, repeat: Infinity, ease: 'easeInOut' } }}
+                  className="relative mt-12 group"
+                >
+                  <div className="relative max-w-sm mx-auto flex items-center justify-center">
+                    <div className="swiper-button-prev-cat z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block mr-8">
+                        <ChevronLeft className="text-white w-6 h-6" />
+                    </div>
+                    <Swiper
+                        speed={800}
+                        autoplay={{ delay: 3500, disableOnInteraction: false }}
+                        effect={'cards'}
+                        grabCursor={true}
+                        centeredSlides={true}
+                        loop={true}
+                        initialSlide={0}
+                        modules={[EffectCards, Navigation, Autoplay]}
+                        navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
+                        className="!w-72 md:!w-80 h-96"
+                    >
+                        {categories.map((category) => (
+                            <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
+                                <Link to="/browse">
+                                    <img src={category.image} alt={category.title} className="w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                                        <h3 className="text-white text-3xl font-bold">{category.title}</h3>
+                                    </div>
+                                </Link>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                    <div className="swiper-button-next-cat z-10 p-2 rounded-full bg-primary/50 hover:bg-primary transition-colors cursor-pointer hidden sm:block ml-8">
+                        <ChevronRight className="text-white w-6 h-6" />
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+            
             <section className="py-24 px-6">
                  <div className="max-w-5xl mx-auto">
                     <SectionTitle title="A Smarter Way to Style" subtitle="Experience fashion that's better for your wallet and the planet." />
@@ -144,46 +127,46 @@ const Home = () => {
                  </div>
             </section>
 
-            {/* --- "Trending Now" Section with Custom Carousel --- */}
             <section className="py-24 px-6 bg-plum/20">
-  <div className="max-w-7xl mx-auto">
-    <div className="grid lg:grid-cols-3 gap-12 items-center">
-      <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="lg:col-span-1">
-        <SectionTitle align="left" title="Trending Now" subtitle="Discover the most popular outfits and accessories currently being rented." />
-        <Link to="/browse">
-          <motion.button whileHover={{ scale: 1.05 }} className="mt-4 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
-            Explore All
-          </motion.button>
-        </Link>
-      </motion.div>
-      <div className="lg:col-span-2">
-        {loading ? (
-          <div className="flex justify-center items-center h-72">
-            <div className="w-10 h-10 rounded-full border-4 border-t-primary border-lavender/30 animate-spin"></div>
-          </div>
-        ) : error ? (
-          <div className="text-center text-red-400 p-8 bg-plum/20 rounded-lg">{error}</div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* ✅ FIX: We map over all fetched items... */}
-            {popularItems.map((p_item, index) => (
-              <div 
-                key={p_item._id}
-                // ✅ ...but use CSS to hide/show them based on screen size.
-                // Hidden by default, visible on small (sm), but hidden after the 3rd item until large (lg) screens.
-                className={`${index >= 3 && 'hidden lg:block'} ${index >= 2 && 'hidden sm:block lg:block'}`}
-              >
-                <ItemCard {...p_item} />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid lg:grid-cols-3 gap-12 items-center">
+                        <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="lg:col-span-1">
+                            <SectionTitle align="left" title="Trending Now" subtitle="Discover the most popular outfits and accessories currently being rented." />
+                            <Link to="/browse">
+                                <motion.button whileHover={{ scale: 1.05 }} className="mt-4 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
+                                    Explore All
+                                </motion.button>
+                            </Link>
+                        </motion.div>
+                        <div className="lg:col-span-2">
+                            {loading ? (
+                                <div className="flex justify-center items-center h-72">
+                                    <div className="w-10 h-10 rounded-full border-4 border-t-primary border-lavender/30 animate-spin"></div>
+                                </div>
+                            ) : error ? (
+                                <div className="text-center text-red-400 p-8 bg-plum/20 rounded-lg">{error}</div>
+                            ) : (
+                                isDesktop ? (
+                                    <HorizontalCarousel>
+                                        {popularItems.map((p_item) => (
+                                            <div key={p_item._id} className="w-72 flex-shrink-0 snap-center">
+                                                <ItemCard {...p_item} />
+                                            </div>
+                                        ))}
+                                    </HorizontalCarousel>
+                                ) : (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        {popularItems.slice(0, 4).map((p_item) => (
+                                            <ItemCard key={p_item._id} {...p_item} />
+                                        ))}
+                                    </div>
+                                )
+                            )}
+                        </div>
+                    </div>
+                </div>
             </section>
             
-            {/* --- Final Assembled Sections --- */}
             <HowItWorks />
             <Testimonials />
             <Brands />
