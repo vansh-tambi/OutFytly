@@ -94,7 +94,7 @@ const Home = () => {
                         {categories.map((category) => (
                             <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
                                 <Link to="/browse">
-                                    <img src={category.image} alt={category.title} className="w-full h-full object-cover" />
+                                    <img src={category.image} alt={category.title} loading='lazy' className="w-full h-full object-cover" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
                                         <h3 className="text-white text-3xl font-bold">{category.title}</h3>
                                     </div>
