@@ -10,9 +10,9 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-import uploadRoutes from "./routes/uploadRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import shippingRoutes from "./routes/shippingRoutes.js";
@@ -24,7 +24,7 @@ import couponRoutes from "./routes/couponRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
 import listEndpoints from 'express-list-endpoints';
 
-import "./config/razorpay.js";
+import "./config/razorpay.js";  
 
 // ✅ Connect DB
 connectDB();
