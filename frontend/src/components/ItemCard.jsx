@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { MapPin, Heart, ShoppingCart, MinusCircle } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
-import toast from 'react-hot-toast';
 
 const ItemCard = ({ _id, title, rentalPrice, images, category, user }) => {
   const { toggleWishlistItem, isItemInWishlist, isToggling: isWishlistLoading } = useWishlist();
