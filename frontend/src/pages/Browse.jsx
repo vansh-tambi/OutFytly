@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ItemCard from '../components/ItemCard';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { SlidersHorizontal, X } from 'lucide-react'; // Removed Search icon
 import { fetchProducts } from '../api/productService';
 import toast from 'react-hot-toast';
@@ -163,15 +163,11 @@ const Browse = () => {
                     </div>
                 ) : (
                     <>
-                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 min-h-[500px]">
-                            <AnimatePresence>
-                                {products.map((itemData) => (
-                                    <motion.div layout initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.3 }} key={itemData._id}>
-                                        <ItemCard {...itemData} />
-                                    </motion.div>
-                                ))}
-                            </AnimatePresence>
-                        </motion.div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 min-h-[500px]">
+                            {products.map((itemData) => (
+                                <ItemCard key={itemData._id} {...itemData} />
+                            ))}
+                        </div>
 
                         {products.length === 0 && !loading && (
                             <div className="text-center py-20">
@@ -187,19 +183,17 @@ const Browse = () => {
         </div>
       </div>
       
-      <AnimatePresence>
-        {mobileFiltersOpen && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileFiltersOpen(false)} className="fixed inset-0 bg-black/60 z-50 lg:hidden">
-                <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ duration: 0.3, ease: 'easeInOut' }} onClick={(e) => e.stopPropagation()} className="absolute top-0 left-0 h-full w-full max-w-xs bg-ink border-r border-lavender/20 p-6 overflow-y-auto">
-                    <div className="flex justify-between items-center mb-6">
-                        <h3 className="text-2xl font-semibold text-white">Filters</h3>
-                        <button onClick={() => setMobileFiltersOpen(false)}><X/></button>
-                    </div>
-                    <FilterSidebar filters={filters} setFilters={filterSetters} loading={loading} />
-                </motion.div>
-            </motion.div>
-        )}
-      </AnimatePresence>
+      {mobileFiltersOpen && (
+        <div onClick={() => setMobileFiltersOpen(false)} className="fixed inset-0 bg-black/60 z-50 lg:hidden">
+          <div onClick={(e) => e.stopPropagation()} className="absolute top-0 left-0 h-full w-full max-w-xs bg-ink border-r border-lavender/20 p-6 overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-semibold text-white">Filters</h3>
+              <button onClick={() => setMobileFiltersOpen(false)}><X/></button>
+            </div>
+            <FilterSidebar filters={filters} setFilters={filterSetters} loading={loading} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

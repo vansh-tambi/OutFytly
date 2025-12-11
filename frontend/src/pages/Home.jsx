@@ -85,7 +85,7 @@ const Home = () => {
                         effect={'cards'}
                         grabCursor={true}
                         centeredSlides={true}
-                        loop={true}
+                        loop={false}
                         initialSlide={0}
                         modules={[EffectCards, Navigation, Autoplay]}
                         navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}

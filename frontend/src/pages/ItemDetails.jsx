@@ -7,6 +7,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { fetchProductById, createProductReview } from '../api/productService';
+import { getMainImageUrl, getThumbnailUrl } from '../utils/imageUtils';
 
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
@@ -105,7 +106,8 @@ const ItemDetails = () => {
       setProduct(data);
       if (data.images && data.images.length > 0) setSelectedImage(data.images[0]);
       if (data.sizes && data.sizes.length > 0) setSelectedSize(data.sizes[0]);
-    } catch (err) {
+    } catch (error) {
+      console.error("Error loading product:", error);
       toast.error("Could not load product details.");
     } finally {
       setLoading(false);
@@ -211,7 +213,7 @@ const ItemDetails = () => {
             <AnimatePresence mode="wait">
               <motion.img
                 key={selectedImage}
-                src={selectedImage}
+                src={getMainImageUrl(selectedImage)}
                 alt={product.title}
                 className="w-full h-auto object-cover rounded-2xl shadow-2xl shadow-plum/50 aspect-square"
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -237,7 +239,7 @@ const ItemDetails = () => {
               {product.images.map((img) => (
                 <motion.img
                   key={img}
-                  src={img}
+                  src={getThumbnailUrl(img)}
                   alt={`${product.title} thumbnail`}
                   onClick={() => setSelectedImage(img)}
                   className={`w-1/5 cursor-pointer rounded-lg aspect-square object-cover border-2 transition ${selectedImage === img ? 'border-primary' : 'border-transparent'}`}
@@ -346,9 +348,9 @@ const ItemDetails = () => {
                     {product.reviews && product.reviews.length > 0 ? (
                         product.reviews.map(review => (
                             <div key={review._id} className="flex gap-4">
-                                <img 
-                                    src={review.user?.avatar || `https://ui-avatars.com/api/?name=${review.user?.name}&background=8A2BE1&color=fff`} 
-                                    alt={review.user?.name}
+                                <img
+                                    src={review.user?.avatar && review.user.avatar !== 'data:;base64,=' ? review.user.avatar : `https://ui-avatars.com/api/?name=${review.user?.name || 'Anonymous'}&background=8A2BE1&color=fff`}
+                                    alt={review.user?.name || 'User'}
                                     className="w-12 h-12 rounded-full object-cover"
                                 />
                                 <div className="flex-grow">

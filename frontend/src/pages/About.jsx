@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { Eye, Sparkles, Users, Wind, Linkedin, Twitter } from 'lucide-react';
 
 const teamMembers = [
-    { name: 'Vansh Tambi', role: 'Founder & Full Stack Developer', avatar: 'https://i.pravatar.cc/150?u=vansh1', bio: 'Building the future of sustainable fashion, one line of code at a time.' },
-    { name: 'Jane Doe', role: 'UI/UX Designer', avatar: 'https://i.pravatar.cc/150?u=jane2', bio: 'Crafting beautiful, intuitive experiences that make style accessible to everyone.' },
+    { name: 'Vansh Tambi', role: 'Founder & Full Stack Developer', avatar: 'https://i.pravatar.cc/150?u=jane2', bio: 'Building the future of sustainable fashion, one line of code at a time.' },
+    { name: 'Jane Doe', role: 'UI/UX Designer', avatar: 'https://i.pravatar.cc/150?u=vansh1', bio: 'Crafting beautiful, intuitive experiences that make style accessible to everyone.' },
     { name: 'John Smith', role: 'Operations & Logistics', avatar: 'https://i.pravatar.cc/150?u=john3', bio: 'Ensuring every outfit gets to you flawlessly, from our closet to yours.' },
     { name: 'Aisha Khan', role: 'Community Manager', avatar: 'https://i.pravatar.cc/150?u=aisha4', bio: 'Connecting fashion lovers and building a community passionate about sustainability.' },
 ];

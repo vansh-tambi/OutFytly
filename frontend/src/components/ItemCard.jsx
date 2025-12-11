@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { MapPin, Heart, ShoppingCart, MinusCircle } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
+import { getThumbnailUrl } from '../utils/imageUtils';
 
-const ItemCard = ({ _id, title, rentalPrice, images, category, user }) => {
+const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }) => {
   const { toggleWishlistItem, isItemInWishlist, isToggling: isWishlistLoading } = useWishlist();
   const { cart, removeItem } = useCart();
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const ItemCard = ({ _id, title, rentalPrice, images, category, user }) => {
   const itemInCart = cart.items?.find(item => item.product?._id === _id);
 
   const imageUrl = images && images.length > 0
-    ? images[0]
+    ? getThumbnailUrl(images[0])
     : 'https://via.placeholder.com/300x300.png?text=No+Image';
 
   const handleWishlistToggle = (e) => {
@@ -41,33 +41,29 @@ const ItemCard = ({ _id, title, rentalPrice, images, category, user }) => {
   };
 
   return (
-    <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ type: "spring", stiffness: 300 }}
-      className="relative bg-ink text-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-primary/30 flex flex-col w-full"
+    <div
+      className="relative bg-ink text-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-primary/30 hover:-translate-y-1 transition-transform duration-200 ease-out flex flex-col w-full"
     >
       <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
-        <motion.button
-          whileTap={{ scale: 0.9 }}
+        <button
           onClick={handleWishlistToggle}
           disabled={isWishlistLoading}
-          className="p-2 rounded-full bg-black/40 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2 rounded-full bg-black/40 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 transition-transform"
           aria-label="Toggle Wishlist"
         >
-          <Heart 
-            size={20} 
-            className={`transition-colors ${isInWishlist ? 'text-red-500 fill-current' : 'text-white'}`} 
+          <Heart
+            size={20}
+            className={`transition-colors ${isInWishlist ? 'text-red-500 fill-current' : 'text-white'}`}
           />
-        </motion.button>
+        </button>
 
-        <motion.button
-          whileTap={{ scale: 0.9 }}
+        <button
           onClick={handleCartClick}
-          className="p-2 rounded-full bg-black/40 backdrop-blur-sm text-white"
+          className="p-2 rounded-full bg-black/40 backdrop-blur-sm text-white active:scale-95 transition-transform"
           aria-label={itemInCart ? "Remove from cart" : "View to add to cart"}
         >
           {itemInCart ? <MinusCircle size={20} className="text-red-400" /> : <ShoppingCart size={20} />}
-        </motion.button>
+        </button>
       </div>
       
       <Link to={`/item/${_id}`} className="block overflow-hidden aspect-square">
@@ -99,16 +95,17 @@ const ItemCard = ({ _id, title, rentalPrice, images, category, user }) => {
         </p>
 
         <Link to={`/item/${_id}`} className="block mt-3">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            className="w-full bg-primary/90 text-white text-center py-2.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-primary transition-colors"
+          <button
+            className="w-full bg-primary/90 text-white text-center py-2.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-primary hover:scale-105 active:scale-95 transition-all"
           >
             View Details
-          </motion.button>
+          </button>
         </Link>
       </div>
-    </motion.div>
+    </div>
   );
-};
+});
+
+ItemCard.displayName = 'ItemCard';
 
 export default ItemCard;
