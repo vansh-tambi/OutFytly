@@ -48,7 +48,7 @@ const Help = () => {
             variants={containerVariant}
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: false, amount: 0.2 }}
             className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8"
           >
             {helpTopics.map((topic) => {

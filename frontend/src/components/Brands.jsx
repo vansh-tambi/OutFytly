@@ -29,7 +29,7 @@ const Brands = () => {
         <motion.div 
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.6 }}
         >
             <h2 className="text-3xl font-bold text-white mb-3">
@@ -44,7 +44,7 @@ const Brands = () => {
           variants={containerVariant}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: false, amount: 0.2 }}
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6"
         >
           {brands.map((brand) => (

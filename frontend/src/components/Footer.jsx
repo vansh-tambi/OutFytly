@@ -28,7 +28,7 @@ const FooterLinkColumn = ({ title, links, delay }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.3 }}
+    viewport={{ once: false, amount: 0.3 }}
     transition={{ duration: 0.6, delay: delay }}
   >
     <h3 className="text-white font-semibold mb-4 tracking-wider uppercase text-sm">{title}</h3>
@@ -38,7 +38,7 @@ const FooterLinkColumn = ({ title, links, delay }) => (
           key={link.path}
           initial={{ opacity: 0, x: -10 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.4, delay: delay + 0.05 + index * 0.05 }}
         >
           <motion.div
@@ -123,7 +123,7 @@ const Footer = () => {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 0.6, delay: 0 }}
               className="sm:col-span-2 lg:col-span-2"
             >
@@ -146,7 +146,7 @@ const Footer = () => {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className="sm:col-span-2 lg:col-span-1"
             >

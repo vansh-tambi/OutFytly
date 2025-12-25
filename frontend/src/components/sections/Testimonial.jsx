@@ -31,10 +31,14 @@ const Testimonials = () => {
     <section className="py-24 bg-ink overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 text-center">
         <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={{
+            initial: { opacity: 0, y: -20 },
+            whileInView: { opacity: 1, y: 0 }
+          }}
+          initial="initial"
+          whileInView="whileInView"
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
           className="text-3xl md:text-4xl font-bold mb-12 text-white"
         >
           💬 What Our <span className="text-primary">Community</span> Says
@@ -54,9 +58,18 @@ const Testimonials = () => {
             modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
             className="!pb-16"
           >
-            {testimonials.map((t) => (
+            {testimonials.map((t, index) => (
               <SwiperSlide key={t.id} className="!w-full max-w-lg select-none">
-                <div className="bg-plum/50 backdrop-blur-sm rounded-xl shadow-lg p-8 text-left border border-primary/30 h-full flex flex-col">
+                <motion.div 
+                  variants={{
+                    initial: { opacity: 0, scale: 0.9 },
+                    whileInView: { opacity: 1, scale: 1 }
+                  }}
+                  initial="initial"
+                  whileInView="whileInView"
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-plum/50 backdrop-blur-sm rounded-xl shadow-lg p-8 text-left border border-primary/30 h-full flex flex-col">
                   <Quote className="text-primary/50 mb-4" size={32} />
                   <p className="text-lavender/80 italic mb-6 leading-relaxed flex-grow">"{t.text}"</p>
                   <div className="flex items-center gap-4 mt-auto">
@@ -69,27 +82,29 @@ const Testimonials = () => {
                       <StarRating rating={t.rating} />
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </SwiperSlide>
             ))}
           </Swiper>
 
           {/* Custom navigation arrows */}
-          <motion.div
+          <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className="custom-swiper-prev absolute top-1/2 -translate-y-1/2 left-0 sm:left-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-primary border border-white/30 cursor-pointer opacity-0 group-hover:opacity-100"
+            aria-label="Previous testimonial"
           >
             <ChevronLeft className="text-white" size={16} />
-          </motion.div>
+          </motion.button>
 
-          <motion.div
+          <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className="custom-swiper-next absolute top-1/2 -translate-y-1/2 right-0 sm:right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-primary border border-white/30 cursor-pointer opacity-0 group-hover:opacity-100"
+            aria-label="Next testimonial"
           >
             <ChevronRight className="text-white" size={16} />
-          </motion.div>
+          </motion.button>
 
           {/* Pagination dots */}
           <div className="swiper-pagination !bottom-0 !relative mt-8"></div>

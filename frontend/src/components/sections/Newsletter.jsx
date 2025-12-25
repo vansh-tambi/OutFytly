@@ -22,19 +22,27 @@ const Newsletter = () => {
     <section className="py-20 bg-plum text-white text-center">
       <div className="max-w-2xl mx-auto px-6">
         <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={{
+            initial: { opacity: 0, y: -20 },
+            whileInView: { opacity: 1, y: 0 }
+          }}
+          initial="initial"
+          whileInView="whileInView"
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
           className="text-3xl font-bold mb-3"
         >
           Stay In The Loop! 💌
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          variants={{
+            initial: { opacity: 0 },
+            whileInView: { opacity: 1 }
+          }}
+          initial="initial"
+          whileInView="whileInView"
           transition={{ delay: 0.2, duration: 0.6 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
           className="text-lavender/70 mb-8 max-w-md mx-auto"
         >
           Subscribe to our newsletter for the latest collections, exclusive deals, and style inspiration.
@@ -54,7 +62,7 @@ const Newsletter = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="max-w-lg mx-auto"
           >
             <div className="flex flex-col sm:flex-row gap-3">

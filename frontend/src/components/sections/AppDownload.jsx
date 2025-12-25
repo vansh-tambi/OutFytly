@@ -31,28 +31,40 @@ const AppDownload = () => {
       
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.h2
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={{
+            initial: { opacity: 0, y: -30 },
+            whileInView: { opacity: 1, y: 0 }
+          }}
+          initial="initial"
+          whileInView="whileInView"
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
           className="text-3xl md:text-4xl font-bold mb-4"
         >
           📱 Shop Smarter with the OutFytly App
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          variants={{
+            initial: { opacity: 0 },
+            whileInView: { opacity: 1 }
+          }}
+          initial="initial"
+          whileInView="whileInView"
           transition={{ delay: 0.2, duration: 0.6 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
           className="text-lg text-lavender mb-8 max-w-2xl mx-auto"
         >
           Get exclusive deals, faster checkout, and outfit recommendations tailored just for you.
         </motion.p>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={{
+            initial: { opacity: 0, y: 30 },
+            whileInView: { opacity: 1, y: 0 }
+          }}
+          initial="initial"
+          whileInView="whileInView"
           transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
           // This ensures buttons stack on small screens and go side-by-side on larger ones
           className="flex flex-col sm:flex-row justify-center items-center gap-5"
         >

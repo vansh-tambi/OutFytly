@@ -21,7 +21,7 @@ const FAQ = () => {
         <motion.div
             initial={{ opacity: 0, y: -30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
@@ -35,7 +35,7 @@ const FAQ = () => {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.8 }}
             className="md:col-span-1 space-y-4"
           >
@@ -68,7 +68,7 @@ const FAQ = () => {
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.8 }}
             className="md:col-span-2 bg-plum/30 p-8 rounded-2xl border border-lavender/20 min-h-[300px]"
           >

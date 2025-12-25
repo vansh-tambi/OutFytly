@@ -51,7 +51,7 @@ const CTA = () => {
         <motion.div 
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: false, amount: 0.5 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="max-w-xl p-8 text-center md:text-left"
         >
@@ -78,7 +78,7 @@ const CTA = () => {
         <motion.div 
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: false, amount: 0.5 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="hidden md:flex flex-col gap-6 p-8"
         >
@@ -87,7 +87,7 @@ const CTA = () => {
                 key={i}
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.2 }}
                 className="flex items-start gap-4 bg-plum/30 backdrop-blur-sm p-4 rounded-xl border border-lavender/20"
              >

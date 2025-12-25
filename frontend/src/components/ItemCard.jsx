@@ -48,18 +48,26 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
+      variants={{
+        initial: { opacity: 0, y: 40, scale: 0.95 },
+        whileInView: { opacity: 1, y: 0, scale: 1 }
+      }}
+      initial="initial"
+      whileInView="whileInView"
+      viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      whileHover={{ y: -8 }}
+      whileHover={{ y: -8, scale: 1.02 }}
       className="relative bg-ink text-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-primary/30 transition-shadow duration-300 flex flex-col w-full"
     >
       <motion.div 
         className="absolute top-3 right-3 z-10 flex flex-col gap-2"
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
+        variants={{
+          initial: { opacity: 0, x: 20 },
+          whileInView: { opacity: 1, x: 0 }
+        }}
+        initial="initial"
+        whileInView="whileInView"
+        viewport={{ once: false }}
         transition={{ duration: 0.4, delay: 0.1 }}
       >
         <motion.button
@@ -123,9 +131,13 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
       <div className="p-3 sm:p-4 flex flex-col flex-grow">
         <motion.p 
           className="text-xs sm:text-sm text-primary mb-1 capitalize"
-          initial={{ opacity: 0, x: -10 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          variants={{
+            initial: { opacity: 0, x: -10 },
+            whileInView: { opacity: 1, x: 0 }
+          }}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: false }}
           transition={{ duration: 0.4, delay: 0.15 }}
         >
           {category}
@@ -133,9 +145,13 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
         <motion.h3 
           className="text-base sm:text-lg font-semibold truncate text-lavender/90" 
           title={title}
-          initial={{ opacity: 0, x: -10 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          variants={{
+            initial: { opacity: 0, x: -10 },
+            whileInView: { opacity: 1, x: 0 }
+          }}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: false }}
           transition={{ duration: 0.4, delay: 0.2 }}
         >
           {title}
@@ -144,9 +160,13 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
         {user?.name && (
           <motion.div 
             className="flex items-center gap-1.5 text-gray-400 text-xs sm:text-sm mt-1 mb-2"
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            variants={{
+              initial: { opacity: 0, x: -10 },
+              whileInView: { opacity: 1, x: 0 }
+            }}
+            initial="initial"
+            whileInView="whileInView"
+            viewport={{ once: false }}
             transition={{ duration: 0.4, delay: 0.25 }}
           >
             <MapPin size={12} />
@@ -158,9 +178,13 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
         
         <motion.p 
           className="text-white font-bold text-lg sm:text-xl mt-2"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          variants={{
+            initial: { opacity: 0, y: 10 },
+            whileInView: { opacity: 1, y: 0 }
+          }}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: false }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
           ₹{rentalPrice.toLocaleString()} <span className="text-xs sm:text-sm font-normal text-gray-400">/ day</span>

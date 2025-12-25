@@ -57,7 +57,7 @@ const About = () => {
                                     <motion.div 
                                         initial={{ opacity: 0, y: 40 }}
                                         whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true, amount: 0.4 }}
+                                        viewport={{ once: false, amount: 0.4 }}
                                         transition={{ duration: 0.7 }}
                                         className={`w-full md:w-1/2 ${i % 2 === 0 ? 'md:pl-12' : 'md:pr-12 md:text-right md:ml-auto'}`}
                                     >
@@ -82,7 +82,7 @@ const About = () => {
                     <motion.h2 
                         initial={{ opacity: 0, y: 20 }} 
                         whileInView={{ opacity: 1, y: 0 }} 
-                        viewport={{ once: true }} 
+                        viewport={{ once: false }} 
                         className="text-3xl md:text-4xl font-bold text-white text-center mb-10"
                     >
                         The People Behind the Passion

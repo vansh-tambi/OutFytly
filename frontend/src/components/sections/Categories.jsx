@@ -13,13 +13,13 @@ const categories = [
 ];
 
 const containerVariant = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
 };
 
 const itemVariant = {
-  hidden: { opacity: 0, scale: 0.9 },
-  show: { opacity: 1, scale: 1 },
+  initial: { opacity: 0, scale: 0.9 },
+  whileInView: { opacity: 1, scale: 1 },
 };
 
 const CategoryCard = ({ name, image, size }) => {
@@ -55,9 +55,13 @@ const Categories = () => {
     <section className="py-24 bg-ink">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            variants={{
+              initial: { opacity: 0, y: -20 },
+              whileInView: { opacity: 1, y: 0 }
+            }}
+            initial="initial"
+            whileInView="whileInView"
+            viewport={{ once: false, amount: 0.3 }}
             className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-white">
@@ -70,9 +74,9 @@ const Categories = () => {
 
         <motion.div
           variants={containerVariant}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.1 }}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: false, amount: 0.1 }}
           className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-6 h-[600px]"
         >
           {categories.map((cat) => (

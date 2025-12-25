@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SlidersHorizontal, X } from 'lucide-react'; // Removed Search icon
 import { fetchProducts } from '../api/productService';
 import toast from 'react-hot-toast';
-import indianCities from '../data/indian-cities.json'; 
+import indianCities from '../data/indian-cities.json';
+import { useScrollDirection } from '../hooks/useScrollDirection'; 
 
 // --- Filter Options ---
 const locations = ["All Locations", ...new Set(indianCities.map(city => city.name).sort())];
@@ -24,18 +25,32 @@ const FilterSidebar = ({ filters, setFilters, loading }) => {
     const { location, category, sortBy } = filters;
     const { setLocation, setCategory, setSortBy } = setFilters;
 
+    const sidebarVariants = {
+      initial: { opacity: 0, x: -20 },
+      whileInView: { opacity: 1, x: 0 },
+      exit: { opacity: 0, x: -20 }
+    };
+
     return (
         <motion.div 
           className="space-y-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
+          variants={sidebarVariants}
+          initial="initial"
+          whileInView="whileInView"
+          exit="exit"
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
         >
             {/* SEARCH INPUT HAS BEEN REMOVED */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              variants={{
+                initial: { opacity: 0, y: 10 },
+                whileInView: { opacity: 1, y: 0 }
+              }}
+              initial="initial"
+              whileInView="whileInView"
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
             >
                 <label className="form-label mb-2">Category</label>
                 <div className="space-y-2">
@@ -56,9 +71,14 @@ const FilterSidebar = ({ filters, setFilters, loading }) => {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
+              variants={{
+                initial: { opacity: 0, y: 10 },
+                whileInView: { opacity: 1, y: 0 }
+              }}
+              initial="initial"
+              whileInView="whileInView"
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ delay: 0.15, duration: 0.4 }}
             >
                 <label className="form-label mb-2">Location</label>
                 <motion.select 
@@ -73,9 +93,14 @@ const FilterSidebar = ({ filters, setFilters, loading }) => {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              variants={{
+                initial: { opacity: 0, y: 10 },
+                whileInView: { opacity: 1, y: 0 }
+              }}
+              initial="initial"
+              whileInView="whileInView"
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
             >
                 <label className="form-label mb-2">Sort By</label>
                 <motion.select 
@@ -249,16 +274,21 @@ const Browse = () => {
                         <motion.div 
                           className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 min-h-[500px]"
                           initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: false, amount: 0.1 }}
                           transition={{ duration: 0.5 }}
                         >
                             {products.map((itemData, index) => (
                                 <motion.div
                                   key={itemData._id}
-                                  initial={{ opacity: 0, y: 20 }}
-                                  whileInView={{ opacity: 1, y: 0 }}
-                                  viewport={{ once: true, amount: 0.1 }}
-                                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                                  variants={{
+                                    initial: { opacity: 0, y: 40, scale: 0.95 },
+                                    whileInView: { opacity: 1, y: 0, scale: 1 }
+                                  }}
+                                  initial="initial"
+                                  whileInView="whileInView"
+                                  viewport={{ once: false, amount: 0.2 }}
+                                  transition={{ duration: 0.5, delay: index * 0.05 }}
                                 >
                                   <ItemCard {...itemData} />
                                 </motion.div>
