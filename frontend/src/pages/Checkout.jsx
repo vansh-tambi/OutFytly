@@ -131,78 +131,214 @@ const Checkout = () => {
   return (
     <div className="bg-ink min-h-screen text-white p-4 sm:p-8">
       <div className="max-w-7xl mx-auto">
-        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-bold mb-10">Checkout</motion.h1>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl md:text-4xl font-bold mb-10"
+        >
+          Checkout
+        </motion.h1>
         <div className="grid lg:grid-cols-3 gap-8 items-start">
-          <form onSubmit={handleSubmit(onSubmit)} className="lg:col-span-2 bg-plum/30 p-8 rounded-xl border border-lavender/20 space-y-6">
-            <h2 className="text-2xl font-semibold mb-4">Shipping Information</h2>
+          <motion.form 
+            onSubmit={handleSubmit(onSubmit)} 
+            className="lg:col-span-2 bg-plum/30 p-8 rounded-xl border border-lavender/20 space-y-6"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <motion.h2 
+              className="text-2xl font-semibold mb-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              Shipping Information
+            </motion.h2>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+              >
                 <label className="form-label">Full Name</label>
-                <input {...register("fullName", { required: "Full name is required" })} className="form-input mt-2" />
+                <motion.input 
+                  {...register("fullName", { required: "Full name is required" })} 
+                  className="form-input mt-2"
+                  whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
+                  transition={{ duration: 0.2 }}
+                />
                 {errors.fullName && <p className="form-error">{errors.fullName.message}</p>}
-              </div>
-              <div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
                 <label className="form-label">Email</label>
-                <input {...register("email", { required: "Email is required" })} type="email" className="form-input mt-2" />
+                <motion.input 
+                  {...register("email", { required: "Email is required" })} 
+                  type="email" 
+                  className="form-input mt-2"
+                  whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
+                  transition={{ duration: 0.2 }}
+                />
                 {errors.email && <p className="form-error">{errors.email.message}</p>}
-              </div>
+              </motion.div>
             </div>
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+            >
               <label className="form-label">Phone Number</label>
-              <input {...register("phone", { required: "Phone number is required" })} type="tel" className="form-input mt-2" />
+              <motion.input 
+                {...register("phone", { required: "Phone number is required" })} 
+                type="tel" 
+                className="form-input mt-2"
+                whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
+                transition={{ duration: 0.2 }}
+              />
               {errors.phone && <p className="form-error">{errors.phone.message}</p>}
-            </div>
-            <div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
               <label className="form-label">Full Address</label>
-              <textarea {...register("address", { required: "Address is required" })} rows="3" className="form-input mt-2"></textarea>
+              <motion.textarea 
+                {...register("address", { required: "Address is required" })} 
+                rows="3" 
+                className="form-input mt-2"
+                whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
+                transition={{ duration: 0.2 }}
+              />
               {errors.address && <p className="form-error">{errors.address.message}</p>}
-            </div>
+            </motion.div>
 
-            <h2 className="text-2xl font-semibold pt-6 border-t border-lavender/20">Payment Method</h2>
+            <motion.h2 
+              className="text-2xl font-semibold pt-6 border-t border-lavender/20"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45 }}
+            >
+              Payment Method
+            </motion.h2>
             <div className="space-y-3">
-              <label className="flex items-center gap-3 p-3 rounded-md bg-plum/50 has-[:checked]:bg-primary/30 border border-transparent has-[:checked]:border-primary transition">
+              <motion.label 
+                className="flex items-center gap-3 p-3 rounded-md bg-plum/50 has-[:checked]:bg-primary/30 border border-transparent has-[:checked]:border-primary transition cursor-pointer"
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.2 }}
+              >
                 <input type="radio" {...register("paymentMethod", { required: "Please select a payment method" })} value="COD" className="h-4 w-4 bg-ink border-lavender/50 text-primary focus:ring-primary" />
                 <span>Cash on Delivery (COD)</span>
-              </label>
-              <label className="flex items-center gap-3 p-3 rounded-md bg-plum/50 has-[:checked]:bg-primary/30 border border-transparent has-[:checked]:border-primary transition">
+              </motion.label>
+              <motion.label 
+                className="flex items-center gap-3 p-3 rounded-md bg-plum/50 has-[:checked]:bg-primary/30 border border-transparent has-[:checked]:border-primary transition cursor-pointer"
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.2 }}
+              >
                 <input type="radio" {...register("paymentMethod", { required: "Please select a payment method" })} value="UPI" className="h-4 w-4 bg-ink border-lavender/50 text-primary focus:ring-primary" />
                 <span>UPI / Card (Online)</span>
-              </label>
+              </motion.label>
               {errors.paymentMethod && <p className="form-error">{errors.paymentMethod.message}</p>}
             </div>
 
-            <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.03 }} className="w-full mt-6 bg-primary px-6 py-3 rounded-lg font-semibold text-white disabled:opacity-50">
+            <motion.button 
+              type="submit" 
+              disabled={isSubmitting} 
+              whileHover={{ scale: 1.03 }} 
+              whileTap={{ scale: 0.97 }}
+              className="w-full mt-6 bg-primary px-6 py-3 rounded-lg font-semibold text-white disabled:opacity-50"
+            >
               {isSubmitting ? 'Placing Order...' : `Place Order (₹${total.toLocaleString()})`}
             </motion.button>
-          </form>
+          </motion.form>
 
-          <div className="lg:col-span-1 sticky top-24">
-            <div className="bg-plum/30 p-6 rounded-xl border border-lavender/20">
-              <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
+          <motion.div 
+            className="lg:col-span-1 sticky top-24"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <motion.div className="bg-plum/30 p-6 rounded-xl border border-lavender/20">
+              <motion.h2 
+                className="text-2xl font-bold mb-4"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                Order Summary
+              </motion.h2>
               <div className="space-y-4 max-h-64 overflow-y-auto pr-2">
-                {itemsToCheckout.map(item => {
+                {itemsToCheckout.map((item, index) => {
                   const rentalDays = calculateRentalDays(item.startDate, item.endDate);
                   const itemTotal = (item.product.rentalPrice * item.quantity * rentalDays);
                   return (
-                    <div key={item.product._id + item.size} className="flex gap-4">
-                      <img src={item.product.images[0]} alt={item.product.title} className="w-16 h-16 rounded-md object-cover" />
+                    <motion.div 
+                      key={item.product._id + item.size} 
+                      className="flex gap-4"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.35 + index * 0.05 }}
+                      whileHover={{ x: 4 }}
+                    >
+                      <motion.img 
+                        src={item.product.images[0]} 
+                        alt={item.product.title} 
+                        className="w-16 h-16 rounded-md object-cover" 
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2 }}
+                      />
                       <div className="flex-grow">
                         <p className="font-semibold text-white">{item.product.title}</p>
                         <p className="text-sm text-lavender/70">{rentalDays} {rentalDays > 1 ? 'days' : 'day'}</p>
                       </div>
                       <p className="font-semibold text-white">₹{itemTotal.toLocaleString()}</p>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>
-              <div className="border-t border-lavender/20 mt-4 pt-4 space-y-2">
-                <div className="flex justify-between text-lavender/80"><span>Subtotal</span><span>₹{subtotal.toLocaleString()}</span></div>
-                <div className="flex justify-between text-lavender/80"><span>Shipping</span><span>₹{shipping.toLocaleString()}</span></div>
-                <div className="border-t border-lavender/20 my-2"></div>
-                <div className="flex justify-between text-xl font-bold text-white"><span>Total</span><span>₹{total.toLocaleString()}</span></div>
-              </div>
-            </div>
-          </div>
+              <motion.div 
+                className="border-t border-lavender/20 mt-4 pt-4 space-y-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <motion.div 
+                  className="flex justify-between text-lavender/80"
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.55 }}
+                >
+                  <span>Subtotal</span><span>₹{subtotal.toLocaleString()}</span>
+                </motion.div>
+                <motion.div 
+                  className="flex justify-between text-lavender/80"
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <span>Shipping</span><span>₹{shipping.toLocaleString()}</span>
+                </motion.div>
+                <motion.div 
+                  className="border-t border-lavender/20 my-2"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.65 }}
+                />
+                <motion.div 
+                  className="flex justify-between text-xl font-bold text-white"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <span>Total</span><span>₹{total.toLocaleString()}</span>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </div>

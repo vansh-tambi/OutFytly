@@ -103,3 +103,24 @@ export const getPlaceholderUrl = (url) => {
     crop: 'fill'
   });
 };
+
+/**
+ * Optimize external image URLs (e.g., Unsplash) via Cloudinary's fetch API
+ * @param {string} url - External image URL
+ * @param {number} width - Desired width
+ * @param {number} height - Desired height
+ * @returns {string} - Optimized URL via Cloudinary fetch
+ */
+export const optimizeExternalImage = (url, width = 800, height = 800) => {
+  if (!url) return url;
+  
+  // Encode the external URL
+  const encodedUrl = Buffer.from(url).toString('base64');
+  
+  // Alternative: Use direct URL parameters for Unsplash optimization
+  if (url.includes('unsplash.com')) {
+    return `${url}&q=80&w=${width}&auto=format&fit=crop`;
+  }
+  
+  return url;
+};

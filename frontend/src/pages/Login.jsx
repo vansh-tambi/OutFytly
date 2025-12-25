@@ -59,47 +59,117 @@ const Login = () => {
 
         {/* --- Right Column: Login Form --- */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center p-8 sm:p-12">
-            <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }}>
-              <Link to="/" className="text-2xl font-bold flex gap-2 items-center text-white mb-8">
-                <img src="/Logo_OUTFYTLY.png" alt="OutFytly" className="h-9 w-9 rounded-xl object-cover" />
-                <span>OutFytly</span>
-              </Link>
-              <h2 className="text-3xl font-bold text-white mb-2">Welcome Back 👋</h2>
-              <p className="text-lavender/70 mb-8">Login to continue your fashion journey.</p>
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                <Link to="/" className="text-2xl font-bold flex gap-2 items-center text-white mb-8">
+                  <img src="/Logo_OUTFYTLY.png" alt="OutFytly" className="h-9 w-9 rounded-xl object-cover" />
+                  <span>OutFytly</span>
+                </Link>
+              </motion.div>
+              <motion.h2 
+                className="text-3xl font-bold text-white mb-2"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
+                Welcome Back 👋
+              </motion.h2>
+              <motion.p 
+                className="text-lavender/70 mb-8"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+              >
+                Login to continue your fashion journey.
+              </motion.p>
               
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <div>
-                  <input {...register("email", { required: "Email is required" })} type="email" placeholder="Email Address" className="form-input"/>
+              <motion.form 
+                onSubmit={handleSubmit(onSubmit)} 
+                className="space-y-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55 }}
+                >
+                  <motion.input 
+                    {...register("email", { required: "Email is required" })} 
+                    type="email" 
+                    placeholder="Email Address" 
+                    className="form-input"
+                    whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
+                    transition={{ duration: 0.2 }}
+                  />
                   {errors.email && <p className="form-error">{errors.email.message}</p>}
-                </div>
-                <div className="relative">
-                  <input
+                </motion.div>
+                <motion.div 
+                  className="relative"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <motion.input
                     {...register("password", { required: "Password is required" })}
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
                     className="form-input"
+                    whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
+                    transition={{ duration: 0.2 }}
                   />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-lavender/60 hover:text-white">
+                  <motion.button 
+                    type="button" 
+                    onClick={() => setShowPassword(!showPassword)} 
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-lavender/60 hover:text-white"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
+                  </motion.button>
                   {errors.password && <p className="form-error">{errors.password.message}</p>}
-                </div>
-                <div className="flex justify-between items-center text-sm text-lavender/70">
-                  <label className="flex items-center gap-2 select-none">
-                    <input type="checkbox" {...register("rememberMe")} className="h-4 w-4 rounded bg-ink border-lavender/50 text-primary focus:ring-primary" />
+                </motion.div>
+                <motion.div 
+                  className="flex justify-between items-center text-sm text-lavender/70"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.65 }}
+                >
+                  <label className="flex items-center gap-2 select-none cursor-pointer">
+                    <input type="checkbox" {...register("rememberMe")} className="h-4 w-4 rounded bg-ink border-lavender/50 text-primary focus:ring-primary cursor-pointer" />
                     Remember me
                   </label>
                   <Link to="/forgot-password" className="hover:text-primary transition">Forgot Password?</Link>
-                </div>
-                <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: isSubmitting ? 1 : 1.03 }} className="w-full bg-primary text-white py-3 rounded-lg font-semibold shadow-md hover:bg-primary/90 transition disabled:bg-primary/50">
+                </motion.div>
+                <motion.button 
+                  type="submit" 
+                  disabled={isSubmitting} 
+                  whileHover={{ scale: isSubmitting ? 1 : 1.03 }} 
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full bg-primary text-white py-3 rounded-lg font-semibold shadow-md hover:bg-primary/90 transition disabled:bg-primary/50"
+                >
                   {isSubmitting ? "Logging In..." : "Login"}
                 </motion.button>
-              </form>
+              </motion.form>
 
-              <p className="text-center mt-6 text-lavender/70">
+              <motion.p 
+                className="text-center mt-6 text-lavender/70"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7 }}
+              >
                 Don't have an account?{' '}
                 <Link to="/signup" className="font-semibold text-primary hover:underline">Sign Up</Link>
-              </p>
+              </motion.p>
             </motion.div>
         </div>
       </div>

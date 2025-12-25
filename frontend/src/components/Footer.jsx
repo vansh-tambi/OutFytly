@@ -33,12 +33,23 @@ const FooterLinkColumn = ({ title, links, delay }) => (
   >
     <h3 className="text-white font-semibold mb-4 tracking-wider uppercase text-sm">{title}</h3>
     <ul className="space-y-3 text-sm">
-      {links.map((link) => (
-        <li key={link.path}>
-          <Link to={link.path} className="text-lavender/70 hover:text-white hover:underline transition">
-            {link.label}
-          </Link>
-        </li>
+      {links.map((link, index) => (
+        <motion.li 
+          key={link.path}
+          initial={{ opacity: 0, x: -10 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: delay + 0.05 + index * 0.05 }}
+        >
+          <motion.div
+            whileHover={{ x: 4 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Link to={link.path} className="text-lavender/70 hover:text-white hover:underline transition">
+              {link.label}
+            </Link>
+          </motion.div>
+        </motion.li>
       ))}
     </ul>
   </motion.div>
@@ -72,12 +83,17 @@ const BackToTopButton = () => {
             {isVisible && (
                 <motion.button
                     onClick={scrollToTop}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 20, scale: 0.8 }}
+                    whileHover={{ scale: 1.1, y: -5 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
                     className="fixed bottom-6 right-6 z-50 bg-primary/80 backdrop-blur-sm text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-primary"
                 >
-                    <ArrowUp size={24} />
+                    <motion.div animate={{ y: [0, -4, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                        <ArrowUp size={24} />
+                    </motion.div>
                 </motion.button>
             )}
         </AnimatePresence>

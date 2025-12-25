@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import useMediaQuery from '../hooks/useMediaQueries'; 
@@ -6,27 +6,28 @@ import Hero from '../components/sections/Hero';
 import SectionTitle from '../components/SectionTitle';
 import ItemCard from '../components/ItemCard';
 import HorizontalCarousel from '../components/HorizontalCarousel';
-import HowItWorks from '../components/sections/HowItWorks';
-import Testimonials from '../components/sections/Testimonial';
-import Brands from '../components/Brands';
 import CTA from '../components/CTA';
 import { fetchProducts } from '../api/productService';
 import toast from 'react-hot-toast';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCards, Navigation, Autoplay } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import 'swiper/css';
-import 'swiper/css/effect-cards';
 import 'swiper/css/navigation';
 import { Wind, Infinity, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 
+// ✅ Lazy load heavy components
+const HowItWorks = React.lazy(() => import("../components/sections/HowItWorks"));
+const Testimonials = React.lazy(() => import("../components/sections/Testimonial"));
+const Brands = React.lazy(() => import("../components/Brands"));
+
 // --- Static Data ---
 const categories = [
-    { title: "Watches", image: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { title: "Shoes", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { title: "Accessories", image: "https://images.unsplash.com/3/www.madebyvadim.com.jpg?q=80&w=2082&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { title: "Casual Wear", image: "https://images.unsplash.com/photo-1716004360220-213371f51df1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { title: "Party Wear", image: "https://images.unsplash.com/photo-1723016347027-39d37df73f18?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { title: "Formal Wear", image: "https://images.unsplash.com/photo-1593765762957-d8d876a1beeb?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { title: "Watches", image: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?q=80&w=800&auto=format&fit=crop" },
+    { title: "Shoes", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800&auto=format&fit=crop" },
+    { title: "Accessories", image: "https://images.unsplash.com/3/www.madebyvadim.com.jpg?q=80&w=800&auto=format&fit=crop" },
+    { title: "Casual Wear", image: "https://images.unsplash.com/photo-1716004360220-213371f51df1?q=80&w=800&auto=format&fit=crop" },
+    { title: "Party Wear", image: "https://images.unsplash.com/photo-1723016347027-39d37df73f18?q=80&w=800&auto=format&fit=crop" },
+    { title: "Formal Wear", image: "https://images.unsplash.com/photo-1593765762957-d8d876a1beeb?q=80&w=800&auto=format&fit=crop" },
 ];
 
 const whyChooseUs = [
@@ -81,15 +82,14 @@ const Home = () => {
                     </div>
                     <Swiper
                         speed={800}
-                        autoplay={{ delay: 3500, disableOnInteraction: false }}
-                        effect={'cards'}
                         grabCursor={true}
                         centeredSlides={true}
-                        loop={false}
+                        loop={true}
                         initialSlide={0}
-                        modules={[EffectCards, Navigation, Autoplay]}
+                        modules={[Navigation]}
                         navigation={{ nextEl: '.swiper-button-next-cat', prevEl: '.swiper-button-prev-cat' }}
                         className="!w-72 md:!w-80 h-96"
+                        slidesPerView={1}
                     >
                         {categories.map((category) => (
                             <SwiperSlide key={category.title} className="!rounded-2xl !overflow-hidden shadow-2xl shadow-plum/50">
@@ -167,9 +167,16 @@ const Home = () => {
                 </div>
             </section>
             
-            <HowItWorks />
-            <Testimonials />
-            <Brands />
+            {/* ✅ Lazy load heavy sections with Suspense fallback */}
+            <Suspense fallback={<div className="h-96 bg-plum/10 animate-pulse" />}>
+              <HowItWorks />
+            </Suspense>
+            <Suspense fallback={<div className="h-96 bg-plum/10 animate-pulse" />}>
+              <Testimonials />
+            </Suspense>
+            <Suspense fallback={<div className="h-48 bg-plum/10 animate-pulse" />}>
+              <Brands />
+            </Suspense>
             <CTA />
         </div>
     );

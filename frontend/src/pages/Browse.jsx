@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ItemCard from '../components/ItemCard';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { SlidersHorizontal, X } from 'lucide-react'; // Removed Search icon
 import { fetchProducts } from '../api/productService';
 import toast from 'react-hot-toast';
@@ -25,33 +25,70 @@ const FilterSidebar = ({ filters, setFilters, loading }) => {
     const { setLocation, setCategory, setSortBy } = setFilters;
 
     return (
-        <div className="space-y-6">
+        <motion.div 
+          className="space-y-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
             {/* SEARCH INPUT HAS BEEN REMOVED */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
                 <label className="form-label mb-2">Category</label>
                 <div className="space-y-2">
-                    {categories.map(cat => (
-                        <button key={cat} onClick={() => setCategory(cat)} disabled={loading} className={`w-full text-left px-3 py-2 rounded-md text-sm transition ${category === cat ? 'bg-primary text-white font-semibold' : 'hover:bg-plum/50 text-lavender'}`}>
+                    {categories.map((cat, index) => (
+                        <motion.button 
+                          key={cat} 
+                          onClick={() => setCategory(cat)} 
+                          disabled={loading} 
+                          className={`w-full text-left px-3 py-2 rounded-md text-sm transition ${category === cat ? 'bg-primary text-white font-semibold' : 'hover:bg-plum/50 text-lavender'}`}
+                          whileHover={{ x: 4 }}
+                          whileTap={{ scale: 0.98 }}
+                          transition={{ duration: 0.2 }}
+                        >
                             {cat}
-                        </button>
+                        </motion.button>
                     ))}
                 </div>
-            </div>
+            </motion.div>
 
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+            >
                 <label className="form-label mb-2">Location</label>
-                <select value={location} onChange={(e) => setLocation(e.target.value)} disabled={loading} className="form-input">
+                <motion.select 
+                  value={location} 
+                  onChange={(e) => setLocation(e.target.value)} 
+                  disabled={loading} 
+                  className="form-input"
+                  whileFocus={{ borderColor: '#8A2BE2' }}
+                >
                     {locations.map(loc => <option key={loc} value={loc} className="bg-plum">{loc}</option>)}
-                </select>
-            </div>
+                </motion.select>
+            </motion.div>
 
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
                 <label className="form-label mb-2">Sort By</label>
-                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} disabled={loading} className="form-input">
+                <motion.select 
+                  value={sortBy} 
+                  onChange={(e) => setSortBy(e.target.value)} 
+                  disabled={loading} 
+                  className="form-input"
+                  whileFocus={{ borderColor: '#8A2BE2' }}
+                >
                     {sortOptions.map(opt => <option key={opt.value} value={opt.value} className="bg-plum">{opt.label}</option>)}
-                </select>
-            </div>
-        </div>
+                </motion.select>
+            </motion.div>
+        </motion.div>
     );
 };
 
@@ -131,49 +168,113 @@ const Browse = () => {
   return (
     <div className="bg-ink min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="text-center mb-12">
-            <motion.h1 initial={{ opacity: 0, y:20 }} animate={{ opacity:1, y:0 }} className="text-4xl font-bold text-white">Explore the Collection</motion.h1>
-            <motion.p initial={{ opacity: 0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay: 0.2 }} className="text-lavender/70 mt-2">Find your next statement piece from thousands of unique outfits.</motion.p>
-        </div>
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-4xl font-bold text-white"
+            >
+              Explore the Collection
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-lavender/70 mt-2"
+            >
+              Find your next statement piece from thousands of unique outfits.
+            </motion.p>
+        </motion.div>
 
         <div className="grid lg:grid-cols-4 lg:gap-8">
-            <aside className="hidden lg:block lg:col-span-1">
+            <motion.aside 
+              className="hidden lg:block lg:col-span-1"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
                 <div className="sticky top-24 bg-plum/30 p-6 rounded-xl border border-lavender/20">
                     <h3 className="text-2xl font-semibold text-white mb-4">Filters</h3>
                     <FilterSidebar filters={filters} setFilters={filterSetters} loading={loading}/>
                 </div>
-            </aside>
+            </motion.aside>
 
             <main className="lg:col-span-3">
-                <div className="flex justify-between items-center mb-6 lg:hidden">
+                <motion.div 
+                  className="flex justify-between items-center mb-6 lg:hidden"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                >
                     <p className="text-lavender">{!loading && `${products.length > 0 ? `${products.length} items found` : ''}`}</p>
-                    <button onClick={() => setMobileFiltersOpen(true)} className="flex items-center gap-2 bg-plum/50 px-4 py-2 rounded-md text-white">
+                    <motion.button 
+                      onClick={() => setMobileFiltersOpen(true)} 
+                      className="flex items-center gap-2 bg-plum/50 px-4 py-2 rounded-md text-white"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
                         <SlidersHorizontal size={18} /> Filters
-                    </button>
-                </div>
+                    </motion.button>
+                </motion.div>
                 
                 {loading ? (
-                    <div className="flex justify-center items-center h-96">
-                        <div className="w-12 h-12 rounded-full border-4 border-t-primary border-lavender/30 animate-spin"></div>
-                    </div>
+                    <motion.div 
+                      className="flex justify-center items-center h-96"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                    >
+                        <motion.div 
+                          className="w-12 h-12 rounded-full border-4 border-t-primary border-lavender/30"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        />
+                    </motion.div>
                 ) : error ? (
-                    <div className="text-center py-20 text-red-400">
+                    <motion.div 
+                      className="text-center py-20 text-red-400"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
                         <h3 className="text-2xl font-semibold">Could Not Load Products</h3>
                         <p>{error}</p>
-                    </div>
+                    </motion.div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 min-h-[500px]">
-                            {products.map((itemData) => (
-                                <ItemCard key={itemData._id} {...itemData} />
+                        <motion.div 
+                          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 min-h-[500px]"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.5 }}
+                        >
+                            {products.map((itemData, index) => (
+                                <motion.div
+                                  key={itemData._id}
+                                  initial={{ opacity: 0, y: 20 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  viewport={{ once: true, amount: 0.1 }}
+                                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                                >
+                                  <ItemCard {...itemData} />
+                                </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
 
                         {products.length === 0 && !loading && (
-                            <div className="text-center py-20">
+                            <motion.div 
+                              className="text-center py-20"
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5 }}
+                            >
                                 <h3 className="text-2xl font-semibold text-white">No Items Found</h3>
                                 <p className="text-lavender/70 mt-2">Try adjusting your filters to find what you're looking for.</p>
-                            </div>
+                            </motion.div>
                         )}
                         
                         <Pagination page={pagination.page} pages={pagination.pages} onPageChange={(p) => setPagination(prev => ({...prev, page: p}))} loading={loading} />
@@ -183,17 +284,38 @@ const Browse = () => {
         </div>
       </div>
       
-      {mobileFiltersOpen && (
-        <div onClick={() => setMobileFiltersOpen(false)} className="fixed inset-0 bg-black/60 z-50 lg:hidden">
-          <div onClick={(e) => e.stopPropagation()} className="absolute top-0 left-0 h-full w-full max-w-xs bg-ink border-r border-lavender/20 p-6 overflow-y-auto">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-semibold text-white">Filters</h3>
-              <button onClick={() => setMobileFiltersOpen(false)}><X/></button>
-            </div>
-            <FilterSidebar filters={filters} setFilters={filterSetters} loading={loading} />
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileFiltersOpen && (
+          <motion.div 
+            onClick={() => setMobileFiltersOpen(false)} 
+            className="fixed inset-0 bg-black/60 z-50 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              onClick={(e) => e.stopPropagation()} 
+              className="absolute top-0 left-0 h-full w-full max-w-xs bg-ink border-r border-lavender/20 p-6 overflow-y-auto"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-semibold text-white">Filters</h3>
+                <motion.button 
+                  onClick={() => setMobileFiltersOpen(false)}
+                  whileHover={{ rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X/>
+                </motion.button>
+              </div>
+              <FilterSidebar filters={filters} setFilters={filterSetters} loading={loading} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

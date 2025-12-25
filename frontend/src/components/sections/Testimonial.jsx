@@ -13,9 +13,9 @@ const testimonials = [
   { id: 1, name: 'Aarav Sharma', location: 'Delhi', text: 'OutFytly has completely changed my shopping experience. The quality of the outfits is amazing, and the entire process is incredibly smooth. Love it!', avatar: 'https://i.pravatar.cc/150?u=aarav', rating: 5 },
   { id: 2, name: 'Priya Mehta', location: 'Mumbai', text: 'I found the perfect dress for a wedding in minutes! Super stylish collection, fast delivery, and a beautiful user interface. Totally recommend!', avatar: 'https://i.pravatar.cc/150?u=priya', rating: 5 },
   { id: 3, name: 'Rahul Verma', location: 'Bangalore', text: "As someone who lists clothes, this is the best fashion marketplace I've used. The seller dashboard is easy to navigate and my items get rented out quickly.", avatar: 'https://i.pravatar.cc/150?u=rahul', rating: 5 },
-  { id: 1, name: 'Aarav Sharma', location: 'Delhi', text: 'OutFytly has completely changed my shopping experience. The quality of the outfits is amazing, and the entire process is incredibly smooth. Love it!', avatar: 'https://i.pravatar.cc/150?u=aarav', rating: 5 },
   { id: 4, name: 'Ananya Iyer', location: 'Hyderabad', text: "The variety is unmatched and the sustainability aspect makes me feel good about my choices. A fantastic platform!", avatar: 'https://i.pravatar.cc/150?u=ananya', rating: 5 },
-  { id: 2, name: 'Priya Mehta', location: 'Mumbai', text: 'I found the perfect dress for a wedding in minutes! Super stylish collection, fast delivery, and a beautiful user interface. Totally recommend!', avatar: 'https://i.pravatar.cc/150?u=priya', rating: 5 },
+  { id: 5, name: 'Vikram Singh', location: 'Pune', text: 'Excellent platform with great customer service. I appreciate the easy refund policy and the wide range of products available.', avatar: 'https://i.pravatar.cc/150?u=vikram', rating: 5 },
+  { id: 6, name: 'Neha Gupta', location: 'Chennai', text: 'Best fashion rental experience ever! The quality is consistent and the prices are very reasonable. Keep up the great work!', avatar: 'https://i.pravatar.cc/150?u=neha', rating: 5 },
 ];
 
 const StarRating = ({ rating }) => (

@@ -117,31 +117,70 @@ const Dashboard = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
         <h1 className="text-3xl font-bold text-white mb-6">Seller Dashboard</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-ink p-6 rounded-xl border border-lavender/20">
+          <motion.div 
+            className="bg-ink p-6 rounded-xl border border-lavender/20"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0 }}
+            whileHover={{ y: -4, borderColor: '#8A2BE2' }}
+          >
             <h3 className="text-lavender/70 text-sm font-medium">Total Earnings</h3>
-            <p className="text-3xl font-bold text-white mt-2">
+            <motion.p 
+              className="text-3xl font-bold text-white mt-2"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
               ₹{loading ? "..." : stats.totalEarnings.toLocaleString()}
-            </p>
-          </div>
-          <div className="bg-ink p-6 rounded-xl border border-lavender/20">
+            </motion.p>
+          </motion.div>
+          <motion.div 
+            className="bg-ink p-6 rounded-xl border border-lavender/20"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            whileHover={{ y: -4, borderColor: '#8A2BE2' }}
+          >
             <h3 className="text-lavender/70 text-sm font-medium">Active Listings</h3>
-            <p className="text-3xl font-bold text-white mt-2">
+            <motion.p 
+              className="text-3xl font-bold text-white mt-2"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
               {loading ? "..." : listings.length}
-            </p>
-          </div>
-          <div className="bg-ink p-6 rounded-xl border border-lavender/20">
+            </motion.p>
+          </motion.div>
+          <motion.div 
+            className="bg-ink p-6 rounded-xl border border-lavender/20"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            whileHover={{ y: -4, borderColor: '#8A2BE2' }}
+          >
             <h3 className="text-lavender/70 text-sm font-medium">Items Rented</h3>
-            <p className="text-3xl font-bold text-white mt-2">
+            <motion.p 
+              className="text-3xl font-bold text-white mt-2"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
               {loading ? "..." : stats.itemsRented}
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </div>
 
-        <div className="bg-ink p-8 rounded-2xl shadow-lg border border-lavender/20 mb-8">
+        <motion.div 
+          className="bg-ink p-8 rounded-2xl shadow-lg border border-lavender/20 mb-8"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           <h2 className="text-2xl font-semibold mb-6 text-lavender flex items-center gap-3">
             <UploadCloud /> List a New Item
           </h2>
@@ -249,15 +288,27 @@ const Dashboard = () => {
               </button>
             </div>
           </form>
-        </div>
+        </motion.div>
 
-        <div className="bg-ink p-8 rounded-2xl shadow-lg border border-lavender/20">
+        <motion.div 
+          className="bg-ink p-8 rounded-2xl shadow-lg border border-lavender/20"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <h2 className="text-2xl font-semibold mb-6 text-lavender">My Listings</h2>
           <div className="space-y-4">
             {loading ? ( <p className="text-lavender/70 text-center">Loading your listings...</p> ) : 
             listings.length > 0 ? (
-              listings.map((item) => (
-                <div key={item._id} className="flex items-center gap-4 bg-plum/50 p-3 rounded-lg">
+              listings.map((item, index) => (
+                <motion.div 
+                  key={item._id} 
+                  className="flex items-center gap-4 bg-plum/50 p-3 rounded-lg"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  whileHover={{ x: 4 }}
+                >
                   <img
                     src={item.images[0]}
                     alt={item.title}
@@ -267,16 +318,21 @@ const Dashboard = () => {
                     <p className="font-semibold text-white">{item.title}</p>
                     <p className="text-sm text-primary">₹{item.rentalPrice}</p>
                   </div>
-                  <button onClick={() => setItemToDelete(item)} className="p-2 rounded-md hover:bg-red-500/20 text-red-400 transition">
+                  <motion.button 
+                    onClick={() => setItemToDelete(item)} 
+                    className="p-2 rounded-md hover:bg-red-500/20 text-red-400 transition"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <Trash2 size={18} />
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
               ))
             ) : (
               <p className="text-lavender/70 text-center py-4">You haven't listed any items yet.</p>
             )}
           </div>
-        </div>
+        </motion.div>
       </motion.div>
 
       <ConfirmationModal
