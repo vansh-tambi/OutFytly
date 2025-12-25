@@ -57,7 +57,7 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
       viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
       whileHover={{ y: -8, scale: 1.02 }}
-      className="relative bg-ink text-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-primary/30 transition-shadow duration-300 flex flex-col w-full"
+      className="relative bg-ink text-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-primary/30 transition-shadow duration-300 flex flex-col w-full card-hover"
     >
       <motion.div 
         className="absolute top-3 right-3 z-10 flex flex-col gap-2"

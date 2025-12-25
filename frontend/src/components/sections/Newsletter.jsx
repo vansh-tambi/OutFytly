@@ -32,7 +32,7 @@ const Newsletter = () => {
           viewport={{ once: false, amount: 0.3 }}
           className="text-3xl font-bold mb-3"
         >
-          Stay In The Loop! 💌
+          Stay In The <span className="gradient-text">Loop!</span> 💌
         </motion.h2>
         <motion.p
           variants={{

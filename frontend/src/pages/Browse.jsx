@@ -302,7 +302,7 @@ const Browse = () => {
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ duration: 0.5 }}
                             >
-                                <h3 className="text-2xl font-semibold text-white">No Items Found</h3>
+                                <h3 className="text-2xl font-semibold text-white">No <span className="gradient-text">Items</span> Found</h3>
                                 <p className="text-lavender/70 mt-2">Try adjusting your filters to find what you're looking for.</p>
                             </motion.div>
                         )}

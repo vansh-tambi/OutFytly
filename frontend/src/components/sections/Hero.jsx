@@ -54,7 +54,7 @@ function handleMouse(event) {
           <motion.h1 variants={sentence} initial="hidden" animate="show" className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
             {"Rent. Style. Repeat.".split(" ").map((char, i) => (
               <motion.span key={i} variants={word} className="inline-block mr-4">
-                {char === "Style." ? <span className="text-primary">{char}</span> : char}
+                {char === "Style." ? <span className="gradient-text">{char}</span> : char}
               </motion.span>
             ))}
           </motion.h1>
@@ -65,7 +65,7 @@ function handleMouse(event) {
           
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1 }}>
             <Link to="/browse">
-              <motion.button whileHover={{ scale: 1.05, y: -3, boxShadow: "0px 10px 30px rgba(138, 43, 225, 0.4)" }} whileTap={{ scale: 0.95 }} className="bg-primary text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg inline-flex items-center gap-2">
+              <motion.button whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }} className="btn-gradient glow-hover inline-flex items-center gap-2">
                 Explore Collection <ArrowRight size={20} />
               </motion.button>
             </Link>
@@ -96,7 +96,7 @@ function handleMouse(event) {
         </motion.div>
       </div>
       
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(138,43,225,0.15),rgba(255,255,255,0))]"></div>
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(138,43,225,0.2),rgba(168,85,247,0.1),rgba(255,255,255,0))]"></div>
     </section>
   );
 };

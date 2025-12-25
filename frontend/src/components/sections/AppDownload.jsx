@@ -41,7 +41,7 @@ const AppDownload = () => {
           viewport={{ once: false, amount: 0.3 }}
           className="text-3xl md:text-4xl font-bold mb-4"
         >
-          📱 Shop Smarter with the OutFytly App
+          📱 Shop Smarter with the <span className="gradient-text">OutFytly App</span>
         </motion.h2>
         <motion.p
           variants={{

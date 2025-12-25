@@ -41,7 +41,7 @@ const Testimonials = () => {
           viewport={{ once: false, amount: 0.3 }}
           className="text-3xl md:text-4xl font-bold mb-12 text-white"
         >
-          💬 What Our <span className="text-primary">Community</span> Says
+          💬 What Our <span className="gradient-text">Community</span> Says
         </motion.h2>
 
         <div className="relative group">
@@ -69,7 +69,7 @@ const Testimonials = () => {
                   whileInView="whileInView"
                   viewport={{ once: false, amount: 0.3 }}
                   transition={{ duration: 0.5 }}
-                  className="bg-plum/50 backdrop-blur-sm rounded-xl shadow-lg p-8 text-left border border-primary/30 h-full flex flex-col">
+                  className="glass-card rounded-xl shadow-lg p-8 text-left border-primary/30 h-full flex flex-col glow-hover">
                   <Quote className="text-primary/50 mb-4" size={32} />
                   <p className="text-lavender/80 italic mb-6 leading-relaxed flex-grow">"{t.text}"</p>
                   <div className="flex items-center gap-4 mt-auto">

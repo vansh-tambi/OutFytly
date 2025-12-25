@@ -66,7 +66,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-primary text-white text-center text-sm font-semibold p-2">
+      <div className="bg-gradient-to-r from-primary via-primary-light to-accent-pink text-white text-center text-sm font-semibold p-2">
         Free Shipping On All Orders Above ₹2000!
       </div>
       <motion.nav
@@ -77,10 +77,12 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
           <Link to="/" className="text-2xl font-bold flex gap-2 items-center flex-shrink-0">
             <motion.img src="/Logo_OUTFYTLY.png" alt="OutFytly" className="h-9 w-9 rounded-xl object-cover" whileHover={{ rotate: 10, scale: 1.1 }} />
-            <motion.span
-              className="bg-gradient-to-r from-lavender via-primary to-lavender bg-[length:200%_auto] bg-clip-text text-transparent"
-              animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
-              transition={{ duration: 3, ease: "linear", repeat: Infinity }}
+            <motion.span 
+              className="gradient-text animate-gradient"
+              style={{
+                backgroundImage: 'linear-gradient(90deg, var(--color-lavender), var(--color-primary), var(--color-lavender))',
+                backgroundSize: '200% auto'
+              }}
             >
               OutFytly
             </motion.span>

@@ -8,7 +8,7 @@ const ContactInfoCard = ({ icon: Icon, title, detail, href }) => (
     <motion.a 
         href={href} 
         whileHover={{ y: -5, scale: 1.03 }}
-        className="flex items-start gap-4 p-6 bg-plum/40 rounded-lg border border-lavender/20"
+        className="flex items-start gap-4 p-6 glass-card rounded-lg"
     >
         <div className="bg-primary/20 text-primary p-3 rounded-full">
             <Icon size={24} />
@@ -41,7 +41,7 @@ const Contact = () => {
             viewport={{ once: false }}
             className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold">Get in Touch</h2>
+          <h2 className="text-3xl md:text-4xl font-bold">Get in <span className="gradient-text">Touch</span></h2>
           <p className="text-lavender/70 mt-4 max-w-2xl mx-auto">
             Have questions, feedback, or a partnership proposal? We'd love to hear from you. Choose your preferred method to connect with us.
           </p>

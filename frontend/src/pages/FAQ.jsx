@@ -24,7 +24,7 @@ const FAQ = () => {
             viewport={{ once: false }}
             className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
+          <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked <span className="gradient-text">Questions</span></h2>
           <p className="text-lavender/70 mt-3 max-w-2xl mx-auto">
             Have a question? We've got answers. If you don't see your question here, feel free to contact us.
           </p>
