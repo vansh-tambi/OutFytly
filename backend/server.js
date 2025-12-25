@@ -5,6 +5,7 @@ dotenv.config();
 // ✅ STEP 2: Core modules
 import express from "express";
 import cors from "cors";
+import compression from "compression";
 
 // ✅ STEP 3: DB + routes
 import connectDB from "./config/db.js";
@@ -30,6 +31,9 @@ import "./config/razorpay.js";
 connectDB();
 
 const app = express();
+
+// ✅ Enable compression for all responses (reduces payload size by ~70%)
+app.use(compression());
 
 // ✅ CORS config
 const allowedOrigins = [

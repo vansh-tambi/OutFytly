@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MapPin, Heart, ShoppingCart, MinusCircle } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
-import { getThumbnailUrl } from '../utils/imageUtils';
+import { getThumbnailUrl, getPlaceholderUrl } from '../utils/imageUtils';
 
 const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }) => {
   const { toggleWishlistItem, isItemInWishlist, isToggling: isWishlistLoading } = useWishlist();
   const { cart, removeItem } = useCart();
   const navigate = useNavigate();
+  const [imageLoaded, setImageLoaded] = useState(false);
   
   const isInWishlist = isItemInWishlist(_id);
   
@@ -18,6 +19,10 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
   const imageUrl = images && images.length > 0
     ? getThumbnailUrl(images[0])
     : 'https://via.placeholder.com/300x300.png?text=No+Image';
+  
+  const placeholderUrl = images && images.length > 0
+    ? getPlaceholderUrl(images[0])
+    : 'https://via.placeholder.com/50x50.png?text=No+Image';
 
   const handleWishlistToggle = (e) => {
     e.preventDefault();
@@ -66,12 +71,27 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
         </button>
       </div>
       
-      <Link to={`/item/${_id}`} className="block overflow-hidden aspect-square">
+      <Link to={`/item/${_id}`} className="block overflow-hidden aspect-square relative">
+        {/* Blurred placeholder */}
+        {!imageLoaded && (
+          <img
+            src={placeholderUrl}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover blur-lg scale-110"
+            aria-hidden="true"
+          />
+        )}
+        
+        {/* Main image */}
         <img
           src={imageUrl}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
           loading="lazy"
+          decoding="async"
+          onLoad={() => setImageLoaded(true)}
         />
       </Link>
       

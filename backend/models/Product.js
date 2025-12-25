@@ -17,5 +17,13 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// ✅ Database indexes for faster queries
+productSchema.index({ category: 1 }); // Fast category filtering
+productSchema.index({ user: 1 }); // Fast user-based queries
+productSchema.index({ createdAt: -1 }); // Fast sorting by newest
+productSchema.index({ rentalPrice: 1 }); // Fast price sorting
+productSchema.index({ title: "text" }); // Fast text search
+productSchema.index({ category: 1, rentalPrice: 1 }); // Compound index for category + price filters
+
 const Product = mongoose.model("Product", productSchema);
 export default Product;

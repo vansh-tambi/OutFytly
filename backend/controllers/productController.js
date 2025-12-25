@@ -55,7 +55,7 @@ export const getProducts = async (req, res) => {
     // ✅ 2. Location Filter Logic
     if (req.query.location) {
       // First, find all users who match the location
-      const usersInLocation = await User.find({ location: req.query.location }).select('_id');
+      const usersInLocation = await User.find({ location: req.query.location }).select('_id').lean();
       // Then, get an array of just their IDs
       const userIds = usersInLocation.map(u => u._id);
       // Add a condition to the main query to only find products where the 'user' is in our list of IDs
@@ -81,8 +81,12 @@ export const getProducts = async (req, res) => {
     }
 
     const count = await Product.countDocuments(query);
+    
+    // ✅ Optimized query: lean() for faster response, select only needed fields
     const products = await Product.find(query)
+      .select('title rentalPrice category images createdAt user') // Only select needed fields
       .populate("user", "name location") // Also populate location to display if needed
+      .lean() // Returns plain JS objects instead of Mongoose documents (faster)
       .sort(sortOption)
       .limit(pageSize)
       .skip(pageSize * (page - 1));

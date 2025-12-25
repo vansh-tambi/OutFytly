@@ -11,6 +11,7 @@ import {
 } from "../controllers/productController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/uploadMiddleware.js";
+import { cacheProducts, cacheProductDetails } from "../middleware/cacheMiddleware.js";
 
 const router = express.Router();
 
@@ -18,12 +19,12 @@ router.get("/my-listings", protect, getMyListings);
 
 router
   .route("/")
-  .get(getProducts)
+  .get(cacheProducts, getProducts) // ✅ Add caching
   .post(protect, upload.array("images", 5), createProduct);
 
 router
   .route("/:id")
-  .get(getProductById)
+  .get(cacheProductDetails, getProductById) // ✅ Add caching
   .put(protect, upload.array("images", 5), updateProduct)
   .delete(protect, deleteProduct);
 
