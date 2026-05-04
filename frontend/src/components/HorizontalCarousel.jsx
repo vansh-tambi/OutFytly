@@ -58,7 +58,7 @@ const HorizontalCarousel = ({ children }) => {
       {/* ✅ THE FIX: The 'scrollbar-hide' class is added here */}
       <div
         ref={scrollContainerRef}
-        className="grid grid-cols-1 sm:grid-cols-2 md:flex gap-6 md:overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+        className="grid grid-cols-1 sm:grid-cols-2 md:flex gap-6 md:overflow-x-auto md:overflow-y-hidden scrollbar-hide snap-x snap-mandatory py-4 px-2 -mx-2"
       >
         {children}
       </div>
