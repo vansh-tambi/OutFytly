@@ -48,7 +48,7 @@ const HorizontalCarousel = ({ children }) => {
         animate={{ opacity: canScrollLeft ? 1 : 0 }}
         transition={{ duration: 0.2 }}
         whileHover={{ scale: 1.02 }}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-plum/50 backdrop-blur-sm border border-lavender/20 text-white items-center justify-center disabled:opacity-0 disabled:cursor-default hidden md:flex"
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-plum/50 backdrop-blur-sm border border-lavender/20 text-white items-center justify-center cursor-pointer disabled:opacity-0 disabled:cursor-default hidden md:flex"
         disabled={!canScrollLeft}
         aria-label="Scroll Left"
       >
@@ -69,7 +69,7 @@ const HorizontalCarousel = ({ children }) => {
         animate={{ opacity: canScrollRight ? 1 : 0 }}
         transition={{ duration: 0.2 }}
         whileHover={{ scale: 1.02 }}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-plum/50 backdrop-blur-sm border border-lavender/20 text-white items-center justify-center disabled:opacity-0 disabled:cursor-default hidden md:flex"
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-plum/50 backdrop-blur-sm border border-lavender/20 text-white items-center justify-center cursor-pointer disabled:opacity-0 disabled:cursor-default hidden md:flex"
         disabled={!canScrollRight}
         aria-label="Scroll Right"
       >
