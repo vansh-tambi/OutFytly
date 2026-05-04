@@ -5,7 +5,6 @@ import {
   addToWishlist,
   removeFromWishlist,
   getWishlist,
-  addProductReview,
   getDashboardStats
 } from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
@@ -21,8 +20,5 @@ router.get('/dashboard-stats', protect, getDashboardStats);
 router.post("/wishlist/:id", protect, addToWishlist);
 router.delete("/wishlist/:id", protect, removeFromWishlist);
 router.get("/wishlist", protect, getWishlist);
-
-// Reviews (Product)
-router.post("/reviews/:id", protect, addProductReview);
 
 export default router;

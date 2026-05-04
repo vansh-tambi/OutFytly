@@ -66,6 +66,10 @@ export const addToCart = async (req, res) => {
 export const updateItemQuantity = async (req, res) => {
   try {
     const { quantity } = req.body;
+    if (quantity < 1) {
+      return res.status(400).json({ message: "Quantity must be at least 1" });
+    }
+    
     const cart = await Cart.findOne({ user: req.user._id });
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 

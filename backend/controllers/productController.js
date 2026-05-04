@@ -56,6 +56,17 @@ export const getProducts = async (req, res) => {
     if (req.query.location) {
       // First, find all users who match the location
       const usersInLocation = await User.find({ location: req.query.location }).select('_id').lean();
+      
+      if (usersInLocation.length === 0) {
+        // If no users are found in this location, return an empty result immediately
+        return res.json({
+          products: [],
+          page,
+          pages: 0,
+          total: 0,
+        });
+      }
+      
       // Then, get an array of just their IDs
       const userIds = usersInLocation.map(u => u._id);
       // Add a condition to the main query to only find products where the 'user' is in our list of IDs
