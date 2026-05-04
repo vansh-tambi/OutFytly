@@ -95,13 +95,11 @@ export const addToWishlist = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const user = await User.findById(req.user._id);
-    if (user.wishlist.includes(product._id)) {
-      return res.status(400).json({ message: "Product already in wishlist" });
-    }
-
-    user.wishlist.push(product._id);
-    await user.save();
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { $addToSet: { wishlist: product._id } },
+      { new: true }
+    ).populate("wishlist");
 
     res.json(user.wishlist);
   } catch (error) {
@@ -114,11 +112,12 @@ export const addToWishlist = async (req, res) => {
 // @access  Private
 export const removeFromWishlist = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { $pull: { wishlist: req.params.id } },
+      { new: true }
+    ).populate("wishlist");
 
-    user.wishlist = user.wishlist.filter((p) => p.toString() !== req.params.id);
-
-    await user.save();
     res.json(user.wishlist);
   } catch (error) {
     res.status(500).json({ message: error.message });

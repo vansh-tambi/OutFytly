@@ -8,16 +8,23 @@ export const getCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id }).populate(
       "items.product",
-      // ✅ THE FIX: Add 'user' to the list of fields to populate
       "title images rentalPrice user"
     );
+    
     if (!cart) {
-      return res.json({ user: req.user._id, items: [] });
+      return res.status(200).json({ user: req.user._id, items: [] });
     }
-    res.json(cart);
+    
+    // Filter out items where the product was deleted (product is null after populate)
+    const validItems = cart.items.filter(item => item.product != null);
+    
+    // If some products were deleted, we might want to update the cart, but for a GET request, just returning valid items is safer.
+    cart.items = validItems;
+    
+    res.status(200).json(cart);
   } catch (error) {
     console.error("GET CART ERROR:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Failed to fetch cart. Please try again later." });
   }
 };
 

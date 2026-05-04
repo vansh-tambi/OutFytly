@@ -40,10 +40,6 @@ export const transformCloudinaryUrl = (url, transformations = {}) => {
     params.push(`f_${format}`);
   }
   
-  // Add additional optimizations
-  params.push('fl_progressive'); // Progressive JPEG loading
-  params.push('fl_lossy'); // Lossy compression for smaller files
-
   const transformationString = params.join(',');
   const transformedUrl = `${urlParts[0]}/upload/${transformationString}/${urlParts[1]}`;
 
