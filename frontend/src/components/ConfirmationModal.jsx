@@ -55,21 +55,21 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message }) => {
               className="flex justify-center gap-4"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.1 }}
             >
               <motion.button
                 onClick={onClose}
                 className="px-6 py-2 rounded-lg bg-ink/50 text-white font-semibold hover:bg-ink"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.988 }}
               >
                 Cancel
               </motion.button>
               <motion.button
                 onClick={onConfirm}
                 className="px-6 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.988 }}
               >
                 Confirm Delete
               </motion.button>

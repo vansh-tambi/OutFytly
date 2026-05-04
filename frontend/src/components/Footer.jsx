@@ -26,10 +26,10 @@ const linkData = {
 // --- Reusable Component for Link Columns (with animation) ---
 const FooterLinkColumn = ({ title, links, delay }) => (
   <motion.div
-    initial={{ opacity: 0, y: 30 }}
+    initial={{ opacity: 0, y: 10 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: false, amount: 0.3 }}
-    transition={{ duration: 0.6, delay: delay }}
+    transition={{ duration: 0.3, delay: delay }}
   >
     <h3 className="text-white font-semibold mb-4 tracking-wider uppercase text-sm">{title}</h3>
     <ul className="space-y-3 text-sm">
@@ -86,8 +86,8 @@ const BackToTopButton = () => {
                     initial={{ opacity: 0, y: 20, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 20, scale: 0.8 }}
-                    whileHover={{ scale: 1.1, y: -5 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.02, y: -5 }}
+                    whileTap={{ scale: 0.988 }}
                     transition={{ duration: 0.2 }}
                     className="fixed bottom-6 right-6 z-50 bg-primary/80 backdrop-blur-sm text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-primary"
                 >
@@ -121,10 +121,10 @@ const Footer = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
             
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0 }}
+              transition={{ duration: 0.3, delay: 0 }}
               className="sm:col-span-2 lg:col-span-2"
             >
               <Link to="/" className="text-3xl font-bold flex gap-2 items-center text-white mb-4">
@@ -133,10 +133,10 @@ const Footer = () => {
               </Link>
               <p className="text-lavender/70 mb-6 pr-8">Rent. Wear. Slay. Your go-to platform for premium fashion.</p>
               <div className="flex gap-4 text-2xl">
-                <motion.a whileHover={{ y: -3, scale: 1.1 }} whileTap={{ scale: 0.95 }} href="#" className="hover:text-primary transition"><FaInstagram /></motion.a>
-                <motion.a whileHover={{ y: -3, scale: 1.1 }} whileTap={{ scale: 0.95 }} href="#" className="hover:text-primary transition"><FaFacebook /></motion.a>
-                <motion.a whileHover={{ y: -3, scale: 1.1 }} whileTap={{ scale: 0.95 }} href="#" className="hover:text-primary transition"><FaTwitter /></motion.a>
-                <motion.a whileHover={{ y: -3, scale: 1.1 }} whileTap={{ scale: 0.95 }} href="#" className="hover:text-primary transition"><FaLinkedin /></motion.a>
+                <motion.a whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.988 }} href="#" className="hover:text-primary transition"><FaInstagram /></motion.a>
+                <motion.a whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.988 }} href="#" className="hover:text-primary transition"><FaFacebook /></motion.a>
+                <motion.a whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.988 }} href="#" className="hover:text-primary transition"><FaTwitter /></motion.a>
+                <motion.a whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.988 }} href="#" className="hover:text-primary transition"><FaLinkedin /></motion.a>
               </div>
             </motion.div>
 
@@ -144,10 +144,10 @@ const Footer = () => {
             <FooterLinkColumn title="Support" links={linkData.supportLinks} delay={0.2} />
 
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
               className="sm:col-span-2 lg:col-span-1"
             >
                 <h3 className="text-white font-semibold mb-4 tracking-wider uppercase text-sm">Stay in the Loop</h3>
@@ -157,7 +157,7 @@ const Footer = () => {
                 ) : (
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col sm:flex-row lg:flex-col gap-2">
                         <input {...register("email", { required: true })} type="email" placeholder="Your email" className="form-input flex-1" />
-                        <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.05 }} className="px-5 py-2 rounded-lg bg-primary text-white font-semibold shadow-md hover:bg-lavender hover:text-plum transition disabled:bg-primary/50">
+                        <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.02 }} className="px-5 py-2 rounded-lg bg-primary text-white font-semibold shadow-md hover:bg-lavender hover:text-plum transition disabled:bg-primary/50">
                             {isSubmitting ? "..." : "Subscribe"}
                         </motion.button>
                     </form>

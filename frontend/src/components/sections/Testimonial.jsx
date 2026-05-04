@@ -37,7 +37,7 @@ const Testimonials = () => {
           }}
           initial="initial"
           whileInView="whileInView"
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
           viewport={{ once: false, amount: 0.3 }}
           className="text-3xl md:text-4xl font-bold mb-12 text-white"
         >
@@ -62,14 +62,14 @@ const Testimonials = () => {
               <SwiperSlide key={t.id} className="!w-full max-w-lg select-none">
                 <motion.div 
                   variants={{
-                    initial: { opacity: 0, scale: 0.9 },
+                    initial: { opacity: 0, scale: 0.98 },
                     whileInView: { opacity: 1, scale: 1 }
                   }}
                   initial="initial"
                   whileInView="whileInView"
                   viewport={{ once: false, amount: 0.3 }}
-                  transition={{ duration: 0.5 }}
-                  className="glass-card rounded-xl shadow-lg p-8 text-left border-primary/30 h-full flex flex-col glow-hover">
+                  transition={{ duration: 0.3 }}
+                  className="glass-card rounded-xl shadow-lg p-8 text-left border-primary/30 h-full flex flex-col ">
                   <Quote className="text-primary/50 mb-4" size={32} />
                   <p className="text-lavender/80 italic mb-6 leading-relaxed flex-grow">"{t.text}"</p>
                   <div className="flex items-center gap-4 mt-auto">
@@ -89,8 +89,8 @@ const Testimonials = () => {
 
           {/* Custom navigation arrows */}
           <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             className="custom-swiper-prev absolute top-1/2 -translate-y-1/2 left-0 sm:left-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-primary border border-white/30 cursor-pointer opacity-0 group-hover:opacity-100"
             aria-label="Previous testimonial"
           >
@@ -98,8 +98,8 @@ const Testimonials = () => {
           </motion.button>
 
           <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             className="custom-swiper-next absolute top-1/2 -translate-y-1/2 right-0 sm:right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-primary border border-white/30 cursor-pointer opacity-0 group-hover:opacity-100"
             aria-label="Next testimonial"
           >

@@ -49,10 +49,10 @@ const CTA = () => {
       <div className="relative z-20 h-full grid md:grid-cols-2 gap-8 items-center">
         {/* --- Left Column: Main CTA --- */}
         <motion.div 
-          initial={{ opacity: 0, x: -50 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
           className="max-w-xl p-8 text-center md:text-left"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
@@ -61,12 +61,12 @@ const CTA = () => {
           <p className="text-lg md:text-xl mb-8 text-lavender/80">
             Join a community where style meets sustainability. Discover unique pieces and give your own fashion a new life.
           </p>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.8 }}>
   <Link to="/signup">
     <motion.button 
-      whileHover={{ scale: 1.05, y: -3 }} 
-      whileTap={{ scale: 0.95 }} 
-      className="btn-gradient glow-hover inline-flex items-center gap-2"
+      whileHover={{ scale: 1.02, y: -3 }} 
+      whileTap={{ scale: 0.988 }} 
+      className="btn-gradient  inline-flex items-center gap-2"
     >
       Join OutFytly Now <ArrowRight size={20} />
     </motion.button>
@@ -76,19 +76,19 @@ const CTA = () => {
 
         {/* --- Right Column: Key Feature Highlights --- */}
         <motion.div 
-          initial={{ opacity: 0, x: 50 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
           className="hidden md:flex flex-col gap-6 p-8"
         >
           {keyFeatures.map((feature, i) => (
              <motion.div 
                 key={i}
-                initial={{ opacity: 0, x: 50 }}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.2 + i * 0.2 }}
+                transition={{ duration: 0.3, delay: 0.2 + i * 0.2 }}
                 className="flex items-start gap-4 glass-card p-4 rounded-xl"
              >
                 <div className="bg-primary/20 text-primary p-3 rounded-full">

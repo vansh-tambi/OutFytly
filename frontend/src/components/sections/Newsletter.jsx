@@ -28,7 +28,7 @@ const Newsletter = () => {
           }}
           initial="initial"
           whileInView="whileInView"
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
           viewport={{ once: false, amount: 0.3 }}
           className="text-3xl font-bold mb-3"
         >
@@ -41,7 +41,7 @@ const Newsletter = () => {
           }}
           initial="initial"
           whileInView="whileInView"
-          transition={{ delay: 0.2, duration: 0.6 }}
+          transition={{ delay: 0.2, duration: 0.3 }}
           viewport={{ once: false, amount: 0.3 }}
           className="text-lavender/70 mb-8 max-w-md mx-auto"
         >
@@ -59,9 +59,9 @@ const Newsletter = () => {
         ) : (
           <motion.form
             onSubmit={handleSubmit(onSubmit)}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
+            transition={{ delay: 0.3, duration: 0.3 }}
             viewport={{ once: false }}
             className="max-w-lg mx-auto"
           >

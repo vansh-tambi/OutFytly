@@ -51,7 +51,7 @@ const Signup = () => {
             modules={[Autoplay, EffectFade]}
             effect="fade"
             loop={true}
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            autoplay={{ delay: 1000, disableOnInteraction: false }}
             className="w-full h-full"
           >
             {carouselImages.map((src, i) => (
@@ -65,14 +65,14 @@ const Signup = () => {
 
         <div className="w-full lg:w-1/2 flex flex-col justify-center p-8 sm:p-12">
           <motion.div 
-            initial={{ opacity: 0, x: 50 }} 
+            initial={{ opacity: 0, y: 10 }} 
             animate={{ opacity: 1, x: 0 }} 
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
           >
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
             >
               <Link to="/" className="text-2xl font-bold flex gap-2 items-center text-white mb-6">
                 <img src="/Logo_OUTFYTLY.png" alt="OutFytly" className="h-9 w-9 rounded-xl object-cover" />
@@ -83,7 +83,7 @@ const Signup = () => {
               className="text-3xl font-bold text-white mb-2"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
             >
               Create Your Account
             </motion.h2>
@@ -91,7 +91,7 @@ const Signup = () => {
               className="text-lavender/70 mb-6"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
             >
               Join the community and start your fashion journey.
             </motion.p>
@@ -101,12 +101,12 @@ const Signup = () => {
               className="space-y-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.1 }}
             >
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.55 }}
+                transition={{ delay: 0.15 }}
               >
                 <motion.input 
                   {...register("fullName", { required: "Full name is required" })} 
@@ -120,7 +120,7 @@ const Signup = () => {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
+                transition={{ delay: 0.1 }}
               >
                 <CityAutocomplete 
                   register={register}
@@ -132,7 +132,7 @@ const Signup = () => {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.65 }}
+                transition={{ delay: 0.15 }}
               >
                 <motion.input 
                   {...register("email", { required: "Email is required", pattern: { value: /^\S+@\S+$/i, message: "Invalid email address" }})} 
@@ -158,8 +158,8 @@ const Signup = () => {
                   type="button" 
                   onClick={() => setShowPassword(!showPassword)} 
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-lavender/60 hover:text-white"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </motion.button>
@@ -181,8 +181,8 @@ const Signup = () => {
                   type="button" 
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-lavender/60 hover:text-white"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </motion.button>
@@ -193,7 +193,7 @@ const Signup = () => {
                 type="submit" 
                 disabled={isSubmitting} 
                 whileHover={{ scale: isSubmitting ? 1 : 1.03 }} 
-                whileTap={{ scale: 0.97 }}
+                whileTap={{ scale: 0.988 }}
                 className="w-full bg-primary text-white py-3 rounded-lg font-semibold shadow-md hover:bg-primary/90 transition disabled:bg-primary/50"
               >
                 {isSubmitting ? "Creating Account..." : "Create Account"}

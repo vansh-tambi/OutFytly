@@ -18,7 +18,7 @@ const containerVariant = {
 };
 
 const itemVariant = {
-  initial: { opacity: 0, scale: 0.9 },
+  initial: { opacity: 0, scale: 0.98 },
   whileInView: { opacity: 1, scale: 1 },
 };
 
@@ -32,7 +32,7 @@ const CategoryCard = ({ name, image, size }) => {
         ${isLarge ? 'md:col-span-2 md:row-span-2' : ''}
       `}
     >
-      <motion.div variants={itemVariant} whileHover={{ scale: 1.05 }} className="h-full">
+      <motion.div variants={itemVariant} whileHover={{ scale: 1.02 }} className="h-full">
         <img
           src={image}
           alt={name}

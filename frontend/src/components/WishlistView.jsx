@@ -45,7 +45,7 @@ const WishlistView = () => {
           <h2 className="text-2xl font-semibold text-white">Your wishlist is empty.</h2>
           <p className="text-lavender/70 mt-2">Heart some items to see them here!</p>
           <Link to="/browse">
-            <motion.button whileHover={{ scale: 1.05 }} className="mt-6 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
+            <motion.button whileHover={{ scale: 1.02 }} className="mt-6 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
               Start Browsing
             </motion.button>
           </Link>

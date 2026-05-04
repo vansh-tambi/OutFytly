@@ -69,10 +69,10 @@ const Home = () => {
                   subtitle="Discover curated collections that perfectly match your unique style and occasion." 
                 />
                 <motion.div 
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: false, amount: 0.2 }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 0.3 }}
                   animate={{ y: [0, -8, 0], transition: { duration: 5, repeat: Infinity, ease: 'easeInOut' } }}
                   className="relative mt-12 group"
                 >
@@ -115,7 +115,7 @@ const Home = () => {
                     <SectionTitle title="A Smarter Way to Style" subtitle="Experience fashion that's better for your wallet and the planet." />
                     <div className="grid md:grid-cols-3 gap-8 mt-12">
                         {whyChooseUs.map((item, i) => (
-                            <motion.div key={item.title} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.5 }} transition={{ duration: 0.6, delay: i * 0.15 }} className="text-center p-6">
+                            <motion.div key={item.title} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.5 }} transition={{ duration: 0.3, delay: i * 0.15 }} className="text-center p-6">
                                 <div className="bg-primary/10 text-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                                   <item.icon size={32} />
                                 </div>
@@ -130,10 +130,10 @@ const Home = () => {
             <section className="py-24 px-6 bg-plum/20">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid lg:grid-cols-3 gap-12 items-center">
-                        <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false }} className="lg:col-span-1">
+                        <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false }} className="lg:col-span-1">
                             <SectionTitle align="left" title="Trending Now" subtitle="Discover the most popular outfits and accessories currently being rented." />
                             <Link to="/browse">
-                                <motion.button whileHover={{ scale: 1.05 }} className="mt-4 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
+                                <motion.button whileHover={{ scale: 1.02 }} className="mt-4 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
                                     Explore All
                                 </motion.button>
                             </Link>

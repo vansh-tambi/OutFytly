@@ -59,13 +59,13 @@ function handleMouse(event) {
             ))}
           </motion.h1>
 
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }} className="text-lg md:text-xl mb-10 text-lavender/80 max-w-xl mx-auto lg:mx-0">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.8 }} className="text-lg md:text-xl mb-10 text-lavender/80 max-w-xl mx-auto lg:mx-0">
             Access an endless wardrobe of premium looks. Rent designer outfits, or earn by sharing your own style with our community.
           </motion.p>
           
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1 }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 1 }}>
             <Link to="/browse">
-              <motion.button whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }} className="btn-gradient glow-hover inline-flex items-center gap-2">
+              <motion.button whileHover={{ scale: 1.02, y: -3 }} whileTap={{ scale: 0.988 }} className="btn-gradient  inline-flex items-center gap-2">
                 Explore Collection <ArrowRight size={20} />
               </motion.button>
             </Link>

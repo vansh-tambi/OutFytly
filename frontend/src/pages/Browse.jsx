@@ -39,7 +39,7 @@ const FilterSidebar = ({ filters, setFilters, loading }) => {
           whileInView="whileInView"
           exit="exit"
           viewport={{ once: false, amount: 0.2 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3 }}
         >
             {/* SEARCH INPUT HAS BEEN REMOVED */}
             <motion.div
@@ -61,7 +61,7 @@ const FilterSidebar = ({ filters, setFilters, loading }) => {
                           disabled={loading} 
                           className={`w-full text-left px-3 py-2 rounded-md text-sm transition ${category === cat ? 'bg-primary text-white font-semibold' : 'hover:bg-plum/50 text-lavender'}`}
                           whileHover={{ x: 4 }}
-                          whileTap={{ scale: 0.98 }}
+                          whileTap={{ scale: 0.988 }}
                           transition={{ duration: 0.2 }}
                         >
                             {cat}
@@ -197,12 +197,12 @@ const Browse = () => {
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3 }}
         >
             <motion.h1 
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.3 }}
               className="text-4xl font-bold text-white"
             >
               Explore the Collection
@@ -210,7 +210,7 @@ const Browse = () => {
             <motion.p 
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.2, duration: 0.5 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
               className="text-lavender/70 mt-2"
             >
               Find your next statement piece from thousands of unique outfits.
@@ -222,7 +222,7 @@ const Browse = () => {
               className="hidden lg:block lg:col-span-1"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
             >
                 <div className="sticky top-24 bg-plum/30 p-6 rounded-xl border border-lavender/20">
                     <h3 className="text-2xl font-semibold text-white mb-4">Filters</h3>
@@ -241,8 +241,8 @@ const Browse = () => {
                     <motion.button 
                       onClick={() => setMobileFiltersOpen(true)} 
                       className="flex items-center gap-2 bg-plum/50 px-4 py-2 rounded-md text-white"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.988 }}
                     >
                         <SlidersHorizontal size={18} /> Filters
                     </motion.button>
@@ -276,19 +276,19 @@ const Browse = () => {
                           initial={{ opacity: 0 }}
                           whileInView={{ opacity: 1 }}
                           viewport={{ once: false, amount: 0.1 }}
-                          transition={{ duration: 0.5 }}
+                          transition={{ duration: 0.3 }}
                         >
                             {products.map((itemData, index) => (
                                 <motion.div
                                   key={itemData._id}
                                   variants={{
-                                    initial: { opacity: 0, y: 40, scale: 0.95 },
+                                    initial: { opacity: 0, y: 40, scale: 0.988 },
                                     whileInView: { opacity: 1, y: 0, scale: 1 }
                                   }}
                                   initial="initial"
                                   whileInView="whileInView"
                                   viewport={{ once: false, amount: 0.2 }}
-                                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                                  transition={{ duration: 0.3, delay: index * 0.05 }}
                                 >
                                   <ItemCard {...itemData} />
                                 </motion.div>
@@ -300,7 +300,7 @@ const Browse = () => {
                               className="text-center py-20"
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.5 }}
+                              transition={{ duration: 0.3 }}
                             >
                                 <h3 className="text-2xl font-semibold text-white">No <span className="gradient-text">Items</span> Found</h3>
                                 <p className="text-lavender/70 mt-2">Try adjusting your filters to find what you're looking for.</p>

@@ -7,7 +7,7 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 const ContactInfoCard = ({ icon: Icon, title, detail, href }) => (
     <motion.a 
         href={href} 
-        whileHover={{ y: -5, scale: 1.03 }}
+        whileHover={{ y: -5, scale: 1.01 }}
         className="flex items-start gap-4 p-6 glass-card rounded-lg"
     >
         <div className="bg-primary/20 text-primary p-3 rounded-full">
@@ -36,7 +36,7 @@ const Contact = () => {
     <section className="py-24 bg-ink text-white">
       <div className="max-w-6xl mx-auto px-6">
         <motion.div 
-            initial={{ opacity: 0, y: -30 }}
+            initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             className="text-center mb-16"
@@ -50,10 +50,10 @@ const Contact = () => {
         <div className="grid md:grid-cols-2 gap-10 items-start">
             {/* --- Left Column: Contact Info --- */}
             <motion.div 
-                initial={{ opacity: 0, x: -50 }}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.3 }}
                 className="space-y-6"
             >
                 <ContactInfoCard icon={Mail} title="Email Us" detail="support@outfytly.com" href="mailto:support@outfytly.com" />
@@ -63,10 +63,10 @@ const Contact = () => {
 
             {/* --- Right Column: Contact Form --- */}
             <motion.div 
-                initial={{ opacity: 0, x: 50 }}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.3 }}
                 className="bg-plum/30 p-8 rounded-2xl border border-lavender/20"
             >
                 {isSuccess ? (
@@ -92,7 +92,7 @@ const Contact = () => {
                             <textarea {...register("message", { required: "A message is required" })} rows="5" placeholder="Your Message" className="form-input"/>
                             {errors.message && <p className="form-error">{errors.message.message}</p>}
                         </div>
-                        <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="w-full bg-primary text-white py-3 rounded-lg font-semibold shadow-md hover:bg-primary/90 transition disabled:bg-primary/50">
+                        <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.988 }} className="w-full bg-primary text-white py-3 rounded-lg font-semibold shadow-md hover:bg-primary/90 transition disabled:bg-primary/50">
                             {isSubmitting ? 'Sending...' : 'Send Message'}
                         </motion.button>
                     </form>

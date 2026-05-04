@@ -22,7 +22,7 @@ const containerVariant = {
 
 const itemVariant = {
   hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
 };
 
 
@@ -31,10 +31,10 @@ const Help = () => {
     <div className="bg-ink min-h-screen">
       {/* --- Hero Section --- */}
       <div className="text-center py-24 px-6 bg-gradient-to-b from-plum to-ink">
-        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }} className="text-4xl md:text-5xl font-bold text-white mb-4">
+        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }} className="text-4xl md:text-5xl font-bold text-white mb-4">
           How can we help? 🙋
         </motion.h1>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }} className="relative mt-8 max-w-2xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2, ease: 'easeOut' }} className="relative mt-8 max-w-2xl mx-auto">
           <input type="search" placeholder="Search for answers..." className="w-full pl-12 pr-4 py-4 rounded-full bg-plum/50 border border-lavender/30 text-white placeholder-lavender/60 focus:outline-none focus:ring-2 focus:ring-primary"/>
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-lavender/50" size={22} />
         </motion.div>

@@ -32,12 +32,12 @@ const AppDownload = () => {
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.h2
           variants={{
-            initial: { opacity: 0, y: -30 },
+            initial: { opacity: 0, y: -10 },
             whileInView: { opacity: 1, y: 0 }
           }}
           initial="initial"
           whileInView="whileInView"
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.3 }}
           viewport={{ once: false, amount: 0.3 }}
           className="text-3xl md:text-4xl font-bold mb-4"
         >
@@ -50,7 +50,7 @@ const AppDownload = () => {
           }}
           initial="initial"
           whileInView="whileInView"
-          transition={{ delay: 0.2, duration: 0.6 }}
+          transition={{ delay: 0.2, duration: 0.3 }}
           viewport={{ once: false, amount: 0.3 }}
           className="text-lg text-lavender mb-8 max-w-2xl mx-auto"
         >
@@ -58,12 +58,12 @@ const AppDownload = () => {
         </motion.p>
         <motion.div
           variants={{
-            initial: { opacity: 0, y: 30 },
+            initial: { opacity: 0, y: 10 },
             whileInView: { opacity: 1, y: 0 }
           }}
           initial="initial"
           whileInView="whileInView"
-          transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+          transition={{ delay: 0.1, duration: 0.3, ease: "easeOut" }}
           viewport={{ once: false, amount: 0.3 }}
           // This ensures buttons stack on small screens and go side-by-side on larger ones
           className="flex flex-col sm:flex-row justify-center items-center gap-5"

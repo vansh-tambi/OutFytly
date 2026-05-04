@@ -7,10 +7,10 @@ import { Gavel, Package, ShieldAlert, FileText } from 'lucide-react';
 // Upgraded component with icons and a card-like design
 const PolicySection = ({ icon: Icon, title, children, delay }) => (
   <motion.div
-    initial={{ opacity: 0, y: 30 }}
+    initial={{ opacity: 0, y: 10 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: false, amount: 0.5 }}
-    transition={{ duration: 0.6, delay: delay }}
+    transition={{ duration: 0.3, delay: delay }}
     className="flex items-start gap-6 bg-plum/30 p-6 rounded-2xl border border-lavender/20"
   >
     <div className="bg-primary/10 text-primary p-3 rounded-full mt-1">

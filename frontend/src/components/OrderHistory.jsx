@@ -63,7 +63,7 @@ const OrderHistory = () => {
         <div className="text-center py-20 bg-ink rounded-lg border border-lavender/20">
           <h2 className="text-2xl font-semibold text-white">You haven't placed any orders yet.</h2>
           <Link to="/browse">
-            <motion.button whileHover={{ scale: 1.05 }} className="mt-6 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
+            <motion.button whileHover={{ scale: 1.02 }} className="mt-6 bg-primary px-6 py-2 rounded-lg font-semibold text-white">
               Start Shopping
             </motion.button>
           </Link>

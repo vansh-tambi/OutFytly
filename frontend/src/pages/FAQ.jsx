@@ -19,7 +19,7 @@ const FAQ = () => {
     <section className="py-24 bg-ink text-white">
       <div className="max-w-6xl mx-auto px-6">
         <motion.div
-            initial={{ opacity: 0, y: -30 }}
+            initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             className="text-center mb-16"
@@ -33,10 +33,10 @@ const FAQ = () => {
         <div className="grid md:grid-cols-3 gap-10">
           {/* --- Left Column with Upgraded Animations --- */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.3 }}
             className="md:col-span-1 space-y-4"
           >
             {faqs.map((faq, index) => {
@@ -66,10 +66,10 @@ const FAQ = () => {
 
           {/* --- Right Column: Answer Display --- */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.3 }}
             className="md:col-span-2 bg-plum/30 p-8 rounded-2xl border border-lavender/20 min-h-[300px]"
           >
             <AnimatePresence>

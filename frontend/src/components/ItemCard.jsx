@@ -49,13 +49,13 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
   return (
     <motion.div
       variants={{
-        initial: { opacity: 0, y: 40, scale: 0.95 },
+        initial: { opacity: 0, y: 40, scale: 0.988 },
         whileInView: { opacity: 1, y: 0, scale: 1 }
       }}
       initial="initial"
       whileInView="whileInView"
       viewport={{ once: false, amount: 0.2 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
       whileHover={{ y: -8, scale: 1.02 }}
       className="relative bg-ink text-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-primary/30 transition-shadow duration-300 flex flex-col w-full card-hover"
     >
@@ -75,8 +75,8 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
           disabled={isWishlistLoading}
           className="p-2 rounded-full bg-black/40 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           aria-label="Toggle Wishlist"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           <motion.div
             animate={isInWishlist ? { scale: [1, 1.2, 1] } : {}}
@@ -93,8 +93,8 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
           onClick={handleCartClick}
           className="p-2 rounded-full bg-black/40 backdrop-blur-sm text-white transition-all"
           aria-label={itemInCart ? "Remove from cart" : "View to add to cart"}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           {itemInCart ? <MinusCircle size={20} className="text-red-400" /> : <ShoppingCart size={20} />}
         </motion.button>
@@ -194,7 +194,7 @@ const ItemCard = React.memo(({ _id, title, rentalPrice, images, category, user }
           <motion.button
             className="w-full bg-primary/90 text-white text-center py-2.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-primary transition-colors"
             whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileTap={{ scale: 0.988 }}
             transition={{ duration: 0.2 }}
           >
             View Details

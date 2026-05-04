@@ -30,7 +30,7 @@ const Brands = () => {
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.3 }}
         >
             <h2 className="text-3xl font-bold text-white mb-3">
               Featured In Our Collection
@@ -51,7 +51,7 @@ const Brands = () => {
             <motion.div
               key={brand.alt}
               variants={cardVariant}
-              whileHover={{ y: -8, scale: 1.05, boxShadow: "0px 10px 20px rgba(138, 43, 225, 0.2)" }}
+              whileHover={{ y: -8, scale: 1.02, boxShadow: "0px 10px 20px rgba(138, 43, 225, 0.2)" }}
               className="group bg-plum/30 backdrop-blur-sm p-6 rounded-xl flex items-center justify-center aspect-square border border-lavender/20 transition-colors hover:border-primary/50"
             >
               <img

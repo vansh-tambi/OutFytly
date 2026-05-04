@@ -53,7 +53,7 @@ const Careers = () => {
       className="bg-ink text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }}
     >
       {/* --- Hero Section --- */}
       <div className="relative text-center py-24 px-6 bg-gradient-to-b from-plum to-ink overflow-hidden"> {/* 🔽 Optimized: py-28 -> py-24 */}
@@ -61,7 +61,7 @@ const Careers = () => {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.3 }}
           className="text-4xl md:text-5xl font-bold text-white mb-4 relative z-10"
         >
           Shape the Future of Fashion
@@ -69,7 +69,7 @@ const Careers = () => {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
           className="text-lg text-lavender/80 max-w-3xl mx-auto relative z-10"
         >
           We're looking for passionate, creative individuals to join our revolution. Find your place at OutFytly.

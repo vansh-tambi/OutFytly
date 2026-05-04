@@ -216,16 +216,16 @@ const ItemDetails = () => {
                 src={getMainImageUrl(selectedImage)}
                 alt={product.title}
                 className="w-full h-auto object-cover rounded-2xl shadow-2xl shadow-plum/50 aspect-square"
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.988 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
+                exit={{ opacity: 0, scale: 0.988 }}
                 transition={{ duration: 0.3 }}
               />
             </AnimatePresence>
             
             <div className="absolute top-4 right-4 flex flex-col gap-3">
                 <motion.button
-                    whileTap={{ scale: 0.9 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={handleWishlistToggle}
                     disabled={isToggling}
                     className="z-10 p-3 rounded-full bg-black/40 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed"
@@ -243,7 +243,7 @@ const ItemDetails = () => {
                   alt={`${product.title} thumbnail`}
                   onClick={() => setSelectedImage(img)}
                   className={`w-1/5 cursor-pointer rounded-lg aspect-square object-cover border-2 transition ${selectedImage === img ? 'border-primary' : 'border-transparent'}`}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.02 }}
                 />
               ))}
             </div>

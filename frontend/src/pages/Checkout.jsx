@@ -134,7 +134,7 @@ const Checkout = () => {
         <motion.h1 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3 }}
           className="text-3xl md:text-4xl font-bold mb-10"
         >
           Checkout
@@ -145,7 +145,7 @@ const Checkout = () => {
             className="lg:col-span-2 bg-plum/30 p-8 rounded-xl border border-lavender/20 space-y-6"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
           >
             <motion.h2 
               className="text-2xl font-semibold mb-4"
@@ -204,7 +204,7 @@ const Checkout = () => {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.1 }}
             >
               <label className="form-label">Full Address</label>
               <motion.textarea 
@@ -221,7 +221,7 @@ const Checkout = () => {
               className="text-2xl font-semibold pt-6 border-t border-lavender/20"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45 }}
+              transition={{ delay: 0.15 }}
             >
               Payment Method
             </motion.h2>
@@ -248,8 +248,8 @@ const Checkout = () => {
             <motion.button 
               type="submit" 
               disabled={isSubmitting} 
-              whileHover={{ scale: 1.03 }} 
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.01 }} 
+              whileTap={{ scale: 0.988 }}
               className="w-full mt-6 bg-primary px-6 py-3 rounded-lg font-semibold text-white disabled:opacity-50"
             >
               {isSubmitting ? 'Placing Order...' : `Place Order (₹${total.toLocaleString()})`}
@@ -260,7 +260,7 @@ const Checkout = () => {
             className="lg:col-span-1 sticky top-24"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
           >
             <motion.div className="bg-plum/30 p-6 rounded-xl border border-lavender/20">
               <motion.h2 
@@ -288,7 +288,7 @@ const Checkout = () => {
                         src={item.product.images[0]} 
                         alt={item.product.title} 
                         className="w-16 h-16 rounded-md object-cover" 
-                        whileHover={{ scale: 1.05 }}
+                        whileHover={{ scale: 1.02 }}
                         transition={{ duration: 0.2 }}
                       />
                       <div className="flex-grow">
@@ -304,13 +304,13 @@ const Checkout = () => {
                 className="border-t border-lavender/20 mt-4 pt-4 space-y-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.1 }}
               >
                 <motion.div 
                   className="flex justify-between text-lavender/80"
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.55 }}
+                  transition={{ delay: 0.15 }}
                 >
                   <span>Subtotal</span><span>₹{subtotal.toLocaleString()}</span>
                 </motion.div>
@@ -318,7 +318,7 @@ const Checkout = () => {
                   className="flex justify-between text-lavender/80"
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.6 }}
+                  transition={{ delay: 0.1 }}
                 >
                   <span>Shipping</span><span>₹{shipping.toLocaleString()}</span>
                 </motion.div>
@@ -326,11 +326,11 @@ const Checkout = () => {
                   className="border-t border-lavender/20 my-2"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.65 }}
+                  transition={{ delay: 0.15 }}
                 />
                 <motion.div 
                   className="flex justify-between text-xl font-bold text-white"
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.7 }}
                 >

@@ -117,7 +117,7 @@ const Dashboard = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.3 }}
       >
         <h1 className="text-3xl font-bold text-white mb-6">Seller Dashboard</h1>
 
@@ -126,7 +126,7 @@ const Dashboard = () => {
             className="bg-ink p-6 rounded-xl border border-lavender/20"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0 }}
+            transition={{ duration: 0.3, delay: 0 }}
             whileHover={{ y: -4, borderColor: '#8A2BE2' }}
           >
             <h3 className="text-lavender/70 text-sm font-medium">Total Earnings</h3>
@@ -143,7 +143,7 @@ const Dashboard = () => {
             className="bg-ink p-6 rounded-xl border border-lavender/20"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
             whileHover={{ y: -4, borderColor: '#8A2BE2' }}
           >
             <h3 className="text-lavender/70 text-sm font-medium">Active Listings</h3>
@@ -160,7 +160,7 @@ const Dashboard = () => {
             className="bg-ink p-6 rounded-xl border border-lavender/20"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
             whileHover={{ y: -4, borderColor: '#8A2BE2' }}
           >
             <h3 className="text-lavender/70 text-sm font-medium">Items Rented</h3>
@@ -177,9 +177,9 @@ const Dashboard = () => {
 
         <motion.div 
           className="bg-ink p-8 rounded-2xl shadow-lg border border-lavender/20 mb-8"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
         >
           <h2 className="text-2xl font-semibold mb-6 text-lavender flex items-center gap-3">
             <UploadCloud /> List a New Item
@@ -292,9 +292,9 @@ const Dashboard = () => {
 
         <motion.div 
           className="bg-ink p-8 rounded-2xl shadow-lg border border-lavender/20"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
         >
           <h2 className="text-2xl font-semibold mb-6 text-lavender">My Listings</h2>
           <div className="space-y-4">
@@ -321,8 +321,8 @@ const Dashboard = () => {
                   <motion.button 
                     onClick={() => setItemToDelete(item)} 
                     className="p-2 rounded-md hover:bg-red-500/20 text-red-400 transition"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     <Trash2 size={18} />
                   </motion.button>

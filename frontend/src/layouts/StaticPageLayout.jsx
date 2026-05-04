@@ -10,7 +10,7 @@ const StaticPageLayout = ({ title, subtitle, children }) => {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
           className="text-4xl md:text-5xl font-bold text-white mb-4"
         >
           {title}
@@ -19,7 +19,7 @@ const StaticPageLayout = ({ title, subtitle, children }) => {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+            transition={{ duration: 0.3, delay: 0.2, ease: 'easeOut' }}
             className="text-lg text-lavender/80 max-w-3xl mx-auto"
           >
             {subtitle}
@@ -32,7 +32,7 @@ const StaticPageLayout = ({ title, subtitle, children }) => {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 0.3, delay: 0.3, ease: 'easeOut' }}
           className="bg-plum/30 p-8 sm:p-10 rounded-2xl border border-lavender/20 text-lavender/80 leading-relaxed space-y-4"
         >
           {children}

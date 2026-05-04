@@ -38,9 +38,9 @@ const Cart = () => {
 
         {validItems.length === 0 ? (
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
             className="text-center py-20 bg-plum/30 rounded-lg"
           >
             <motion.div
@@ -54,8 +54,8 @@ const Cart = () => {
             <p className="text-lavender/70 mt-2">Looks like you haven't added anything yet!</p>
             <Link to="/browse">
               <motion.button 
-                whileHover={{ scale: 1.05 }} 
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }} 
+                whileTap={{ scale: 0.988 }}
                 className="mt-6 bg-primary px-6 py-2 rounded-lg font-semibold"
               >
                 Start Shopping
@@ -75,9 +75,9 @@ const Cart = () => {
                     <motion.div
                       key={item._id}
                       layout
-                      initial={{ opacity: 0, x: -50 }}
+                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 50, transition: { duration: 0.3 } }}
+                      exit={{ opacity: 0, y: 10, transition: { duration: 0.3 } }}
                       whileHover={{ y: -2 }}
                       transition={{ duration: 0.2 }}
                       className="flex items-start gap-4 bg-plum/50 p-4 rounded-xl border border-lavender/20 hover:border-lavender/40 transition-colors"
@@ -86,7 +86,7 @@ const Cart = () => {
                         src={imageUrl}
                         alt={item.product.title} 
                         className="w-24 h-24 object-cover rounded-lg" 
-                        whileHover={{ scale: 1.05 }}
+                        whileHover={{ scale: 1.02 }}
                         transition={{ duration: 0.2 }}
                       />
                       <div className="flex-grow">
@@ -120,8 +120,8 @@ const Cart = () => {
                           <motion.button 
                             onClick={() => updateQuantity(item._id, item.quantity - 1)} 
                             className="text-lavender"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                           >
                             <Minus size={16}/>
                           </motion.button>
@@ -137,8 +137,8 @@ const Cart = () => {
                           <motion.button 
                             onClick={() => updateQuantity(item._id, item.quantity + 1)} 
                             className="text-lavender"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                           >
                             <Plus size={16}/>
                           </motion.button>
@@ -146,8 +146,8 @@ const Cart = () => {
                         <motion.button 
                           onClick={() => removeItem(item._id)} 
                           className="text-red-400 hover:text-red-500 transition-colors flex items-center gap-1 text-sm"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.988 }}
                         >
                           <Trash2 size={14} /> Remove
                         </motion.button>
@@ -160,9 +160,9 @@ const Cart = () => {
             
             <div className="lg:col-span-1 sticky top-24">
                 <motion.div
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
+                  transition={{ delay: 0.2, duration: 0.3 }}
                   className="bg-plum/50 p-6 rounded-xl border border-lavender/20"
                 >
                   <motion.h2 
@@ -187,7 +187,7 @@ const Cart = () => {
                       className="flex justify-between"
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.4 }}
+                      transition={{ delay: 0.1 }}
                     >
                       <span>Shipping</span> 
                       <span className="text-white">₹{shipping.toLocaleString()}</span>
@@ -196,13 +196,13 @@ const Cart = () => {
                       className="border-t border-lavender/20 my-2"
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: 1 }}
-                      transition={{ delay: 0.45 }}
+                      transition={{ delay: 0.15 }}
                     />
                     <motion.div 
                       className="flex justify-between text-xl font-bold text-white"
-                      initial={{ opacity: 0, scale: 0.9 }}
+                      initial={{ opacity: 0, scale: 0.98 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.5 }}
+                      transition={{ delay: 0.1 }}
                     >
                       <span>Total</span> 
                       <span>₹{total.toLocaleString()}</span>
@@ -210,8 +210,8 @@ const Cart = () => {
                   </div>
                   <Link to="/checkout">
                     <motion.button 
-                      whileHover={{ scale: 1.03 }} 
-                      whileTap={{ scale: 0.97 }}
+                      whileHover={{ scale: 1.01 }} 
+                      whileTap={{ scale: 0.988 }}
                       className="w-full mt-6 bg-primary px-6 py-3 rounded-lg font-semibold text-white transition-colors hover:bg-primary/90"
                     >
                       Proceed to Checkout

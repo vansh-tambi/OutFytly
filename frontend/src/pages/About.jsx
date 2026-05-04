@@ -24,7 +24,7 @@ const About = () => {
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
-                    transition={{ duration: 0.6 }} 
+                    transition={{ duration: 0.3 }} 
                     className="text-4xl md:text-5xl font-bold text-white"
                 >
                     Fashion for a <span className="text-primary">Better Future.</span>
@@ -32,7 +32,7 @@ const About = () => {
                 <motion.p 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
-                    transition={{ duration: 0.6, delay: 0.2 }} 
+                    transition={{ duration: 0.3, delay: 0.2 }} 
                     className="text-lavender/80 mt-4 max-w-3xl mx-auto text-lg"
                 >
                     OutFytly isn't just a marketplace. We're a movement towards a more sustainable and stylish world.
@@ -93,10 +93,10 @@ const About = () => {
                         {teamMembers.map((member, index) => (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, y: 30 }}
+                                initial={{ opacity: 0, y: 10 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, amount: 0.4 }}
-                                transition={{ duration: 0.6, delay: index * 0.1 }}
+                                transition={{ duration: 0.3, delay: index * 0.1 }}
                                 className="bg-plum p-6 rounded-2xl shadow-lg text-center border border-lavender/20"
                             >
                                 <img src={member.avatar} alt={member.name} className="w-24 h-24 mx-auto rounded-full mb-4 shadow-md border-2 border-primary/50" />

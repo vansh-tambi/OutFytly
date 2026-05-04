@@ -8,7 +8,7 @@ const CategoryCard = ({ title, image }) => {
     // The entire card is now a clickable link
     <Link to={`/browse?category=${title.toLowerCase()}`}>
       <motion.div
-        whileHover={{ scale: 1.05, y: -5 }}
+        whileHover={{ scale: 1.02, y: -5 }}
         transition={{ type: "spring", stiffness: 300 }}
         className="relative rounded-2xl overflow-hidden shadow-lg group cursor-pointer h-48 sm:h-56"
       >

@@ -27,13 +27,13 @@ const HowItWorks = () => {
       <div className="max-w-6xl mx-auto px-6">
         <motion.div
             variants={{
-              initial: { opacity: 0, y: -30 },
+              initial: { opacity: 0, y: -10 },
               whileInView: { opacity: 1, y: 0 }
             }}
             initial="initial"
             whileInView="whileInView"
             viewport={{ once: false, amount: 0.5 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.3 }}
             className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold">How <span className="gradient-text">OutFytly</span> Works</h2>
@@ -43,13 +43,13 @@ const HowItWorks = () => {
         <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
           <motion.div
             variants={{
-              initial: { opacity: 0, x: -50 },
+              initial: { opacity: 0, y: 10 },
               whileInView: { opacity: 1, x: 0 }
             }}
             initial="initial"
             whileInView="whileInView"
             viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.3 }}
             className="space-y-4"
           >
             {steps.map((step, index) => {
@@ -82,13 +82,13 @@ const HowItWorks = () => {
 
           <motion.div 
             variants={{
-              initial: { opacity: 0, x: 50 },
+              initial: { opacity: 0, y: 10 },
               whileInView: { opacity: 1, x: 0 }
             }}
             initial="initial"
             whileInView="whileInView"
             viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.3 }}
             className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-2xl shadow-plum/50"
           >
             <AnimatePresence>
@@ -96,10 +96,10 @@ const HowItWorks = () => {
                 key={activeIndex}
                 src={steps[activeIndex].image}
                 alt={steps[activeIndex].title}
-                initial={{ opacity: 0, scale: 1.1 }}
+                initial={{ opacity: 0, scale: 1.02 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.1 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
+                exit={{ opacity: 0, scale: 1.02 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </AnimatePresence>

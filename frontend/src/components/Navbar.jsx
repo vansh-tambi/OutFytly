@@ -70,13 +70,13 @@ const Navbar = () => {
         Free Shipping On All Orders Above ₹2000!
       </div>
       <motion.nav
-        initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }}
+        initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.3 }}
         onMouseLeave={handleMouseLeave}
         className="sticky top-0 z-50 bg-plum/80 backdrop-blur-lg"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
           <Link to="/" className="text-2xl font-bold flex gap-2 items-center flex-shrink-0">
-            <motion.img src="/Logo_OUTFYTLY.png" alt="OutFytly" className="h-9 w-9 rounded-xl object-cover" whileHover={{ rotate: 10, scale: 1.1 }} />
+            <motion.img src="/Logo_OUTFYTLY.png" alt="OutFytly" className="h-9 w-9 rounded-xl object-cover" whileHover={{ rotate: 10, scale: 1.02 }} />
             <motion.span 
               className="gradient-text animate-gradient"
               style={{
@@ -117,12 +117,12 @@ const Navbar = () => {
                   )}
                 </NavLink>
                 <NavLink to="/account/profile" className={navLinkClasses}>Profile</NavLink>
-                <motion.button onClick={logout} whileHover={{ scale: 1.05 }} className="bg-lavender text-plum px-4 py-2 rounded-md text-sm font-semibold hover:bg-white transition">Logout</motion.button>
+                <motion.button onClick={logout} whileHover={{ scale: 1.02 }} className="bg-lavender text-plum px-4 py-2 rounded-md text-sm font-semibold hover:bg-white transition">Logout</motion.button>
               </>
             ) : (
               <>
                 <NavLink to="/login" className={navLinkClasses}>Login</NavLink>
-                <motion.div whileHover={{ scale: 1.05 }}>
+                <motion.div whileHover={{ scale: 1.02 }}>
                   <NavLink to="/signup" className="bg-primary px-4 py-2 rounded-md font-medium hover:bg-lavender hover:text-plum transition">Signup</NavLink>
                 </motion.div>
               </>
