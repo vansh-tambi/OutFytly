@@ -38,7 +38,7 @@ const Signup = () => {
       toast.success('Account created successfully!');
       navigate('/');
     } catch (error) {
-      toast.error(String(error));
+      toast.error(error.response?.data?.message || error.message || 'Signup failed');
     }
   };
 
@@ -85,7 +85,7 @@ const Signup = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              Create Your Account 🚀
+              Create Your Account
             </motion.h2>
             <motion.p 
               className="text-lavender/70 mb-6"
@@ -113,8 +113,6 @@ const Signup = () => {
                   type="text" 
                   placeholder="Full Name" 
                   className="form-input"
-                  whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
-                  transition={{ duration: 0.2 }}
                 />
                 {errors.fullName && <p className="form-error">{errors.fullName.message}</p>}
               </motion.div>
@@ -141,8 +139,6 @@ const Signup = () => {
                   type="email" 
                   placeholder="Email Address" 
                   className="form-input"
-                  whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
-                  transition={{ duration: 0.2 }}
                 />
                 {errors.email && <p className="form-error">{errors.email.message}</p>}
               </motion.div>
@@ -157,8 +153,6 @@ const Signup = () => {
                   type={showPassword ? 'text' : 'password'} 
                   placeholder="Password" 
                   className="form-input"
-                  whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
-                  transition={{ duration: 0.2 }}
                 />
                 <motion.button 
                   type="button" 
@@ -182,8 +176,6 @@ const Signup = () => {
                   type={showConfirmPassword ? 'text' : 'password'} 
                   placeholder="Confirm Password" 
                   className="form-input"
-                  whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
-                  transition={{ duration: 0.2 }}
                 />
                 <motion.button 
                   type="button" 

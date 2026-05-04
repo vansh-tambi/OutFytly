@@ -31,7 +31,7 @@ const Login = () => {
       toast.success('Logged in successfully!');
       navigate('/'); // Redirect to homepage on success
     } catch (error) {
-      toast.error(error);
+      toast.error(error.response?.data?.message || error.message || 'Login failed');
     }
   };
 
@@ -108,8 +108,6 @@ const Login = () => {
                     type="email" 
                     placeholder="Email Address" 
                     className="form-input"
-                    whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
-                    transition={{ duration: 0.2 }}
                   />
                   {errors.email && <p className="form-error">{errors.email.message}</p>}
                 </motion.div>
@@ -124,8 +122,6 @@ const Login = () => {
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
                     className="form-input"
-                    whileFocus={{ borderColor: '#8A2BE2', boxShadow: '0 0 0 3px rgba(138, 43, 226, 0.1)' }}
-                    transition={{ duration: 0.2 }}
                   />
                   <motion.button 
                     type="button" 

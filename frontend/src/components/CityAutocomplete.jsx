@@ -10,7 +10,6 @@ const CityAutocomplete = ({ register, setValue, error }) => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
-    setValue('location', value); // Update react-hook-form value
 
     if (value.length > 1) {
       const filteredSuggestions = cities
@@ -37,11 +36,13 @@ const CityAutocomplete = ({ register, setValue, error }) => {
     <div className="relative">
       <label className="form-label">Location</label>
       <input
-        {...register("location", { required: "Location is required" })}
+        {...register("location", { 
+          required: "Location is required",
+          onChange: handleInputChange,
+          onBlur: () => setTimeout(() => setShowSuggestions(false), 200)
+        })}
         type="text"
         value={inputValue}
-        onChange={handleInputChange}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} // Hide on blur with a small delay
         placeholder="e.g. Bhopal"
         className="form-input mt-2"
         autoComplete="off"
@@ -52,7 +53,10 @@ const CityAutocomplete = ({ register, setValue, error }) => {
             <li
               key={city.id}
               className="px-4 py-2 cursor-pointer text-white hover:bg-primary/50"
-              onClick={() => handleSuggestionClick(city.name)}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                handleSuggestionClick(city.name);
+              }}
             >
               {city.name}, {city.state}
             </li>

@@ -19,7 +19,7 @@ const ResetPassword = () => {
       toast.success(successMessage);
       setTimeout(() => navigate('/login'), 2000); // Redirect to login after 2s
     } catch (error) {
-      toast.error(String(error));
+      toast.error(error.response?.data?.message || error.message || 'Action failed');
     }
   };
 

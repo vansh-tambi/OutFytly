@@ -16,7 +16,7 @@ const ForgotPassword = () => {
       setMessage(successMessage);
       toast.success(successMessage);
     } catch (error) {
-      toast.error(String(error));
+      toast.error(error.response?.data?.message || error.message || 'Action failed');
     }
   };
 
